@@ -25,7 +25,8 @@
 				<img class="marker" src="${root }/resources/img/marker_BK9_btn.png" alt="marker_BK9_btn" data-markerName="BK9" data-makerToggle="false">
 				<img class="marker" src="${root }/resources/img/marker_CS2_btn.png" alt="marker_CS2_btn" data-markerName="CS2" data-makerToggle="false">
 			</div>
-			<div class="detail">
+			<div class="sideView detail">
+				<img class="info-close" src="/resources/img/closeIcon.png" />
 				<div class="info_aptNm"></div>
 				<div class="info_viewCount">
 					<img alt="" src="${root }/resources/img/viewCount.png">
@@ -36,6 +37,29 @@
 				<canvas id="priceChart" height="200"></canvas>
 				<div class="section-title">BLOG</div>
 				<div class="info-news"></div>
+			</div>
+			<div class="sideView sideViewOpen">
+				<div class="chat">
+					<div class="chat-header"></div>
+					<div class="chat-body">
+						<div class="chat-list">
+							<div onclick='connectChatRoom("ssafy2@naver.com")'></div>
+							<div onclick='connectChatRoom("ssafy3@naver.com")'></div>
+						</div>
+						<div class="chat-box">
+							<div class="chat-output"></div>
+							<div class="chat-input-div">
+								<div class="chat-input">
+									<textarea id="messageInput" placeholder="메시지를 입력해주세요."></textarea>
+									<div class="chat-btns">
+										<div>버튼들</div>
+										<div><button id="chat-sub">전송</button></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</main>
