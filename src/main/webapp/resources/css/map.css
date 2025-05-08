@@ -45,7 +45,7 @@ main {
   cursor: pointer;
 }
 
-.detail {
+.sideView {
   width: 22%;
   height: 100%;
   z-index: 30;
@@ -65,10 +65,10 @@ main {
   align-items: center;
 }
 /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
-.detail:-webkit-scrollbar {
+.sideView:-webkit-scrollbar {
   display: none;
 }
-.detailOpen {
+.sideViewOpen {
   left: 78%;
 }
 .detail * {
@@ -76,6 +76,14 @@ main {
 }
 .detail > * {
   width: 90% !important;
+}
+.detail > .info-close {
+  position: absolute;
+  top: 0.5vw;
+  left: 0.5vw;
+  height: 1vw;
+  width: auto !important;
+  cursor: pointer;
 }
 .detail .info_aptNm {
   display: flex;
@@ -173,4 +181,122 @@ main {
 
 .up {
   animation: up 1s ease forwards;
+}
+
+.chat {
+  width: 95%;
+  height: 100%;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.chat * {
+  width: 100%;
+  height: 100%;
+}
+
+.chat-header {
+  height: 5%;
+  flex-shrink: 0;
+  background-color: lightblue;
+}
+
+.chat-body {
+  display: flex;
+  height: 95%;
+}
+
+.chat-list {
+  width: 15%;
+  flex-shrink: 0;
+  background-color: lightgray;
+}
+
+.chat-box {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5vw;
+}
+.chat-output {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5vw;
+  overflow-y: scroll;
+  padding: 0.5vw;
+}
+.chat-message,
+.chat-output *,
+.chat-input * {
+  width: auto;
+  height: auto;
+}
+.chat-message {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  width: fit-content;
+}
+.chat-message:is(.sender) {
+  align-self: end;
+}
+.chat-message:not(.sender) > div:not(.time) {
+  background-color: #d6d6d6;
+  padding: 0.3vw 0.5vw;
+  border-radius: 0.2vw;
+}
+.chat-message:is(.sender) > div:not(.time) {
+  background-color: #bbe9fd;
+  padding: 0.3vw 0.5vw;
+  border-radius: 0.2vw;
+}
+.chat-output .time {
+  font-size: 0.6em;
+}
+.chat-input-div {
+  height: 20%;
+  flex-shrink: 0;
+}
+.chat-input {
+  border: 1px solid #a3a3a3;
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 0.5vw;
+}
+.chat-input textarea {
+  width: 100%;
+  height: 80%;
+  resize: none;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  border: none;
+  outline: none;
+}
+.chat-btns {
+  display: flex;
+  justify-content: space-between;
+}
+#chat-sub {
+  background-color: #e5e5e5;
+  font-size: 0.8em;
+  border: none;
+  padding: 0.3vw 0.5vw;
+  border-radius: 0.2vw;
+  color: #313131;
+  cursor: pointer;
+}
+
+.chat-list div {
+  width: 60px;
+  height: 60px;
+  margin: 20px auto;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.chat-list div:first-child {
+  background-color: blue;
+}
+.chat-list div:nth-child(2) {
+  background-color: red;
 }
