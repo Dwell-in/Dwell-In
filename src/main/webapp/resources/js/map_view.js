@@ -28,8 +28,3 @@ document.querySelectorAll(".marker").forEach((mk) => {
   });
 });
 ////
-
-// detail 끄기
-document.querySelector(".info-close").addEventListener("click", () => {
-  document.querySelector(".detail").classList.remove("sideViewOpen");
-});

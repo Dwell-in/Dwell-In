@@ -3,14 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.websocket.model.dao.ChatMessageDAO">
-	<resultMap type="ChatMessageDTO" id="ChatMessageMap">
-		<id column="message_id" property="messageId"/>
-		<result column="room_id" property="roomId"/>
-		<result column="sender_id" property="sender"/>
-		<result column="content" property="content"/>
-		<result column="sent_at" property="sentAt"/>
-	</resultMap>
-	<select id="selectChatMessageList" resultMap="ChatMessageMap">
+	<select id="selectChatMessageList">
 		SELECT *
 		FROM chat_message
 		WHERE room_id = #{roomId};
