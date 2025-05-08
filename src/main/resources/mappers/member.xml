@@ -11,11 +11,12 @@
 		<result column="phone" property="phone"/>
 		<result column="role" property="role"/>
 		<result column="kakao_id" property="kakaoId"/>
+		<result column="profile" property="profile"/>
 	</resultMap>
 	
     <insert id="insertMember">
-        insert into member(email,name,password,phone,role,kakao_id) 
-        values(#{email},#{name}, #{password},#{phone},#{role},#{kakaoId})
+        insert into member(email,name,password,phone,role,kakao_id,profile) 
+        values(#{email},#{name}, #{password},#{phone},#{role},#{kakaoId},#{profile})
     </insert>
 	
 	<select id="selectMemberByEmail" resultMap="memberMap">
@@ -34,7 +35,7 @@
 		    
     <update id="updateMember">
     	update member 
-    	set name=#{name},password=#{password},phone=#{phone} 
+    	set name=#{name},password=#{password},phone=#{phone}, profile=#{profile} 
     	where email=#{email}
     </update>
     
