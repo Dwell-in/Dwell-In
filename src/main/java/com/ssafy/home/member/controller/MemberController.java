@@ -1,5 +1,6 @@
 package com.ssafy.home.member.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.home.common.RestControllerHelper;
@@ -51,14 +53,18 @@ public class MemberController implements RestControllerHelper {
 	private final PasswordEncoder pe;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member, HttpSession session) {
+	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member, 
+			@RequestParam(required = false) MultipartFile img, HttpSession session) {
 		try {
 			String hashpw = pe.encode(member.getPassword());
+			if(img != null && !img.isEmpty()) {
+				member.setProfile(img.getBytes());
+			}
 			member.setRole("USER");
 			member.setPassword(hashpw);
 			mService.addMember(member);
 			return handleSuccess(member, HttpStatus.CREATED);
-		} catch (RuntimeException e) {
+		} catch (RuntimeException | IOException e) {
 			e.printStackTrace();
 			return handleFail(e);
 		}
@@ -160,8 +166,9 @@ public class MemberController implements RestControllerHelper {
 	@GetMapping("/kakao/login")
 	public ResponseEntity<?> getUserInfo(@RequestParam String id, @RequestParam String nickname,
 			@RequestParam String profileImage, HttpSession session){
+		String email = mService.findEmailByKakaoId(id);
 		try {
-			UserDetails member = cService.loadUserByUsername(id);
+			UserDetails member = cService.loadUserByUsername(email);
 			Authentication auth = new UsernamePasswordAuthenticationToken(member.getUsername(), null, member.getAuthorities());
 			
 			SecurityContext context = SecurityContextHolder.getContext();
@@ -180,6 +187,13 @@ public class MemberController implements RestControllerHelper {
 		        ));
 		}
 	}
+	
+	@GetMapping("/user-info")
+	public ResponseEntity<?> getCurrentUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
+		MemberDTO member = userDetails.getMember();
+		return handleSuccess(Map.of("email",member.getEmail(),"name",member.getName(),"profileImg",member.getProfileImg()));
+	}
+	
 	
 //	@PostMapping("/check-email")
 //	public ResponseEntity<?> checkEmailDuplicate(@RequestParam String email, HttpServletResponse response) {

@@ -1,11 +1,13 @@
 drop table if exists `ssafyhome`.`noticeboard`;
 drop table if exists `ssafyhome`.`board`;
+drop table if exists `ssafyhome`.`chat_message`;
+drop table if exists `ssafyhome`.`chat_room`;
 drop table if exists `ssafyhome`.`pattern`;
 drop table if exists `ssafyhome`.`member`;
 drop table if exists `ssafyhome`.`star`;
 
 -- 매물별 조회수 컬럼 추가 
-alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
+-- alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `email` VARCHAR(45) NOT NULL,
@@ -13,6 +15,8 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `password` VARCHAR(100) NULL,
   `phone` VARCHAR(45) NULL,
   `role` VARCHAR(45) NULL,
+  `kakao_id` VARCHAR(45) NULL, 
+  `profile` MEDIUMBLOB,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
@@ -65,17 +69,6 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`noticeboard` (
     REFERENCES `ssafyhome`.`member` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ssafyhome`.`pattern`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafyhome`.`pattern` (
-  `no` INT NOT NULL auto_increment,
-  `pattern` VARCHAR(45) NULL,
-  `count` INT NULL,
-  PRIMARY KEY (`no`))
 ENGINE = InnoDB;
 
 -- 채팅방 테이블

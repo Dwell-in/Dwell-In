@@ -15,4 +15,6 @@ public interface MemberService {
     int removeMember(String email, String password);
 
     int removeMember(String email);
+    
+    String findEmailByKakaoId(String id);
 }

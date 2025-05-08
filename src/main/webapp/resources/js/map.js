@@ -30,6 +30,7 @@ const setInfo = async (aptNm, aptSeq) => {
   const isStarred = json.data.isStarred;
   const aptNmNode = document.createTextNode(aptNm);
 
+<<<<<<< HEAD
   const staredImg = document.createElement("img");
   staredImg.className = "info-stared";
   staredImg.src = isStarred ? "/resources/img/stared_t.png" : "/resources/img/stared_f.png";
@@ -48,6 +49,34 @@ const setInfo = async (aptNm, aptSeq) => {
     }
     currentIsStarred = !currentIsStarred;
     staredImg.src = currentIsStarred ? `/resources/img/stared_t.png` : `/resources/img/stared_f.png`;
+=======
+const setInfo = async(aptNm,aptSeq) => {
+	const response = await fetch(`${root}/api/v1/house/view/starred/${aptSeq}`)
+	const json = await response.json();
+	const isStarred = json.data.isStarred;
+	const aptNmNode = document.createTextNode(aptNm);
+	const staredImg = document.createElement("img");
+	staredImg.className = "info-stared";
+	staredImg.src = isStarred ?"/resources/img/stared_t.png" :"/resources/img/stared_f.png"
+	let currentIsStarred = isStarred;
+	staredImg.addEventListener("click", async () => {
+		if(currentIsStarred===""){
+			 redirectToLoginIfNeeded();
+			   return; // 아래 코드 실행 방지
+		}
+	 const isCurrentStarred = staredImg.src.includes("stared_t.png");
+	 const url = `${root}/api/v1/starred/${aptSeq}`;
+	 const method = isCurrentStarred ? "DELETE" : "POST";
+	 const response = await fetch(url, { method });
+		if (!response.ok) {
+		   alert("관심지역 등록 실패!");
+		   return;
+		 }
+	    currentIsStarred = !currentIsStarred;
+	    staredImg.src = currentIsStarred
+	      ? `/resources/img/stared_t.png`
+	      : `/resources/img/stared_f.png`;
+>>>>>>> a4f7a1a6f88ebee62807b5e05363d489755da8ff
   });
 
   const info_aptNm = document.querySelector(".info_aptNm");
@@ -193,3 +222,12 @@ const getOG2Link = async (link) => {
   const json = await response.json();
   return json["og:image"];
 };
+
+function redirectToLoginIfNeeded(message = "로그인 후 이용하세요. 로그인 페이지로 이동할까요?") {
+  const goLogin = confirm(message);
+  if (goLogin) {
+    window.location.href = `${root}/member/login`;
+  }
+}
+
+
