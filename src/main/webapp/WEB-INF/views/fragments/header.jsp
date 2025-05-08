@@ -50,9 +50,7 @@
 					<a href="${root }/member/signup">회원가입</a>
 				</c:if>
 				<c:if test="${!empty SPRING_SECURITY_CONTEXT}">
-					<a href="${root }/api/v1/member/logout">로그아웃</a>
-					<a href="${root }/member/mypage">마이페이지</a>
-					<a href="${root }/#">관리자</a>
+					<a href="${root }/api/v1/member/logout"><img class="profile"/></a>
 				</c:if>
 			</div>
 		</div>

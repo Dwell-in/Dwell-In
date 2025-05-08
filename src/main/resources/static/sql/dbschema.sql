@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `phone` VARCHAR(45) NULL,
   `role` VARCHAR(45) NULL,
   `kakao_id` VARCHAR(45) NULL, 
+  `profile` MEDIUMBLOB,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB;
 
@@ -68,17 +69,6 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`noticeboard` (
     REFERENCES `ssafyhome`.`member` (`email`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `ssafyhome`.`pattern`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `ssafyhome`.`pattern` (
-  `no` INT NOT NULL auto_increment,
-  `pattern` VARCHAR(45) NULL,
-  `count` INT NULL,
-  PRIMARY KEY (`no`))
 ENGINE = InnoDB;
 
 -- 채팅방 테이블
