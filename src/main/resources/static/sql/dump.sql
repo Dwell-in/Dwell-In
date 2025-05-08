@@ -1,7 +1,7 @@
 use ssafyhome;
 
 -- member
-INSERT INTO member
+INSERT INTO member(email, name, password, phone, role)
 VALUES
   ('ssafy@naver.com', 'ssafy', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'ADMIN'),
   ('ssafy1@naver.com', 'ssafy1', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'USER'),

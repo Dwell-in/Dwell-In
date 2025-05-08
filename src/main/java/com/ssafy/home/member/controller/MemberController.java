@@ -160,8 +160,9 @@ public class MemberController implements RestControllerHelper {
 	@GetMapping("/kakao/login")
 	public ResponseEntity<?> getUserInfo(@RequestParam String id, @RequestParam String nickname,
 			@RequestParam String profileImage, HttpSession session){
+		String email = mService.findEmailByKakaoId(id);
 		try {
-			UserDetails member = cService.loadUserByUsername(id);
+			UserDetails member = cService.loadUserByUsername(email);
 			Authentication auth = new UsernamePasswordAuthenticationToken(member.getUsername(), null, member.getAuthorities());
 			
 			SecurityContext context = SecurityContextHolder.getContext();

@@ -12,6 +12,7 @@
 	<main>
         <p class="hi">SSAFY HOME에 오신걸 환영합니다!!</p>
         <form action="${root}/api/v1/member/signup" method="post">
+        	<input type="hidden" name="kakaoId" value=${param.id}>
             <div>
                 <div>
                     <label for="email">아이디(이메일)<span class="essential"></span></label>
