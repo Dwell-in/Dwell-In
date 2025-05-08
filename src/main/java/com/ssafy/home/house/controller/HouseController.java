@@ -80,6 +80,9 @@ public class HouseController implements RestControllerHelper{
 	private ResponseEntity<?> IsStarred(@PathVariable String aptSeq,@AuthenticationPrincipal UserDetails member){
 		// 현재 아파트가 관심 아파트 매물인지 확인하는 메서드
 		try {
+		if(member==null) {
+			return handleSuccess(Map.of("isStarred",""));
+		}
 		String memberEmail = member.getUsername();
 
 		StarredDTO starred = StarredDTO.builder().email(memberEmail).aptSeq(aptSeq).build();
