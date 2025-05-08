@@ -13,4 +13,5 @@ public class MemberDTO {
 	private String password;	// 비밀번호
 	private String phone;		// 휴대폰 번호
 	private String role;		// role
+	private String kakaoId;
 }

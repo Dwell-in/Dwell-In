@@ -44,5 +44,10 @@ public class MemberServiceImpl implements MemberService {
 	public int removeMember(String email) {
 		return dao.deleteMemberByEmail(email);
 	}
+
+	@Override
+	public String findEmailByKakaoId(String id) {
+		return dao.selectEmailByKakaoId(id);
+	}
 	
 }

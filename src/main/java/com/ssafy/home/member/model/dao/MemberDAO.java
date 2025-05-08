@@ -23,4 +23,6 @@ public interface MemberDAO {
 	int deleteMemberByEmail(String email);
 	
 	int deleteMember(@Param("email") String email, @Param("password") String password);
+	
+	String selectEmailByKakaoId(String id);
 }
