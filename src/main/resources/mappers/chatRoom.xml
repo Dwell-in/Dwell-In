@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.websocket.model.dao.ChatRoomDAO">
+	<select id="selectRoomId">
+		SELECT room_id
+		FROM chat_room
+		WHERE user1_id = LEAST(#{user1Id}, #{user2Id})
+			AND user2_id = GREATEST(#{user1Id}, #{user2Id})
+	</select>
+	<insert id="insertChatRoom">
+		INSERT INTO chat_room (room_id, user1_id, user2_id)
+		VALUES (#{roomId}, LEAST(#{user1Id}, #{user2Id}), GREATEST(#{user1Id}, #{user2Id}))
+	</insert>
+</mapper>

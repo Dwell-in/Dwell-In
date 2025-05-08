@@ -1,0 +1,118 @@
+* {
+  color: black;
+}
+body {
+  overflow-x: hidden;
+}
+main {
+  max-width: 1920px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.hi {
+  text-align: center;
+  font-size: 1.25em;
+  font-weight: bold;
+  line-height: 7em;
+}
+
+main form {
+  width: 80%;
+  border-top: 1px solid black;
+  padding-top: 50px;
+}
+
+main form > div:not(.btns) {
+  border-top: 1px solid lightgray;
+}
+
+main form > div > div {
+  display: flex;
+  align-items: center;
+  height: 75px;
+}
+main form > div > div:nth-child(2) {
+  height: auto;
+  padding: 20px 0;
+  margin-left: 18%;
+  display: block;
+  line-height: 1.2em;
+}
+main form > div > div:nth-child(2) p {
+  font-size: 0.7em;
+  color: gray;
+}
+
+span:not(.essential) {
+  padding: 15px;
+  font-size: 0.85em;
+}
+
+main label {
+  border-top: 1px solid black;
+  width: 16%;
+  padding: 20px;
+  font-size: 0.85em;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+main input {
+  height: 80%;
+  padding: 20px;
+  border: 1px solid lightgray;
+  width: 100%;
+  font-size: 0.85em;
+}
+main select {
+  height: 80%;
+  padding: 5px 10px;
+  border: 1px solid lightgray;
+  font-size: 0.85em;
+  cursor: pointer;
+}
+.tel {
+  padding: 20px;
+  width: 300px;
+}
+label + input,
+label + select {
+  margin-left: 2%;
+}
+input::placeholder {
+  color: rgb(172, 172, 172);
+  font-weight: 300;
+}
+
+.essential {
+  display: inline-block;
+  background: url(https://www.ssafy.com/swp/images/icons/red-bul1.png) no-repeat;
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+  position: relative;
+  margin-left: 5px;
+}
+
+.btns {
+  padding: 0 0 5%;
+  gap: 50px;
+}
+.btn {
+  padding: 25px 35px;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.btns .lb {
+  background-color: #4f5a66;
+}
+
+.btns .sb {
+  background-color: #3c90e2;
+}

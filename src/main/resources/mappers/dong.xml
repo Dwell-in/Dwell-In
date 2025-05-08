@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.search.model.dao.DongDAO">
+	<select id="selectCode">
+		select dong_code
+		from dongcodes
+		where sido_name=#{sido} and gugun_name=#{gugun} and dong_name=#{dong}
+	</select>
+	
+	<select id="selectSidoList">
+		select distinct sido_name
+		from dongcodes
+	</select>
+	
+	<select id="selectGugunList">
+		select distinct gugun_name
+		from dongcodes
+		where sido_name=#{sido} and gugun_name is not null
+		order by gugun_name
+	</select>
+	
+	<select id="selectDongList">
+		select distinct dong_name
+		from dongcodes
+		where sido_name=#{sido} and gugun_name=#{gugun}  and dong_name is not null
+		order by dong_name
+	</select>
+</mapper>

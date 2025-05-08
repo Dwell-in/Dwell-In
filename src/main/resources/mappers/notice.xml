@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ssafy.home.board.model.dao.BoardDao">
+  
+  	<select id="selectBoard" resultMap="boardMap">
+  		select * from noticeboard
+  	</select>
+
+	<select id="selectSearchBoard" resultMap="boardMap">
+		select * from noticeboard
+		where title like concat('%', #{search}, '%')
+	</select>
+  	
+  	<select id="selectDetailBoard" resultMap="boardMap">
+  		select * from noticeboard
+  		<where>
+  			<if test ="email!=null">
+  				boardId = #{boardId}
+  			</if>
+  		</where>
+  	</select>
+  	
+  	<update id="updateViewCount">
+    	UPDATE noticeboard
+    	SET view_count = view_count + 1
+    	WHERE boardId = #{boardId}
+	</update>
+
+	<update id="updateBoard">
+		UPDATE noticeboard
+		SET title = #{title}, content = #{content}
+		WHERE boardId = #{boardId}
+
+	</update>
+
+	<insert id="insertBoard" parameterType="com.ssafy.home.board.model.dto.BoardDTO">
+    INSERT INTO noticeboard (content, email, title, view_count,reg_date)
+    VALUES (#{content}, #{email}, #{title}, 0, #{regDate})
+	</insert>
+	
+	<delete id="deleteBoard">
+	delete from noticeboard
+	where boardId = #{boardId}
+	
+	</delete>
+  
+  	<resultMap type="BoardDTO" id="boardMap">
+  	<id column="boardid" property="boardId"/>
+  	<result column="title" property="title"/>
+  	<result column="content" property="content"/>
+  	<result column="email" property="email"/>
+  	<result column="view_count" property="viewCount"/>
+  	<result column="reg_date" property="regDate"/>
+  	</resultMap>
+  
+  </mapper>

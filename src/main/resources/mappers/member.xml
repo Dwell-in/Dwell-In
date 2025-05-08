@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.member.model.dao.MemberDAO">
+	<!--  useGeneratedKeys="true" keyProperty="mno"은 insert에서 auto increment 컬럼에서 사용 -->
+	
+    <insert id="insertMember">
+        insert into member(email,name,password,phone) 
+        values(#{email},#{name}, #{password},#{phone})
+    </insert>
+	
+	<select id="selectMemberByEmail" resultMap="memberMap">
+        select * from member 
+        where email=#{email} 
+    </select>
+	
+    <select id="selectMember" resultMap="memberMap">
+        select * from member 
+        where email=#{email} and password=#{password}
+    </select>
+		    
+    <update id="updateMember">
+    	update member 
+    	set name=#{name},password=#{password},phone=#{phone} 
+    	where email=#{email}
+    </update>
+    
+    <delete id="deleteMemberByEmail">
+    	delete from member where email=#{email}
+    </delete>
+    
+    <delete id="deleteMember">
+    	delete from member where email=#{email} and password=#{password}
+    </delete>
+
+	<resultMap type="MemberDTO" id="memberMap">
+		<id column="email" property="email"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<result column="phone" property="phone"/>
+	</resultMap>
+
+</mapper>

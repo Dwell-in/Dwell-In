@@ -1,0 +1,43 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Pretendard;
+  transition: opacity 0.2s, gap 0.2s, width 0.2s, color 0.2s, background-color 0.2s;
+  font-size: 20px;
+}
+body {
+  position: relative;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-top: 65px;
+}
+main {
+  position: relative;
+}
+a {
+  text-decoration: none;
+  cursor: pointer;
+}
+.flex {
+  display: flex;
+}
+.flex-j-c {
+  justify-content: center;
+}
+.flex-d-c {
+  flex-direction: column;
+}
+.flex-j-sb {
+  justify-content: space-between;
+}
+.flex-a-s {
+  align-items: start;
+}
+.flex-a-c {
+  align-items: center;
+}
+
+.display-none {
+  display: none;
+}
