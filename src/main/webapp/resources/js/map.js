@@ -7,12 +7,12 @@ const addEvent = async (num) => {
   });
   kakao.maps.event.addListener(marker[num], "click", function () {
     // 상세보기창 on
-    document.querySelector(".detail").classList.add("sideViewOpen");
+    document.querySelector(".detail").classList.add("detailOpen");
     document.querySelector(".detail").scrollTop = 0;
-    //관심아파트인지 확인
-
+	//관심아파트인지 확인
+	
     // 아파트 이름, 즐겨찾기 버튼 등 세팅
-    setInfo(`${infoList[num].aptNm}`, infoList[num].aptSeq);
+    setInfo(`${infoList[num].aptNm}`,infoList[num].aptSeq);
     // 조회수
     getViewCount(infoList[num].aptSeq);
     // 로드뷰
@@ -24,32 +24,36 @@ const addEvent = async (num) => {
   });
 };
 
-const setInfo = async (aptNm, aptSeq) => {
-  const response = await fetch(`${root}/api/v1/house/view/starred/${aptSeq}`);
-  const json = await response.json();
-  const isStarred = json.data.isStarred;
-  const aptNmNode = document.createTextNode(aptNm);
 
-  const staredImg = document.createElement("img");
-  staredImg.className = "info-stared";
-  staredImg.src = isStarred ? "/resources/img/stared_t.png" : "/resources/img/stared_f.png";
-
-  let currentIsStarred = isStarred;
-  staredImg.addEventListener("click", async () => {
-    const isCurrentStarred = staredImg.src.includes("stared_t.png");
-    const url = `${root}/api/v1/starred/${aptSeq}`;
-    const method = isCurrentStarred ? "DELETE" : "POST";
-
-    const response = await fetch(url, { method });
-
-    if (!response.ok) {
-      alert("관심지역 등록 실패!");
-      return;
-    }
-    currentIsStarred = !currentIsStarred;
-    staredImg.src = currentIsStarred ? `/resources/img/stared_t.png` : `/resources/img/stared_f.png`;
+const setInfo = async(aptNm,aptSeq) => {
+	const response = await fetch(`${root}/api/v1/house/view/starred/${aptSeq}`)
+	const json = await response.json();
+	const isStarred = json.data.isStarred;
+	const aptNmNode = document.createTextNode(aptNm);
+	
+	const staredImg = document.createElement("img");
+	staredImg.className = "info-stared";
+	staredImg.src = isStarred ?"/resources/img/stared_t.png" :"/resources/img/stared_f.png"
+	  
+	let currentIsStarred = isStarred;
+	staredImg.addEventListener("click", async () => {
+	 const isCurrentStarred = staredImg.src.includes("stared_t.png");
+	 const url = `${root}/api/v1/starred/${aptSeq}`;
+	 const method = isCurrentStarred ? "DELETE" : "POST";
+	
+	 const response = await fetch(url, { method });
+	    
+		if (!response.ok) {
+		   alert("관심지역 등록 실패!");
+		   return;
+		 }
+	    currentIsStarred = !currentIsStarred;
+	    staredImg.src = currentIsStarred
+	      ? `/resources/img/stared_t.png`
+	      : `/resources/img/stared_f.png`;
   });
 
+  
   const info_aptNm = document.querySelector(".info_aptNm");
   info_aptNm.innerHTML = "";
   info_aptNm.appendChild(aptNmNode);
