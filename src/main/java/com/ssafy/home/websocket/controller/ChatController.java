@@ -2,6 +2,7 @@ package com.ssafy.home.websocket.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ssafy.home.common.RestControllerHelper;
+import com.ssafy.home.member.model.dto.MemberDTO;
+import com.ssafy.home.member.model.service.MemberService;
 import com.ssafy.home.websocket.model.dto.ChatMessageDTO;
 import com.ssafy.home.websocket.model.dto.ChatRoomDTO;
 import com.ssafy.home.websocket.model.service.ChatService;
@@ -24,6 +27,14 @@ import lombok.RequiredArgsConstructor;
 public class ChatController implements RestControllerHelper{
 	private final SimpMessageSendingOperations smso;
 	private final ChatService chatService;
+	private final MemberService memberService;
+	
+	// 채팅 상대 리스트
+	@ResponseBody
+	@GetMapping("/chat/targets/{loginUserEmail}")
+	public ResponseEntity<?> getChatTargets(@PathVariable String loginUserEmail){
+		return handleSuccess(memberService.findChatTargetList(loginUserEmail));
+	}
 	
 	// 채팅방 ID 반환
     @ResponseBody

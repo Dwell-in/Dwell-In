@@ -14,34 +14,39 @@ const detailInit = (info) => {
   drawChart(info);
   // 블로그
   searchBlog(info.aptNm);
-}
+  // sideView 끄기
+  const closeBtns = document.querySelectorAll(".detail .close");
+  closeBtns.forEach((closeBtn) => {
+    closeBtn.addEventListener("click", () => {
+      closeBtn.parentElement.classList.remove("open");
+    });
+  });
+};
 
-const setInfo = async(aptNm,aptSeq) => {
-	const response = await fetch(`${root}/api/v1/house/view/starred/${aptSeq}`)
-	const json = await response.json();
-	const isStarred = json.data.isStarred;
-	const aptNmNode = document.createTextNode(aptNm);
-	const staredImg = document.createElement("img");
-	staredImg.className = "info-stared";
-	staredImg.src = isStarred ?"/resources/img/stared_t.png" :"/resources/img/stared_f.png"
-	let currentIsStarred = isStarred;
-	staredImg.addEventListener("click", async () => {
-		if(currentIsStarred===""){
-			 redirectToLoginIfNeeded();
-			   return; // 아래 코드 실행 방지
-		}
-	 const isCurrentStarred = staredImg.src.includes("stared_t.png");
-	 const url = `${root}/api/v1/starred/${aptSeq}`;
-	 const method = isCurrentStarred ? "DELETE" : "POST";
-	 const response = await fetch(url, { method });
-		if (!response.ok) {
-		   alert("관심지역 등록 실패!");
-		   return;
-		 }
-	    currentIsStarred = !currentIsStarred;
-	    staredImg.src = currentIsStarred
-	      ? `/resources/img/stared_t.png`
-	      : `/resources/img/stared_f.png`;
+const setInfo = async (aptNm, aptSeq) => {
+  const response = await fetch(`${root}/api/v1/house/view/starred/${aptSeq}`);
+  const json = await response.json();
+  const isStarred = json.data.isStarred;
+  const aptNmNode = document.createTextNode(aptNm);
+  const staredImg = document.createElement("img");
+  staredImg.className = "info-stared";
+  staredImg.src = isStarred ? "/resources/img/stared_t.png" : "/resources/img/stared_f.png";
+  let currentIsStarred = isStarred;
+  staredImg.addEventListener("click", async () => {
+    if (currentIsStarred === "") {
+      redirectToLoginIfNeeded();
+      return; // 아래 코드 실행 방지
+    }
+    const isCurrentStarred = staredImg.src.includes("stared_t.png");
+    const url = `${root}/api/v1/starred/${aptSeq}`;
+    const method = isCurrentStarred ? "DELETE" : "POST";
+    const response = await fetch(url, { method });
+    if (!response.ok) {
+      alert("관심지역 등록 실패!");
+      return;
+    }
+    currentIsStarred = !currentIsStarred;
+    staredImg.src = currentIsStarred ? `/resources/img/stared_t.png` : `/resources/img/stared_f.png`;
   });
 
   const info_aptNm = document.querySelector(".info_aptNm");
@@ -195,4 +200,3 @@ function redirectToLoginIfNeeded(message = "로그인 후 이용하세요. 로�
     window.location.href = `${root}/member/login`;
   }
 }
-

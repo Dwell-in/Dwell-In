@@ -1,137 +1,137 @@
-.sideView {
-    width: 22%;
-    height: 100%;
-    z-index: 30;
-    position: absolute;
-    top: 0;
-    left: 100%;
-    gap: 5vh;
-    padding: 3vh 0;
-    overflow-y: scroll;
-    background-color: #343434d1;
-    box-shadow: -0.3vh 0.3vh 1vh black;
-    -ms-overflow-style: none;
-    /* 인터넷 익스플로러 */
-    scrollbar-width: none;
-    /* 파이어폭스 */
-    transition: 0.5s;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.sideView:is(.detail) {
+  width: 22%;
+  height: 100%;
+  z-index: 30;
+  position: absolute;
+  top: 0;
+  left: 100%;
+  gap: 5vh;
+  padding: 3vh 0;
+  overflow-y: scroll;
+  background-color: #343434d1;
+  box-shadow: -0.3vh 0.3vh 1vh black;
+  -ms-overflow-style: none;
+  /* 인터넷 익스플로러 */
+  scrollbar-width: none;
+  /* 파이어폭스 */
+  transition: 0.5s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
 .sideView:-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-.sideViewOpen {
-    left: 78%;
+.sideView:is(.open) {
+  left: 78% !important;
 }
 
-.sideView>.close {
-    position: absolute;
-    top: 0.5vw;
-    left: 0.5vw;
-    height: 1vw;
-    width: auto !important;
-    cursor: pointer;
+.sideView > .close {
+  position: absolute;
+  top: 0.5vw;
+  left: 0.5vw;
+  height: 1vw;
+  width: auto !important;
+  cursor: pointer;
 }
 
 .detail * {
-    color: white;
+  color: white;
 }
 
-.detail>* {
-    width: 90% !important;
+.detail > * {
+  width: 90% !important;
 }
 
 .detail .info_aptNm {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .detail .info-stared {
-    height: 30px;
-    width: auto !important;
-    cursor: pointer;
+  height: 30px;
+  width: auto !important;
+  cursor: pointer;
 }
 
 .detail .section-title {
-    margin: -2vh 0;
-    font-size: 1.2em;
+  margin: -2vh 0;
+  font-size: 1.2em;
 }
 
 .detail .info_aptNm {
-    font-size: 1.5em;
-    text-align: center;
-    line-height: 3em;
+  font-size: 1.5em;
+  text-align: center;
+  line-height: 3em;
 }
 
 .detail .info_viewCount {
-    margin: -5vh 0 -4vh;
-    height: 16px;
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    gap: 5px;
+  margin: -5vh 0 -4vh;
+  height: 16px;
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 5px;
 }
 
 .detail .info_viewCount img {
-    height: 80%;
+  height: 80%;
 }
 
-.detail .info_viewCount>div {
-    font-size: 0.8em;
+.detail .info_viewCount > div {
+  font-size: 0.8em;
 }
 
 .detail .info-roadview {
-    height: 15vw;
-    margin: 0 auto;
-    flex-shrink: 0;
-    border-radius: 20px;
+  height: 15vw;
+  margin: 0 auto;
+  flex-shrink: 0;
+  border-radius: 20px;
 }
 
 .detail .info-news {
-    height: 7vw;
-    display: flex;
-    gap: 2vw;
-    overflow-y: hidden;
-    flex-shrink: 0;
-    -ms-overflow-style: none;
-    /* 인터넷 익스플로러 */
-    scrollbar-width: none;
-    /* 파이어폭스 */
+  height: 7vw;
+  display: flex;
+  gap: 2vw;
+  overflow-y: hidden;
+  flex-shrink: 0;
+  -ms-overflow-style: none;
+  /* 인터넷 익스플로러 */
+  scrollbar-width: none;
+  /* 파이어폭스 */
 }
 
 /* ( 크롬, 사파리, 오페라, 엣지 ) 동작 */
 .detail .info-news:-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
-.detail .info-news>a {
-    flex-shrink: 0;
-    width: 7vw;
-    height: 7vw;
-    background-size: 100% 100%;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative;
-    border-radius: 1vw;
-    overflow: hidden;
+.detail .info-news > a {
+  flex-shrink: 0;
+  width: 7vw;
+  height: 7vw;
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  border-radius: 1vw;
+  overflow: hidden;
 }
 
 .detail .info-news .title {
-    width: 100%;
-    height: 40%;
-    position: absolute;
-    bottom: 0;
-    background-color: #000000c2;
-    font-size: 0.7em;
+  width: 100%;
+  height: 40%;
+  position: absolute;
+  bottom: 0;
+  background-color: #000000c2;
+  font-size: 0.7em;
 }
 
 .detail .info-news .title b {
-    font-size: 1em;
+  font-size: 1em;
 }
