@@ -25,15 +25,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public MemberDTO findMemberDetail(String email, String password) {
-		return dao.selectMember(email, password);
-	}
-
-	@Override
 	public MemberDTO findMemberDetail(String email) {
 		return dao.selectMemberByEmail(email);
 	}
 
+	@Override
+	public MemberDTO findMemberById(int id) {
+		return dao.selectMemberById(id);
+	}
+	
 	@Override
 	public int modifyMember(MemberDTO member) {
 		return dao.updateMember(member);
@@ -55,14 +55,15 @@ public class MemberServiceImpl implements MemberService {
 	}
 
 	@Override
-	public List<Map<String, ?>> findChatTargetList(String loginUserEmail) {
+	public List<Map<String, ?>> findChatTargetList(int id) {
 		List<Map<String, ?>> targets = new ArrayList<>();
-		List<String> targetEmails = dao.selectChatTargetEmail(loginUserEmail);
-		for (String email : targetEmails) {
-			MemberDTO target = dao.selectMemberByEmail(email);
-			targets.add(Map.of("email",target.getEmail(),"name",target.getName(),"profileImg",target.getProfileImg()));
+		List<Integer> targetList = dao.selectChatTargetId(id);
+		for (int targetId: targetList) {
+			MemberDTO target = dao.selectMemberById(targetId);
+			targets.add(Map.of("id",target.getId(),"name",target.getName(),"profileImg",target.getProfileImg()));
 		}
 		return targets;
 	}
+
 	
 }

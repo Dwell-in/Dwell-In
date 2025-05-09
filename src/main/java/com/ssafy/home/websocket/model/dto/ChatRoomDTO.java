@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ChatRoomDTO {
 	private String roomId;
-	private String user1Id;
-	private String user2Id;
+	private int user1Id;
+	private int user2Id;
 }

@@ -191,7 +191,11 @@ public class MemberController implements RestControllerHelper {
 	@GetMapping("/user-info")
 	public ResponseEntity<?> getCurrentUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
 		MemberDTO member = userDetails.getMember();
-		return handleSuccess(Map.of("email",member.getEmail(),"name",member.getName(),"profileImg",member.getProfileImg()));
+		return handleSuccess(Map.of(
+				"id",member.getId()
+				,"email",member.getEmail()
+				,"name",member.getName()
+				,"profileImg",member.getProfileImg()));
 	}
 	
 	

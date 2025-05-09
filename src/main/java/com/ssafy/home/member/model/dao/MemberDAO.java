@@ -14,10 +14,10 @@ public interface MemberDAO {
 
 	int updateMember(MemberDTO member);
 
+	MemberDTO selectMemberById(int id) ;
+
 	MemberDTO selectMemberByEmail(String email) ;
 
-	MemberDTO selectMember(@Param("email") String email, @Param("password") String password);
-	
 	MemberDTO selectAllMember();
 
 	String selectPassword(String email);
@@ -28,5 +28,5 @@ public interface MemberDAO {
 	
 	String selectEmailByKakaoId(String id);
 	
-	List<String> selectChatTargetEmail(String loginUserEmail);
+	List<Integer> selectChatTargetId(int id);
 }
