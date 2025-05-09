@@ -23,6 +23,7 @@ import com.ssafy.home.house.model.service.HouseService;
 import com.ssafy.home.house.util.HouseCookieHandler;
 import com.ssafy.home.member.model.dto.MemberDTO;
 import com.ssafy.home.search.model.dto.DongDTO;
+import com.ssafy.home.security.dto.CustomUserDetails;
 import com.ssafy.home.starred.model.dto.StarredDTO;
 import com.ssafy.home.starred.model.service.StarredService;
 
@@ -77,15 +78,15 @@ public class HouseController implements RestControllerHelper{
 	}
 	
 	@GetMapping("/view/starred/{aptSeq}")
-	private ResponseEntity<?> IsStarred(@PathVariable String aptSeq,@AuthenticationPrincipal UserDetails member){
+	private ResponseEntity<?> IsStarred(@PathVariable String aptSeq,@AuthenticationPrincipal CustomUserDetails member){
 		// 현재 아파트가 관심 아파트 매물인지 확인하는 메서드
 		try {
 		if(member==null) {
 			return handleSuccess(Map.of("isStarred",""));
 		}
-		String memberEmail = member.getUsername();
+		int memberId = member.getMember().getId();
 
-		StarredDTO starred = StarredDTO.builder().email(memberEmail).aptSeq(aptSeq).build();
+		StarredDTO starred = StarredDTO.builder().userId(memberId).aptSeq(aptSeq).build();
 		
 		boolean isStarred = sService.isStarred(starred);
 		
