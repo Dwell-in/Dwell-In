@@ -5,12 +5,14 @@
 <mapper namespace="com.ssafy.home.member.model.dao.MemberDAO">
 	<!--  useGeneratedKeys="true" keyProperty="mno"은 insert에서 auto increment 컬럼에서 사용 -->
 	<resultMap type="MemberDTO" id="memberMap">
-		<id column="email" property="email"/>
+		<id column="id" property="id"/>
+		<result column="email" property="email"/>
 		<result column="name" property="name"/>
 		<result column="password" property="password"/>
 		<result column="phone" property="phone"/>
 		<result column="role" property="role"/>
 		<result column="kakao_id" property="kakaoId"/>
+		<result column="state" property="state"/>
 		<result column="profile" property="profile"/>
 	</resultMap>
 	
@@ -19,14 +21,18 @@
         values(#{email},#{name}, #{password},#{phone},#{role},#{kakaoId},#{profile})
     </insert>
 	
+	<select id="selectMemberById" resultMap="memberMap">
+        select * from member 
+        where id=#{id} 
+    </select>
+	
 	<select id="selectMemberByEmail" resultMap="memberMap">
         select * from member 
         where email=#{email} 
     </select>
 	
-    <select id="selectMember" resultMap="memberMap">
+	<select id="selectAllMember" resultMap="memberMap">
         select * from member 
-        where email=#{email} and password=#{password}
     </select>
     
     <select id="selectEmailByKakaoId">
@@ -47,14 +53,14 @@
     	delete from member where email=#{email} and password=#{password}
     </delete>
 	
-	<select id="selectChatTargetEmail">
-    	select user1_id as email
+	<select id="selectChatTargetId">
+    	select user1_id as id
 		from chat_room
-		where user2_id = #{loginUserEmail}
+		where user2_id = #{id}
 		union
-		select user2_id as email
+		select user2_id as id
 		from chat_room
-		where user1_id = #{loginUserEmail};
+		where user1_id = #{id};
     </select>
 
 </mapper>

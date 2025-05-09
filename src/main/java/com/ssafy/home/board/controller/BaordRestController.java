@@ -2,10 +2,10 @@ package com.ssafy.home.board.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +21,8 @@ import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.member.model.dto.MemberDTO;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RestController
@@ -58,21 +56,22 @@ public class BaordRestController implements RestControllerHelper {
 		}
 	}
 	
-	@PostMapping("/board-update")
-	public ResponseEntity<?> boardModify(@ModelAttribute BoardDTO boardDTO, HttpSession session){
-		try {
-			MemberDTO member = (MemberDTO)session.getAttribute("loginUser");
-			if(member.getEmail().equals(boardDTO.getEmail())) {
-			boardService.modifyBoard(boardDTO);
-			return handleSuccess(boardDTO,HttpStatus.OK);
-			}else {
-				throw new NotWrittenMember();
-			}
-		}catch(RuntimeException e) {
-			e.printStackTrace();
-			return handleFail(e);
-		}
-	}
+	// 업데이트 필요
+//	@PostMapping("/board-update")
+//	public ResponseEntity<?> boardModify(@ModelAttribute BoardDTO boardDTO, HttpSession session){
+//		try {
+//			MemberDTO member = (MemberDTO)session.getAttribute("loginUser");
+//			if(member.getId()==boardDTO.getUserId()) {
+//			boardService.modifyBoard(boardDTO);
+//			return handleSuccess(boardDTO,HttpStatus.OK);
+//			}else {
+//				throw new NotWrittenMember();
+//			}
+//		}catch(RuntimeException e) {
+//			e.printStackTrace();
+//			return handleFail(e);
+//		}
+//	}
 	
 	@GetMapping("/board-search")
 	public ResponseEntity<?> boardSearch(@RequestParam String search){
@@ -89,7 +88,9 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardDetails(@PathVariable int boardId ) {
 		try {
 			BoardDTO board = boardService.findDetailBoard(boardId);
-			return handleSuccess(board,HttpStatus.OK);
+			return handleSuccess(Map.of("redirect","/board/board-detail"
+					,"boardId",board.getBoardId()
+					,"categoryId","category"));
 		}catch (RuntimeException e) {
 			e.printStackTrace();
 			return handleFail(e);

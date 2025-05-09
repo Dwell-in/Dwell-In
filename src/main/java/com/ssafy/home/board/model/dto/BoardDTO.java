@@ -12,27 +12,13 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public class BoardDTO {
 	private int boardId;
+	private int categoryId;
 	private String title;
 	private String content;
-	private String email;
+	private int userId;
 	private int viewCount;
+	private int like;
+	private int dislike;
 	private LocalDateTime regDate;
-	
-	
 
-	public BoardDTO(String email, LocalDateTime regDate, String title, int viewCount) {
-		this.email = email;
-		this.regDate = regDate;
-		this.title = title;
-		this.viewCount = viewCount;
-	}
-
-
-	public BoardDTO(String title, String content, String email, int viewCount, LocalDateTime regDate) {
-		this(0, title, content, email, viewCount, regDate);
-	}
-
-
-	
-	
 }
