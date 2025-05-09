@@ -29,11 +29,11 @@ public class StarredController implements RestControllerHelper {
 	private final StarredService sService;
 	
 	@PostMapping("/{aptSeq}")
-	public ResponseEntity<?> starredAdd(@PathVariable String aptSeq , @AuthenticationPrincipal UserDetails member){
+	public ResponseEntity<?> starredAdd(@PathVariable String aptSeq , @AuthenticationPrincipal CustomUserDetails member){
 		try {
 			
-			String memberEmail = member.getUsername();
-			StarredDTO starred = StarredDTO.builder().email(memberEmail).aptSeq(aptSeq).build();
+			int memberId = member.getMember().getId();
+			StarredDTO starred = StarredDTO.builder().userId(memberId).aptSeq(aptSeq).build();
 			sService.addStarred(starred);
 			return handleSuccess("등록성공",HttpStatus.OK);
 		}catch(Exception e) {
@@ -44,10 +44,10 @@ public class StarredController implements RestControllerHelper {
 	}
 	
 	@DeleteMapping("/{aptSeq}")
-	public ResponseEntity<?> starredRemove(@PathVariable String aptSeq, @AuthenticationPrincipal UserDetails member){
+	public ResponseEntity<?> starredRemove(@PathVariable String aptSeq, @AuthenticationPrincipal CustomUserDetails member){
 		try {
-			String memberEmail = member.getUsername();
-			StarredDTO starred = StarredDTO.builder().email(memberEmail).aptSeq(aptSeq).build();
+			int memberId = member.getMember().getId();
+			StarredDTO starred = StarredDTO.builder().userId(memberId).aptSeq(aptSeq).build();
 			sService.removeStarred(starred);
 			return handleSuccess("삭제성공",HttpStatus.OK);
 		}catch(Exception e) {

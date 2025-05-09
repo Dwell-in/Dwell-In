@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StarredDTO {
-	String email;
+	int userId;
 	String aptSeq;
 }

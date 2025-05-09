@@ -9,19 +9,19 @@
     FROM
       star
     WHERE
-      email = #{email}
+     user_id = #{userId}
       AND apt_seq = #{aptSeq}
   	</select>
   	
   	<insert id="insertStarred" parameterType="com.ssafy.home.starred.model.dto.StarredDTO" useGeneratedKeys="true">
-  	INSERT INTO star (email , apt_seq)
-  	VALUES (#{email} , #{aptSeq})
+  	INSERT INTO star (user_id , apt_seq)
+  	VALUES (#{userId} , #{aptSeq})
   	</insert>
   	
   	<delete id="deleteStarred" parameterType="com.ssafy.home.starred.model.dto.StarredDTO">
   	DELETE FROM star
   	WHERE
-    email = #{email}
+    user_id = #{userId}
     AND apt_seq = #{aptSeq}
   
   	</delete>
