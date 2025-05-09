@@ -36,4 +36,9 @@ public class MainController {
 	public String findPage() {
 		return "member/passwordFind";
 	}
+	
+	@GetMapping("/starred/list")
+	public String goPage() {
+		return "starred/list";
+	}
 }
