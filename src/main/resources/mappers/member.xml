@@ -47,5 +47,14 @@
     	delete from member where email=#{email} and password=#{password}
     </delete>
 	
+	<select id="selectChatTargetEmail">
+    	select user1_id as email
+		from chat_room
+		where user2_id = #{loginUserEmail}
+		union
+		select user2_id as email
+		from chat_room
+		where user1_id = #{loginUserEmail};
+    </select>
 
 </mapper>

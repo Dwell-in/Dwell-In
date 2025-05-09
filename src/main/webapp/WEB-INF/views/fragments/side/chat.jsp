@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <link rel="stylesheet" href="/resources/css/chat.css">
-<div class="sideView sideViewOpen">
+<div class="sideView chatView">
 	<img class="close" src="/resources/img/closeIcon.png" />
 	<div class="chat">
 		<div class="chat-header">

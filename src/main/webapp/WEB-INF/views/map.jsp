@@ -26,8 +26,8 @@
 				<img class="marker" src="${root }/resources/img/marker_CS2_btn.png" alt="marker_CS2_btn" data-markerName="CS2" data-makerToggle="false">
 			</div>
 		</div>
+		<%@ include file="/WEB-INF/views/fragments/side/chat.jsp" %>
 		<%@ include file="/WEB-INF/views/fragments/side/detail.jsp" %>
-	    <%@ include file="/WEB-INF/views/fragments/side/chat.jsp" %>
 	</main>
     <%@ include file="/WEB-INF/views/fragments/footer2.jsp" %>
 	<script src="${root }/resources/js/map.js"></script>

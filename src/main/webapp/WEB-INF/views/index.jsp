@@ -29,6 +29,7 @@
       </div>
       <div class="section" style="background: url(${root }/resources/img/index4.png) top / 100% no-repeat;">
       </div>
+      <%@ include file="/WEB-INF/views/fragments/side/chat.jsp" %>
     </main>
     <%@ include file="/WEB-INF/views/fragments/footer1.jsp" %>
 	<script src="${root }/resources/js/index.js"></script>
