@@ -57,7 +57,7 @@ const chatInit = async () => {
     const profileImg = target.profileImg ? target.profileImg : "/resources/img/default_profile.png";
     chatIcon.src = profileImg;
     chatIcon.addEventListener("click", () => {
-      connectChatRoom(target.email, profileImg);
+      connectChatRoom(target.id, profileImg);
       document.querySelectorAll(".chat-room-icon").forEach((c) => {
         c.classList.remove("selected");
       });
@@ -73,12 +73,12 @@ const getLoginUser = async () => {
     method: "GET",
   });
   const json = await response.json();
-  return json.data.email;
+  return json.data.id;
 };
 
 // 채팅 상대 얻어오기
-const getTargets = async (loginUserEmail) => {
-  const response = await fetch(`/chat/targets/${loginUserEmail}`, {
+const getTargets = async (userId) => {
+  const response = await fetch(`/chat/targets/${userId}`, {
     method: "GET",
   });
   const json = await response.json();

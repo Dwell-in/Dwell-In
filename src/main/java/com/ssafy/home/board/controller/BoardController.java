@@ -33,12 +33,10 @@ public class BoardController {
 		return "board/list";
 	}
 	
-//	@GetMapping("/board-detail")
-//	public String boardDetails(@RequestParam int boardId , Model model) {
-//		BoardDTO board = boardService.findDetailBoard(boardId);
-//		model.addAttribute("board",board);
-//		return "board/detail";
-//	}
+	@GetMapping("/board-detail")
+	public String boardDetails() {
+		return "board/detail";
+	}
 	
 	@GetMapping("/board-write-form")
 	public String boardAddPage(Model model, HttpSession session) {

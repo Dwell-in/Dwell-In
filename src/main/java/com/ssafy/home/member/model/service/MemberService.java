@@ -9,17 +9,18 @@ public interface MemberService {
 	
     int addMember(MemberDTO emp);
 
-    MemberDTO findMemberDetail(String email, String password);
-
     MemberDTO findMemberDetail(String email);
+    
+    MemberDTO findMemberById(int id);
 
+    String findEmailByKakaoId(String id);
+    
     int modifyMember(MemberDTO member);
     
     int removeMember(String email, String password);
 
     int removeMember(String email);
     
-    String findEmailByKakaoId(String id);
     
-    List<Map<String, ?>> findChatTargetList(String loginUserEmail);
+    List<Map<String, ?>> findChatTargetList(int id);
 }

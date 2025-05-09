@@ -26,7 +26,7 @@
 			<a class="noti" href="${root }/board/notification-list">메뉴2</a>
 			<a class="noti" href="${root }/board/notification-list">메뉴3</a>
 			<a class="noti" href="${root }/board/notification-list">메뉴4</a>
-			<a class="noti" href="${root }/board/notification-list">메뉴5</a>
+			<a class="noti" href="${root }/starred/list">수정중</a>
 		</div>
 		<div>
 			<div class="search-div">
