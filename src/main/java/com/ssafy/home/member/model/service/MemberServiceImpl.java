@@ -1,5 +1,9 @@
 package com.ssafy.home.member.model.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Service;
 
 import com.ssafy.home.member.model.dao.MemberDAO;
@@ -48,6 +52,17 @@ public class MemberServiceImpl implements MemberService {
 	@Override
 	public String findEmailByKakaoId(String id) {
 		return dao.selectEmailByKakaoId(id);
+	}
+
+	@Override
+	public List<Map<String, ?>> findChatTargetList(String loginUserEmail) {
+		List<Map<String, ?>> targets = new ArrayList<>();
+		List<String> targetEmails = dao.selectChatTargetEmail(loginUserEmail);
+		for (String email : targetEmails) {
+			MemberDTO target = dao.selectMemberByEmail(email);
+			targets.add(Map.of("email",target.getEmail(),"name",target.getName(),"profileImg",target.getProfileImg()));
+		}
+		return targets;
 	}
 	
 }

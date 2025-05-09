@@ -29,17 +29,9 @@ document.querySelectorAll(".marker").forEach((mk) => {
 });
 ////
 
-// sideView 끄기
-const closeBtns = document.querySelectorAll(".close");
-closeBtns.forEach(closeBtn => {
-  closeBtn.addEventListener("click", () => {
-    closeBtn.parentElement.classList.remove("sideViewOpen");
-  });
-});
-
 const addEvent = async (num) => {
   kakao.maps.event.addListener(marker[num], "mouseover", function () {
-    overlay[num].setMap(map[0]);
+    overlay[num].setMap(map);
   });
   kakao.maps.event.addListener(marker[num], "mouseout", function () {
     overlay[num].setMap(null);

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
 <link rel="stylesheet" href="${root }/resources/css/footer1.css">
-<footer>
+<footer id="footer1">
 	<div class="footer-inner">
 		<ul class="part-list">
 			<li><a href="#">이용약관</a></li>

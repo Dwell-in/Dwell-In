@@ -1,5 +1,8 @@
 package com.ssafy.home.member.model.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.ssafy.home.member.model.dto.MemberDTO;
 
 public interface MemberService {
@@ -17,4 +20,6 @@ public interface MemberService {
     int removeMember(String email);
     
     String findEmailByKakaoId(String id);
+    
+    List<Map<String, ?>> findChatTargetList(String loginUserEmail);
 }

@@ -1,5 +1,7 @@
 package com.ssafy.home.member.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -25,4 +27,6 @@ public interface MemberDAO {
 	int deleteMember(@Param("email") String email, @Param("password") String password);
 	
 	String selectEmailByKakaoId(String id);
+	
+	List<String> selectChatTargetEmail(String loginUserEmail);
 }
