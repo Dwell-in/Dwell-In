@@ -39,12 +39,12 @@
 					</tr>
 				</thead>
 				<tbody>
-					<c:forEach items="${boardList}" var="item">
+					<c:forEach items="${boardList}" var="item" varStatus="status">
 						<tr>
-							<td>${item.boardId}</td>
-							<td class="text-start ps-4"><a
-								href="${root}/api/v1/board/board-detail/${item.boardId}"
-								class="text-decoration-none text-dark"> ${item.title} </a></td>
+							<td>${status.index + 1}</td>
+							<td class="text-start ps-4"><a href="#"
+								class="text-decoration-none text-dark board-link"
+								data-id="${item.boardId}">${item.title}</a></td>
 							<td>${item.viewCount}</td>
 							<td>${item.regDate}</td>
 						</tr>
@@ -92,6 +92,7 @@
 
 	</div>
 
+	<script src="${root }/resources/js/board.js"></script>
 	<%@ include file="/WEB-INF/views/fragments/footer1.jsp"%>
 
 	<%--<script>--%>
