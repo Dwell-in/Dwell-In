@@ -31,7 +31,7 @@ public class ChatController implements RestControllerHelper{
 	
 	// 채팅 상대 리스트
 	@ResponseBody
-	@GetMapping("/chat/targets/{loginUserid}")
+	@GetMapping("/chat/targets/{userId}")
 	public ResponseEntity<?> getChatTargets(@PathVariable int userId){
 		return handleSuccess(memberService.findChatTargetList(userId));
 	}

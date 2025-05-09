@@ -187,13 +187,13 @@ const displayMessage = (chat, user2Img) => {
     timeElement.classList.add("time");
     timeElement.textContent = chat.sentAt.substring(11, 19);
 
-    if (chat.sender === loginUserId) {
+    if (chat.sender == loginUserId) {
         messageElement.classList.add("sender");
         messageElement.prepend(timeElement);
     } else {
         messageElement.appendChild(timeElement);
     }
-    if (lastUser !== chat.sender && chat.sender !== loginUserId) {
+    if (lastUser != chat.sender && chat.sender != loginUserId) {
         const profile = document.createElement("img");
         profile.src = user2Img;
         messageElement.prepend(profile);
