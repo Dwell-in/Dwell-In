@@ -163,9 +163,7 @@ const sendMessage = (content) => {
         roomId: roomId,
         sender: loginUserId,
         content: content,
-        sentAt: new Date().toLocaleString("ko-KR", {
-            timeZone: "Asia/Seoul",
-        }),
+        sentAt: new Date(),
     };
 
     // 서버에 메시지 전송
@@ -185,7 +183,7 @@ const displayMessage = (chat, user2Img) => {
     // 시간 표시용 div 생성
     const timeElement = document.createElement("div");
     timeElement.classList.add("time");
-    timeElement.textContent = chat.sentAt.substring(11, 19);
+    timeElement.textContent = formatToKoreanTime(chat.sentAt);
 
     if (chat.sender == loginUserId) {
         messageElement.classList.add("sender");
@@ -203,4 +201,25 @@ const displayMessage = (chat, user2Img) => {
 
     chatBox.appendChild(messageElement);
     chatBox.scrollTop = chatBox.scrollHeight;
+};
+
+// Date formmat
+const formatToKoreanTime = (datetimeString) => {
+    const date = new Date(datetimeString);
+
+    // 시간 추출
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const isPM = hours >= 12;
+    const period = isPM ? "오후" : "오전";
+
+    // 12시간제로 변환
+    hours = hours % 12 || 12;
+
+    // 두 자리수로 포맷
+    const pad = (n) => String(n).padStart(2, "0");
+
+    return `${period} ${hours}:${pad(minutes)}:${pad(seconds)}`;
 };

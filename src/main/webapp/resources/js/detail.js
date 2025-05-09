@@ -1,6 +1,6 @@
 const detailInit = (info) => {
   // 상세보기창 on
-  document.querySelector(".detail").classList.add("sideViewOpen");
+  document.querySelector(".detail").classList.add("open");
   document.querySelector(".detail").scrollTop = 0;
   //관심아파트인지 확인
 
