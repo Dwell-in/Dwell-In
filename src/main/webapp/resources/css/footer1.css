@@ -1,58 +1,62 @@
-body{
-    padding-bottom: 150px;
+body {
+  padding-bottom: 150px;
 }
-footer{
-    position: absolute;
-    bottom: 0;
-    width: 100vw;
-    height: 150px;
-    background-color: #1E2022;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  height: 150px;
+  background-color: #1e2022;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
-footer *{
-    color: white;
+footer * {
+  color: white;
 }
 .footer-inner::before {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 90px;
-    height: 70px;
-    background: url('../img/footerLogo.png') center center no-repeat;
-    background-size: contain;
-    content: '';
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 90px;
+  height: 70px;
+  background: url("../img/footerLogo.png") center center no-repeat;
+  background-size: contain;
+  content: "";
 }
-.footer-inner{
-    width: 1200px;
-    height: 60%;
-    padding-left: 150px;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 10px;
+.footer-inner {
+  width: 1200px;
+  height: 100%;
+  padding-left: 150px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
 }
-.part-list{
-    list-style: none;
-    display: flex;
-    align-items: end;
-    margin-bottom: 10px;
+.footer-inner * {
+  margin: 0 !important;
+  padding: 0 !important;
 }
-.border{
-    width: 1px;
-    height: 80%;
-    margin: 0 10px;
-    border-left: 1px solid #52616B;
+.part-list {
+  list-style: none;
+  display: flex;
+  align-items: end;
+  margin-bottom: 10px !important;
 }
-.part-list li:nth-child(3) a{
-    color: #3A8ABF;
+.border {
+  width: 1px;
+  height: 80%;
+  margin: 0 10px !important;
+  border-left: 1px solid #52616b;
 }
-footer address{
-    font-size: 0.8em;
-    color: #52616B;
+.part-list li:nth-child(3) a {
+  color: #3a8abf;
 }
-footer .footer-desc{
-    font-size: 0.8em;
+footer address {
+  font-size: 0.8em;
+  color: #52616b;
+}
+footer .footer-desc {
+  font-size: 0.8em;
 }
