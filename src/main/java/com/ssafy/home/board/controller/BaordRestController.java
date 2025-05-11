@@ -88,9 +88,7 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardDetails(@PathVariable int boardId ) {
 		try {
 			BoardDTO board = boardService.findDetailBoard(boardId);
-			return handleSuccess(Map.of("redirect","/board/board-detail"
-					,"boardId",board.getBoardId()
-					,"categoryId","category"));
+			return handleSuccess(Map.of("post",board));
 		}catch (RuntimeException e) {
 			e.printStackTrace();
 			return handleFail(e);
