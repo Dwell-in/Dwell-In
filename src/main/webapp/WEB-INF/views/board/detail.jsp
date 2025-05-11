@@ -18,8 +18,8 @@
             <td>${board.title}</td>
         </tr>
         <tr>
-            <th class="bg-light">작성자 이메일</th>
-            <td>${board.email}</td>
+            <th class="bg-light">작성자</th>
+            <td>${board.userName}</td>
         </tr>
         <tr>
             <th class="bg-light">조회수</th>
@@ -27,7 +27,7 @@
         </tr>
         <tr>
             <th class="bg-light">작성일</th>
-            <td>${board.regDate}</td>
+            <td>${board.regTime}</td>
         </tr>
         <tr>
             <th class="bg-light">내용</th>
@@ -37,7 +37,7 @@
     </table>
 
     <div class="d-flex justify-content-end gap-2">
-    <a href="${root}/api/v1/board/board-update-page?boardId=${board.boardId}" class="btn btn-warning">수정</a>
+    <a href="${root/board/board-update-page}" id="update-button" class="btn btn-warning" data-id="${board.boardId}">수정</a>
     <form action="${root}/api/v1/board/board-delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
         <input type="hidden" name="boardId" value="${board.boardId}" />
         <button type="submit" class="btn btn-danger">삭제</button>
@@ -46,6 +46,7 @@
 </div>
 
 </div>
+<script src="${root }/resources/js/board.js"></script>
 <%@ include file="/WEB-INF/views/fragments/footer1.jsp"%>
 </body>
 </html>

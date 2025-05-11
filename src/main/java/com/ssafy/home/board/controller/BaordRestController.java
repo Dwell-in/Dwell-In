@@ -6,10 +6,12 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import com.ssafy.home.board.model.dto.BoardDTO;
 import com.ssafy.home.board.model.service.BoardService;
 import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.member.model.dto.MemberDTO;
+import com.ssafy.home.security.dto.CustomUserDetails;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -34,10 +37,11 @@ public class BaordRestController implements RestControllerHelper {
 	private final BoardService boardService;
 	
 	@PostMapping("/board-write")
-	public ResponseEntity<?> boardAdd(@ModelAttribute BoardDTO boardDto) {
+	public ResponseEntity<?> boardAdd(@RequestBody BoardDTO boardDto) {
 		try {
-		boardDto.setRegDate(LocalDateTime.now());
-		boardService.addBoard(boardDto);
+			System.out.println(boardDto);
+			boardDto.setRegTime(LocalDateTime.now());
+			boardService.addBoard(boardDto);
 		return handleSuccess(boardDto, HttpStatus.CREATED);
 		}catch(RuntimeException e) {
 			e.printStackTrace();
@@ -57,17 +61,14 @@ public class BaordRestController implements RestControllerHelper {
 	}
 	
 	// 업데이트 필요
-//	@PostMapping("/board-update")
-//	public ResponseEntity<?> boardModify(@ModelAttribute BoardDTO boardDTO, HttpSession session){
+//	@PostMapping("/board-update/${boardId}")
+//	public ResponseEntity<?> boardModify(@PathVariable int boardId, @AuthenticationPrincipal CustomUserDetails userDetails){ 
 //		try {
-//			MemberDTO member = (MemberDTO)session.getAttribute("loginUser");
-//			if(member.getId()==boardDTO.getUserId()) {
-//			boardService.modifyBoard(boardDTO);
-//			return handleSuccess(boardDTO,HttpStatus.OK);
-//			}else {
-//				throw new NotWrittenMember();
-//			}
-//		}catch(RuntimeException e) {
+//			BoardDTO board = boardService.findDetailBoard(boardId);
+//			if(board.getUserId()==userDetails.getMember().getId()) {
+//				return handleSuccess(Map.of("redirect","/board/board-update-page","board",board));
+//			} else throw new NotWrittenMember();
+//		}catch (RuntimeException e) {
 //			e.printStackTrace();
 //			return handleFail(e);
 //		}
@@ -88,7 +89,7 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardDetails(@PathVariable int boardId ) {
 		try {
 			BoardDTO board = boardService.findDetailBoard(boardId);
-			return handleSuccess(Map.of("post",board));
+			return handleSuccess(Map.of("redirect","/board/board-detail","board",board));
 		}catch (RuntimeException e) {
 			e.printStackTrace();
 			return handleFail(e);

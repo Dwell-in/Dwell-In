@@ -1,20 +1,19 @@
 package com.ssafy.home.board.controller;
 
-import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.ssafy.home.board.NotWrittenMember;
 import com.ssafy.home.board.model.dto.BoardDTO;
 import com.ssafy.home.board.model.service.BoardService;
-import com.ssafy.home.member.model.dto.MemberDTO;
-
+import com.ssafy.home.security.dto.CustomUserDetails;
 
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -33,15 +32,15 @@ public class BoardController {
 		return "board/list";
 	}
 	
-	@GetMapping("/board-detail")
-	public String boardDetails() {
-		return "board/detail";
-	}
+    @GetMapping("/board-detail")
+    public String detail(@RequestParam int boardId, Model model) {
+        BoardDTO board = boardService.findDetailBoard(boardId);
+        model.addAttribute("board", board);
+        return "board/detail";
+    }
 	
 	@GetMapping("/board-write-form")
 	public String boardAddPage(Model model, HttpSession session) {
-		MemberDTO member = (MemberDTO)session.getAttribute("loginUser");
-		model.addAttribute("email",member.getEmail());
 		return "board/regist";
 	}
 
@@ -60,10 +59,11 @@ public class BoardController {
 //	}
 	
 	@GetMapping("/board-update-page")
-	public String boardModifyPage(@RequestParam int boardId, Model model) {
+	public String boardModifyPage(@RequestParam int boardId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		BoardDTO board = boardService.findDetailBoard(boardId);
-		model.addAttribute("board",board);
-		return "board/update";
+		if(board.getUserId()==userDetails.getMember().getId()) {
+			return "board/update";
+		} else throw new NotWrittenMember();
 	}
 	
 //	@PostMapping("/board-delete")
