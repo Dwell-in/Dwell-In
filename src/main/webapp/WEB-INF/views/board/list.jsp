@@ -46,7 +46,7 @@
 								class="text-decoration-none text-dark board-link"
 								data-id="${item.boardId}">${item.title}</a></td>
 							<td>${item.viewCount}</td>
-							<td>${item.regDate}</td>
+							<td>${item.regTime}</td>
 						</tr>
 					</c:forEach>
 				</tbody>

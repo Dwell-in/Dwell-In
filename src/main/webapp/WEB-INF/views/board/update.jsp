@@ -10,15 +10,16 @@
 </head>
 <body>
 <%@ include file="/WEB-INF/views/fragments/header.jsp" %>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <div class="container mt-5">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">공지사항 수정</h2>
         <a href="${root}/board/notification-list" class="btn btn-secondary">목록</a>
     </div>
 
-    <form action="${root}/board/board-update" method="post">
-        <input type="hidden" name="boardId" value="${board.boardId}" />
+    <form action="${root}/api/v1/board/board-update" id="update-form" method="post">
+        <input type="hidden" name="boardId" id="boardId" value="${board.boardId}" />
+        <input type="hidden" name="categoryId" id="categoryId" value="${board.categoryId}">
 
         <div class="mb-3">
             <label for="title" class="form-label">제목</label>
@@ -26,8 +27,9 @@
         </div>
 
         <div class="mb-3">
-            <label for="email" class="form-label">작성자 이메일</label>
-            <input type="email" class="form-control" id="email" name="email" value="${board.email}" readonly>
+            <label for="email" class="form-label">작성자</label>
+            <input type="email" class="form-control" id="userName" name="userName" value="${board.userName}" readonly>
+            <input type="hidden" id="userId" name="userId" value="<sec:authentication property='principal.member.id'/>">
         </div>
 
         <div class="mb-3">
@@ -36,11 +38,11 @@
         </div>
 
         <div class="text-end">
-            <button type="submit" class="btn btn-primary">수정 완료</button>
+            <button type="submit" id="update-button" class="btn btn-primary">수정 완료</button>
         </div>
     </form>
 </div>
-
+<script src="${root }/resources/js/board.js"></script>
 <%@ include file="/WEB-INF/views/fragments/footer1.jsp" %>
 </body>
 </html>
