@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,6 +30,13 @@ import lombok.extern.slf4j.Slf4j;
 public class BaordRestController implements RestControllerHelper {
 
 	private final BoardService boardService;
+	
+	@GetMapping("/post-list")
+	public ResponseEntity<?> boardList(Model model) {
+		List<BoardDTO> boardList = boardService.findBoard();
+		System.out.println(boardList);
+		return handleSuccess(Map.of("data", boardList));
+	}
 	
 	@PostMapping("/board-write")
 	public ResponseEntity<?> boardAdd(@RequestBody BoardDTO board) {
@@ -58,7 +66,6 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardModify(@PathVariable int boardId, @RequestBody BoardDTO board){ 
 		try {
 			board.setBoardId(boardId);
-			System.out.println(boardId);
 			boardService.modifyBoard(board);
 			return handleSuccess(board);
 		}catch (RuntimeException e) {
@@ -82,7 +89,7 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardDetails(@PathVariable int boardId ) {
 		try {
 			BoardDTO board = boardService.findDetailBoard(boardId);
-			return handleSuccess(Map.of("redirect","/board/board-detail","board",board));
+			return handleSuccess(Map.of("redirect","/board/post-detail","board",board));
 		}catch (RuntimeException e) {
 			e.printStackTrace();
 			return handleFail(e);
