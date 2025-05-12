@@ -31,7 +31,8 @@ public class CustomSecurityConfig {
 	SecurityFilterChain normalFileterChain(HttpSecurity http) throws Exception {
 		// 임시로 수업때 사용한 경로 사용
 		// 권한에 따라 접근할 수 있는 경로 지정해줘야 할 듯
-    	http.authorizeHttpRequests(authorize -> authorize
+    	http.cors(cors -> {})
+    			.authorizeHttpRequests(authorize -> authorize
     			.requestMatchers("/secured/admin/**").hasRole("ADMIN")
     			.requestMatchers("/secured/user/**").hasRole("USER")
     			.requestMatchers("/auth/**").authenticated()

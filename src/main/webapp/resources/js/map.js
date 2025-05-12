@@ -1,10 +1,10 @@
-const searchHouseInfo = async (word) => {
+const searchHouseInfo = async (addr) => {
   document.querySelector(".loading").classList.remove("display-none"); // 비동기 함수가 완료된 후 실행됩니다.
 
   const query = new URLSearchParams({
-    sido: word.split(" ")[0],
-    gugun: word.split(" ")[1],
-    dong: word.split(" ")[2],
+    sido: addr.split(" ")[0],
+    gugun: addr.split(" ")[1],
+    dong: addr.split(" ")[2],
   }).toString();
 
   const response = await fetch(`${root}/api/v1/house?${query}`);
@@ -12,7 +12,7 @@ const searchHouseInfo = async (word) => {
 
   document.querySelector(".loading").classList.add("display-none"); // 비동기 함수가 완료된 후 실행됩니다.
 
-  await addressSearch(word);
+  await addressSearch(addr);
   await createMarker(json.data);
 };
 

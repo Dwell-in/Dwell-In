@@ -22,6 +22,6 @@ public class MemberDTO {
 	
 	public String getProfileImg() {
 		if(profile!=null) return "data:image/jpeg;base64,"+Base64.getEncoder().encodeToString(profile);
-		else return "/resources/img/default_profile.png";
+		else return "";
 	}
 }
