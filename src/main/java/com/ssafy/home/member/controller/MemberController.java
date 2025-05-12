@@ -169,7 +169,7 @@ public class MemberController implements RestControllerHelper {
 		String email = mService.findEmailByKakaoId(id);
 		try {
 			UserDetails member = cService.loadUserByUsername(email);
-			Authentication auth = new UsernamePasswordAuthenticationToken(member.getUsername(), null, member.getAuthorities());
+			Authentication auth = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
 			
 			SecurityContext context = SecurityContextHolder.getContext();
 	        context.setAuthentication(auth);
