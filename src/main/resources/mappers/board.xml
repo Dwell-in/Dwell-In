@@ -54,7 +54,6 @@
 		SET title = #{title}, content =
 		#{content}
 		WHERE board_id = #{boardId}
-
 	</update>
 
 	<insert id="insertBoard"

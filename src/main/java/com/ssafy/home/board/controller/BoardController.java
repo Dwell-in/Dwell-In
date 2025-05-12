@@ -23,22 +23,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardController {
 	private final BoardService boardService;
-	
-	
+
 	@GetMapping("/notification-list")
 	public String boardList(Model model) {
 		List<BoardDTO> boardList = boardService.findBoard();
 		model.addAttribute("boardList", boardList);
 		return "board/list";
 	}
-	
-    @GetMapping("/board-detail")
-    public String detail(@RequestParam int boardId, Model model) {
-        BoardDTO board = boardService.findDetailBoard(boardId);
-        model.addAttribute("board", board);
-        return "board/detail";
-    }
-	
+
+	@GetMapping("/board-detail")
+	public String detail(@RequestParam int boardId, Model model) {
+		BoardDTO board = boardService.findDetailBoard(boardId);
+		model.addAttribute("board", board);
+		return "board/detail";
+	}
+
 	@GetMapping("/board-write-form")
 	public String boardAddPage(Model model, HttpSession session) {
 		return "board/regist";
@@ -50,22 +49,26 @@ public class BoardController {
 //		model.addAttribute("boardList",boardList);
 //		return "board/list";
 //	}
-	
+
 //	@PostMapping("/board-write")
 //	public String boardAdd(@ModelAttribute BoardDTO boardDto) {
 //		boardDto.setRegDate(LocalDateTime.now());
 //		boardService.addBoard(boardDto);
 //		return "redirect:/board/notification-list";
 //	}
-	
+
 	@GetMapping("/board-update-page")
-	public String boardModifyPage(@RequestParam int boardId, Model model, @AuthenticationPrincipal CustomUserDetails userDetails) {
+	public String boardModifyPage(@RequestParam int boardId, Model model,
+			@AuthenticationPrincipal CustomUserDetails userDetails) {
 		BoardDTO board = boardService.findDetailBoard(boardId);
-		if(board.getUserId()==userDetails.getMember().getId()) {
+		System.out.println(board);
+		if (board.getUserId() == userDetails.getMember().getId()) {
+			model.addAttribute("board", board);
 			return "board/update";
-		} else throw new NotWrittenMember();
+		} else
+			throw new NotWrittenMember();
 	}
-	
+
 //	@PostMapping("/board-delete")
 //	public String boardRemove(@RequestParam int boardId) {
 //		boardService.removeBoard(boardId);

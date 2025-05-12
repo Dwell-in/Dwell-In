@@ -37,8 +37,8 @@
     </table>
 
     <div class="d-flex justify-content-end gap-2">
-    <a href="${root/board/board-update-page}" id="update-button" class="btn btn-warning" data-id="${board.boardId}">수정</a>
-    <form action="${root}/api/v1/board/board-delete" method="post" onsubmit="return confirm('정말 삭제하시겠습니까?');">
+    <a href="${root}/board/board-update-page?boardId=${board.boardId}" id="update-button" class="btn btn-warning" data-id="${board.boardId}">수정</a>
+    <form action="${root}/api/v1/board/board-delete" method="post" id="delete-form" onsubmit="return confirm('정말 삭제하시겠습니까?');">
         <input type="hidden" name="boardId" value="${board.boardId}" />
         <button type="submit" class="btn btn-danger">삭제</button>
     </form>
