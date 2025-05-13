@@ -118,3 +118,14 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`chat_message` (
     FOREIGN KEY (room_id) REFERENCES chat_room(room_id),
     FOREIGN KEY (sender_id) REFERENCES member(id))
 ENGINE = InnoDB;
+
+
+-- ---------------------------------------------
+-- UUID 토큰
+CREATE TABLE `ssafyhome`.`email_verification_token` (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    expiry_date DATETIME NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE
+);
