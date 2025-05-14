@@ -2,6 +2,7 @@ package com.ssafy.home.security.controller;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -44,6 +45,9 @@ public class AuthController implements RestControllerHelper {
     private final JwtTokenProvider jwtTokenProvider;
     private final CustomUserDetailsService cService;
     private final MemberService mService;
+    
+    @Value("${frontend.url}")
+    private String frontendUrl;
 
     @PostMapping("/login")
     // json 요청이면 @RequestBody, form이면 @ModelAttribute
@@ -76,7 +80,7 @@ public class AuthController implements RestControllerHelper {
 		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
 		params.add("grant_type", "authorization_code");
 		params.add("client_id", "7abe84cfdb3ff3310feaca8aa90809c0");
-		params.add("redirect_uri", "http://localhost:8080/member/login");
+		params.add("redirect_uri", frontendUrl+"/member/login");
 		params.add("code", code);
 
 		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
