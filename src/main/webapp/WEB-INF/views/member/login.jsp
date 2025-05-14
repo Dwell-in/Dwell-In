@@ -10,7 +10,7 @@
 	    <%@ include file="/WEB-INF/views/fragments/header.jsp" %>
 	<link rel="stylesheet" href="${root }/resources/css/login.css">
 	<main>
-        <form class="login-area" action="${root}/api/v1/member/login" method="post">
+        <form class="login-area" action="${root}/api/v1/auth/login" method="post">
             <img class="logo" src="${root }/resources/img/logo.png" alt="login">
             <div>
                 <label class="flex flex-a-c" for="">아이디</label>
