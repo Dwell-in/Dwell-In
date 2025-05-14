@@ -49,7 +49,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController implements RestControllerHelper {
 
 	private final MemberService mService;
-	private final CustomUserDetailsService cService;
 	private final PasswordEncoder pe;
 
 	@PostMapping("/signup")
@@ -125,67 +124,6 @@ public class MemberController implements RestControllerHelper {
 		System.out.println("입력받은 이메일: " + email);
 
 		return Map.of("exists", exists);
-	}
-	
-	@GetMapping("/kakao/access-token")
-	public ResponseEntity<?> kakaoCallback(@RequestParam String code){
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("grant_type", "authorization_code");
-		params.add("client_id", "7abe84cfdb3ff3310feaca8aa90809c0");
-		params.add("redirect_uri", "http://localhost:8080/member/login");
-		params.add("code", code);
-
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		
-		RestTemplate rt = new RestTemplate();
-		ResponseEntity<String> response = rt.postForEntity(
-		    "https://kauth.kakao.com/oauth/token", request, String.class
-		);
-		return response;
-	}
-	
-	@GetMapping("/kakao/user-info")
-	public ResponseEntity<?> getUserInfo(@RequestParam String accessToken){
-		HttpHeaders userInfoHeaders = new HttpHeaders();
-		RestTemplate rt = new RestTemplate();
-		userInfoHeaders.setBearerAuth(accessToken);
-
-		HttpEntity<Void> userInfoRequest = new HttpEntity<>(userInfoHeaders);
-
-		ResponseEntity<String> userInfoResponse = rt.exchange(
-		    "https://kapi.kakao.com/v2/user/me",
-		    HttpMethod.GET,
-		    userInfoRequest,
-		    String.class
-		);
-		return userInfoResponse;
-	}
-	
-	@GetMapping("/kakao/login")
-	public ResponseEntity<?> getUserInfo(@RequestParam String id, @RequestParam String nickname,
-			@RequestParam String profileImage, HttpSession session){
-		String email = mService.findEmailByKakaoId(id);
-		try {
-			UserDetails member = cService.loadUserByUsername(email);
-			Authentication auth = new UsernamePasswordAuthenticationToken(member, null, member.getAuthorities());
-			
-			SecurityContext context = SecurityContextHolder.getContext();
-	        context.setAuthentication(auth);
-	        
-	        // 필터 체인을 적용하지 않기 때문에 수동으로 세션 scope에 저장해야 함
-	        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
-	        
-	        return handleSuccess(Map.of("redirect", "/"));
-		} catch (Exception e) {
-			return handleSuccess(Map.of(
-		            "redirect", "/member/signup",
-		            "id", id,
-		            "name", nickname,
-		            "profileImage", profileImage
-		        ));
-		}
 	}
 	
 	@GetMapping("/user-info")
