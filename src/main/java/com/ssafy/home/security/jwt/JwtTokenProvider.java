@@ -10,8 +10,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+
+import com.ssafy.home.security.service.CustomUserDetailsService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -39,7 +40,7 @@ public class JwtTokenProvider {
 
     private final long validityInMilliseconds = 60 * 60 * 1000; // 1시간
 
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService userDetailsService;
 
     // 토큰 생성
     public String createToken(String username, Collection<? extends GrantedAuthority> roles) {
@@ -90,8 +91,8 @@ public class JwtTokenProvider {
     // 요청에서 토큰 추출
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
+        System.out.println("bearer : "+bearer);
         if (bearer != null && bearer.startsWith("Bearer ")) {
-        	System.out.println(123);
             return bearer.substring(7);
         }
         return null;
