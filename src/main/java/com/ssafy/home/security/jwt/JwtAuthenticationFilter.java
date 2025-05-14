@@ -26,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		if (token != null) {
 			if (jwtTokenProvider.validateToken(token)) {
 				Authentication auth = jwtTokenProvider.getAuthentication(token);
+				 System.out.println("인증된 사용자: " + auth.getPrincipal());
 				SecurityContextHolder.getContext().setAuthentication(auth);
 			} else {
 				// 토큰이 유효하지 않을 때 401 응답
@@ -35,7 +36,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				return;
 			}
 		}
-
 		filterChain.doFilter(request, response);
 	}
 }

@@ -19,8 +19,8 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -46,8 +46,8 @@ public class AuthController implements RestControllerHelper {
     private final MemberService mService;
 
     @PostMapping("/login")
-    // json 요청이면 @RequestBody 사용
-    public ResponseEntity<?> login(@ModelAttribute LoginRequest dto) {
+    // json 요청이면 @RequestBody, form이면 @ModelAttribute
+    public ResponseEntity<?> login(@RequestBody LoginRequest dto) {
         try {
         	// 인증 시도
             Authentication authentication = authenticationManager.authenticate(
