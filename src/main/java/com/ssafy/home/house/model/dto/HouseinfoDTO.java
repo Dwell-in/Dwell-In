@@ -13,6 +13,9 @@ import lombok.NoArgsConstructor;
 public class HouseinfoDTO {
 	private String aptSeq;			// PK
 	private String aptNm;			// 아파트 이름
+	private String roadNm;			// 도로명
+	private String roadNmBonbun;	// 
+	private String roadNmBubun;		// 
 	private int buildYear;			// 건축년도
 	private double lat;				// 위도
 	private double lon;				// 경도
