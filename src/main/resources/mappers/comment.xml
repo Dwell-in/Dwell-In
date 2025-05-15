@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.home.board.model.dao.CommentDAO">
+
+	<resultMap id="commentMap" type="CommentDTO">
+		<id property="commentId" column="comment_id" />
+		<result property="boardId" column="board_id" />
+		<result property="userId" column="user_id" />
+		<result property="content" column="content" />
+		<result property="like" column="like" />
+		<result property="dislike" column="dislike" />
+		<result property="reg_date" column="regDate" />
+	</resultMap>
+
+
+	<insert id="insertComment">
+		INSERT INTO comment (board_id, user_id, content)
+		VALUES (#{boardId}, #{userId}, #{content})
+	</insert>
+
+	<select id="selectComment" resultMap="commentMap">
+		SELECT * FROM comment
+		WHERE board_id = #{boardId}
+		ORDER BY reg_date ASC
+	</select>
+
+	<update id="updateComment">
+		UPDATE comment
+		SET
+		content = #{content},
+		`like` = #{like},
+		dislike = #{dislike}
+		WHERE comment_id = #{commentId}
+	</update>
+
+	<delete id="deleteComment">
+		DELETE FROM comment
+		WHERE comment_id = #{commentId}
+	</delete>
+
+</mapper>
