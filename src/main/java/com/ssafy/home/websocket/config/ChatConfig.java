@@ -11,10 +11,12 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @Configuration
 @EnableWebSocketMessageBroker
 public class ChatConfig implements WebSocketMessageBrokerConfigurer {
+	private static final String DEVELOP_FRONT_ADDRESS1 = "http://localhost:8080";
+	private static final String DEVELOP_FRONT_ADDRESS2 = "https://dwell-in.github.io";
 
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:8080").withSockJS();
+		registry.addEndpoint("/ws").setAllowedOrigins(DEVELOP_FRONT_ADDRESS1, DEVELOP_FRONT_ADDRESS2).withSockJS();
 	}
 	
 	@Override
