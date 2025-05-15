@@ -91,7 +91,6 @@ public class JwtTokenProvider {
     // 요청에서 토큰 추출
     public String resolveToken(HttpServletRequest request) {
         String bearer = request.getHeader("Authorization");
-        System.out.println("bearer : "+bearer);
         if (bearer != null && bearer.startsWith("Bearer ")) {
             return bearer.substring(7);
         }
