@@ -7,6 +7,7 @@ import com.ssafy.home.search.model.dto.DongDTO;
 
 public interface HouseService {
 	List<HouseinfoDTO> findInfoList(DongDTO dongDTO);
+	List<HouseinfoDTO> findInBounds(double swLat, double swLng, double neLat, double neLng);
 	int modifyViewCount(String aptSeq);
 	int findViewCount(String aptSeq);
 }
