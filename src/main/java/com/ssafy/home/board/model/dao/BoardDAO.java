@@ -5,12 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.board.model.dto.BoardDTO;
-import com.ssafy.home.board.model.dto.Page;
+import com.ssafy.home.board.model.dto.PostSearchCondition;
 
 @Mapper
-public interface BoardDao {
+public interface BoardDAO {
 
-	List<BoardDTO> selectBoard();
+	List<BoardDTO> searchPosts(PostSearchCondition condition);
 
 	BoardDTO selectDetailBoard(int boardId);
 	
@@ -21,6 +21,7 @@ public interface BoardDao {
 	int deleteBoard(int boardId);
 	
     int updateBoard(BoardDTO boardDTO);
+    
+    int countPosts(PostSearchCondition condition);
 
-	List<BoardDTO> selectSearchBoard(String search);
 }
