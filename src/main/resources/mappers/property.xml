@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.house.model.dao.PropertyDAO">
+
+	<sql id="propertyJoins">
+		JOIN houseinfos h ON p.apt_seq = h.apt_seq
+		JOIN member m ON
+		p.member_id = m.id
+		LEFT JOIN property_price pp ON p.id = pp.property_id
+	</sql>
+
+	<sql id="propertyConditions">
+		<where>
+			<if test="aptName != null and aptName != ''">
+				AND h.apt_nm LIKE CONCAT('%', #{aptName}, '%')
+			</if>
+			<if test="type != null and type != ''">
+				AND p.type = #{type}
+			</if>
+			<if test="direction != null and direction != ''">
+				AND p.direction = #{direction}
+			</if>
+			<if test="parkingAvailable != null">
+				AND p.parking_available = #{parkingAvailable}
+			</if>
+			<if test="elevator != null">
+				AND p.elevator = #{elevator}
+			</if>
+			<if test="immediateMoveIn != null">
+				AND p.immediate_move_in = #{immediateMoveIn}
+			</if>
+			<if test="structureType != null and structureType != ''">
+				AND p.structure_type = #{structureType}
+			</if>
+			<if test="minNetArea != null">
+				AND p.net_area &gt;= #{minNetArea}
+			</if>
+			<if test="maxNetArea != null">
+				AND p.net_area &lt;= #{maxNetArea}
+			</if>
+			<if test="minFloor != null">
+				AND p.floor &gt;= #{minFloor}
+			</if>
+			<if test="maxFloor != null">
+				AND p.floor &lt;= #{maxFloor}
+			</if>
+			<if test="minRooms != null">
+				AND p.rooms &gt;= #{minRooms}
+			</if>
+			<if test="minBathrooms != null">
+				AND p.bathrooms &gt;= #{minBathrooms}
+			</if>
+			<if test="minPrice != null">
+				AND (
+				(p.type = '매매' AND pp.sale_price &gt;= #{minPrice})
+				OR
+				(p.type = '전세' AND pp.deposit &gt;= #{minPrice}) OR
+				(p.type = '월세'
+				AND pp.monthly_rent &gt;= #{minPrice})
+				)
+			</if>
+			<if test="maxPrice != null">
+				AND (
+				(p.type = '매매' AND pp.sale_price &lt;= #{maxPrice})
+				OR
+				(p.type = '전세' AND pp.deposit &lt;= #{maxPrice}) OR
+				(p.type = '월세'
+				AND pp.monthly_rent &lt;= #{maxPrice})
+				)
+			</if>
+			<if test="optionIds != null and optionIds.size > 0">
+				AND p.id IN (
+				SELECT pom.property_id
+				FROM property_option_mapping pom
+				WHERE pom.option_id IN
+				<foreach item="item" collection="optionIds" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY pom.property_id
+				HAVING COUNT(DISTINCT pom.option_id) =
+				${optionIds.size()}
+				)
+			</if>
+			<if test="safetyIds != null and safetyIds.size > 0">
+				AND p.id IN (
+				SELECT psm.property_id
+				FROM property_safety_mapping psm
+				WHERE psm.safety_id IN
+				<foreach item="item" collection="safetyIds" open="("
+					separator="," close=")">
+					#{item}
+				</foreach>
+				GROUP BY psm.property_id
+				HAVING COUNT(DISTINCT psm.safety_id) =
+				${safetyIds.size()}
+				)
+			</if>
+		</where>
+	</sql>
+
+	<resultMap id="propertyMap" type="PropertyDTO">
+		<id column="id" property="id" />
+		<result column="apt_seq" property="aptSeq" />
+		<result column="member_id" property="memberId" />
+		<result column="apt_nm" property="aptName" />
+		<result column="name" property="memberName" />
+		<result column="title" property="title" />
+		<result column="type" property="type" />
+		<result column="net_area" property="netArea" />
+		<result column="supply_area" property="supplyArea" />
+		<result column="floor" property="floor" />
+		<result column="total_floor" property="totalFloor" />
+		<result column="rooms" property="rooms" />
+		<result column="bathrooms" property="bathrooms" />
+		<result column="direction" property="direction" />
+		<result column="elevator" property="elevator" />
+		<result column="parking_available" property="parkingAvailable" />
+		<result column="immediate_move_in" property="immediateMoveIn" />
+		<result column="structure_type" property="structureType" />
+		<result column="description" property="description" />
+		<result column="view_count" property="viewCount" />
+		<result column="registered_at" property="registeredAt" />
+		<result column="sale_price" property="salePrice" />
+		<result column="deposit" property="deposit" />
+		<result column="monthly_rent" property="monthlyRent" />
+		<result column="management_fee" property="managementFee" />
+		<collection property="optionIds" ofType="long" column="id"
+			select="selectOptionIdsByPropertyId" />
+		<collection property="safetyIds" ofType="long" column="id"
+			select="selectSafetyIdsByPropertyId" />
+		<collection property="optionNames" ofType="string"
+			column="id" select="selectOptionNamesByPropertyId" />
+		<collection property="safetyNames" ofType="string"
+			column="id" select="selectSafetyNamesByPropertyId" />
+	</resultMap>
+
+	<select id="selectProperties" resultMap="propertyMap">
+		SELECT p.*, h.apt_nm, m.name,
+		pp.sale_price, pp.deposit,
+		pp.monthly_rent, pp.management_fee
+		FROM property p
+		<include refid="propertyJoins" />
+		<include refid="propertyConditions" />
+		ORDER BY p.id DESC
+		LIMIT #{size} OFFSET #{offset}
+	</select>
+
+	<select id="selectPropertyById" resultMap="propertyMap">
+		SELECT p.*, h.apt_nm, m.name,
+		pp.sale_price, pp.deposit,
+		pp.monthly_rent, pp.management_fee
+		FROM property p
+		<include refid="propertyJoins" />
+		WHERE p.id = #{id}
+	</select>
+
+	<select id="countProperties" resultType="int">
+		SELECT COUNT(*)
+		FROM property p
+		<include refid="propertyJoins" />
+		<include refid="propertyConditions" />
+	</select>
+
+	<insert id="insertProperty" useGeneratedKeys="true"
+		keyProperty="id">
+		INSERT INTO property (
+		apt_seq, member_id, title, type,
+		net_area, supply_area, floor, total_floor,
+		rooms, bathrooms,
+		direction,
+		elevator, parking_available, immediate_move_in, structure_type,
+		description
+		) VALUES (
+		#{aptSeq}, #{memberId}, #{title}, #{type},
+		#{netArea}, #{supplyArea}, #{floor},
+		#{totalFloor},
+		#{rooms},
+		#{bathrooms}, #{direction}, #{elevator}, #{parkingAvailable},
+		#{immediateMoveIn},
+		#{structureType}, #{description}
+		)
+	</insert>
+
+	<insert id="insertPropertyPrice">
+		INSERT INTO property_price (property_id, sale_price,
+		deposit, monthly_rent,
+		management_fee)
+		VALUES (#{id}, #{salePrice},
+		#{deposit}, #{monthlyRent}, #{managementFee})
+	</insert>
+
+	<insert id="insertPropertyOption">
+		INSERT INTO property_option_mapping (property_id,
+		option_id)
+		VALUES (#{propertyId}, #{optionId})
+	</insert>
+
+	<insert id="insertPropertySafety">
+		INSERT INTO property_safety_mapping (property_id,
+		safety_id)
+		VALUES (#{propertyId}, #{safetyId})
+	</insert>
+
+	<update id="updateProperty">
+		UPDATE property
+		SET title = #{title}, type = #{type},
+		net_area = #{netArea}, supply_area
+		= #{supplyArea},
+		floor = #{floor},
+		total_floor = #{totalFloor}, rooms = #{rooms}, bathrooms
+		=
+		#{bathrooms},
+		direction = #{direction}, elevator = #{elevator},
+		parking_available =
+		#{parkingAvailable},
+		immediate_move_in =
+		#{immediateMoveIn}, structure_type = #{structureType}, description
+		=
+		#{description}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updatePropertyPrice">
+		UPDATE property_price
+		SET sale_price = #{salePrice},
+		deposit = #{deposit}, monthly_rent =
+		#{monthlyRent}, management_fee =
+		#{managementFee}
+		WHERE property_id = #{id}
+	</update>
+
+	<delete id="deleteProperty">
+		DELETE FROM property WHERE id = #{id}
+	</delete>
+
+	<delete id="deletePropertyOptions">
+		DELETE FROM property_option_mapping WHERE property_id
+		= #{propertyId}
+	</delete>
+
+	<delete id="deletePropertySafeties">
+		DELETE FROM property_safety_mapping WHERE property_id
+		= #{propertyId}
+	</delete>
+
+	<select id="selectOptionNamesByPropertyId" resultType="string">
+		SELECT
+		po.name
+		FROM property_option_mapping pom
+		JOIN property_option po ON
+		pom.option_id = po.id
+		WHERE pom.property_id = #{id}
+	</select>
+
+	<select id="selectSafetyNamesByPropertyId" resultType="string">
+		SELECT
+		sf.name
+		FROM property_safety_mapping psm
+		JOIN safety_feature sf ON
+		psm.safety_id = sf.id
+		WHERE psm.property_id = #{id}
+	</select>
+
+	<select id="selectOptionIdsByPropertyId" resultType="long">
+		SELECT po.id
+		FROM property_option_mapping pom
+		JOIN property_option po ON pom.option_id = po.id
+		WHERE pom.property_id = #{id}
+	</select>
+
+	<select id="selectSafetyIdsByPropertyId" resultType="long">
+		SELECT sf.id
+		FROM property_safety_mapping psm
+		JOIN safety_feature sf ON psm.safety_id = sf.id
+		WHERE psm.property_id = #{id}
+	</select>
+</mapper>
