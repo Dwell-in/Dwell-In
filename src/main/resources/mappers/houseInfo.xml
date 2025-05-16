@@ -22,12 +22,15 @@
 	</sql>
 
 	<resultMap type="HouseinfoDTO" id="HouseinfoMap">
-		<id column="apt_seq" property="aptSeq" />
-		<result column="apt_nm" property="aptNm" />
-		<result column="build_year" property="buildYear" />
-		<result column="latitude" property="lat" />
-		<result column="longitude" property="lon" />
-		<result column="view_count" property="viewCount" />
+		<id column="apt_seq" property="aptSeq"/>
+		<result column="road_nm" property="roadNm"/>
+		<result column="road_nm_bonbun" property="roadNmBonbun"/>
+		<result column="road_nm_bubun" property="roadNmBubun"/>
+		<result column="apt_nm" property="aptNm"/>
+		<result column="build_year" property="buildYear"/>
+		<result column="latitude" property="lat"/>
+		<result column="longitude" property="lon"/>
+		<result column="view_count" property="viewCount"/>
 	</resultMap>
 
 	<resultMap type="HouseinfoDTO" id="InfoDealMap"

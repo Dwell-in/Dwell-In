@@ -85,19 +85,9 @@ public class SearchController implements RestControllerHelper{
         try {
             // 외부 이미지 URL로 GET 요청을 보내서 이미지 바이트 배열을 받음
             byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
-            
-            if (imageBytes == null) {
-                return ResponseEntity.status(404).body(null); // 이미지가 없으면 404 반환
-            }
 
-         // 외부 이미지 요청
-            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
-            connection.setRequestMethod("GET");
-            connection.connect();
-
-            // 응답 헤더 설정: Content-Type을 원본 이미지 타입으로 설정
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", connection.getContentType()); // 원본 이미지의 Content-Type 그대로 사용
+            headers.setContentType(MediaType.IMAGE_JPEG); // JPEG 이미지를 가정 (다른 이미지 형식도 처리 가능)
 
             // 응답 본문에 이미지 바이트 배열을 포함
             ByteArrayResource resource = new ByteArrayResource(imageBytes);
