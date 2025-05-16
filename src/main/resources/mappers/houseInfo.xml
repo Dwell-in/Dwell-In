@@ -10,7 +10,10 @@
 		i.build_year,
 		i.latitude,
 		i.longitude,
-		i.view_count
+		i.view_count,
+		i.road_nm,
+		i.road_nm_bonbun,
+		i.road_nm_bubun
 	</sql>
 
 	<sql id="housedealColumns">
