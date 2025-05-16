@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ssafy.home.board.NotWrittenMember;
 import com.ssafy.home.board.model.dto.BoardDTO;
-import com.ssafy.home.board.model.service.BoardService;
+import com.ssafy.home.board.model.dto.PostSearchCondition;
+import com.ssafy.home.board.model.service.BoardServiceImpl;
 import com.ssafy.home.security.dto.CustomUserDetails;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,11 +23,11 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/board")
 @RequiredArgsConstructor
 public class BoardController {
-	private final BoardService boardService;
+	private final BoardServiceImpl boardService;
 
 	@GetMapping("/notification-list")
 	public String boardList(Model model) {
-		List<BoardDTO> boardList = boardService.findBoard();
+		List<BoardDTO> boardList = boardService.findPosts(new PostSearchCondition());
 		model.addAttribute("boardList", boardList);
 		return "board/list";
 	}
