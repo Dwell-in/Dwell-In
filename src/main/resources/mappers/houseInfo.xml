@@ -3,6 +3,24 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.house.model.dao.HouseinfoDAO">
+
+	<sql id="houseinfoColumns">
+		i.apt_seq,
+		i.apt_nm,
+		i.build_year,
+		i.latitude,
+		i.longitude,
+		i.view_count
+	</sql>
+
+	<sql id="housedealColumns">
+		d.deal_year,
+		d.deal_month,
+		d.deal_day,
+		d.exclu_use_ar,
+		d.deal_amount
+	</sql>
+
 	<resultMap type="HouseinfoDTO" id="HouseinfoMap">
 		<id column="apt_seq" property="aptSeq"/>
 		<result column="road_nm" property="roadNm"/>
@@ -14,38 +32,65 @@
 		<result column="longitude" property="lon"/>
 		<result column="view_count" property="viewCount"/>
 	</resultMap>
-	
-	<resultMap type="HouseinfoDTO" id="InfoDealMap" extends="HouseinfoMap">
-		<collection
-			property="listDeal"
-			column="apt_seq = apt_seq"
+
+	<resultMap type="HouseinfoDTO" id="InfoDealMap"
+		extends="HouseinfoMap">
+		<collection property="listDeal" column="apt_seq = apt_seq"
 			ofType="HouserdealDTO">
-			<result column="apt_seq" property="aptSeq"/>
-			<result column="deal_year" property="dealYear"/>
-			<result column="deal_month" property="dealMonth"/>
-			<result column="deal_day" property="dealDay"/>
-			<result column="exclu_use_ar" property="exclu"/>
-			<result column="deal_amount" property="amount"/>
+			<result column="apt_seq" property="aptSeq" />
+			<result column="deal_year" property="dealYear" />
+			<result column="deal_month" property="dealMonth" />
+			<result column="deal_day" property="dealDay" />
+			<result column="exclu_use_ar" property="exclu" />
+			<result column="deal_amount" property="amount" />
 		</collection>
 	</resultMap>
-	
-	
+
+
 	<select id="selectInfoList" resultMap="InfoDealMap">
-		select apt_seq, road_nm, road_nm_bonbun, road_nm_bubun, apt_nm, build_year, latitude, longitude, view_count, deal_year, deal_month, deal_day, exclu_use_ar, deal_amount
-		from houseinfos i
-		left join housedeals using(apt_seq)
-		where sgg_cd = #{sggCd} and umd_cd = #{umdCd}
-		ORDER BY deal_year ASC, deal_month ASC, deal_day;
+		SELECT
+		<include refid="houseinfoColumns" />
+		,
+		<include refid="housedealColumns" />
+		FROM houseinfos i
+		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
+		WHERE
+		i.sgg_cd = #{sggCd} AND i.umd_cd = #{umdCd}
+		ORDER BY d.deal_year ASC,
+		d.deal_month ASC, d.deal_day
 	</select>
-	
+
+	<select id="selectInBounds" resultMap="InfoDealMap">
+		SELECT
+		<include refid="houseinfoColumns" />
+		,
+		<include refid="housedealColumns" />
+		FROM (
+		SELECT *
+		FROM houseinfos
+		WHERE latitude BETWEEN #{swLat} AND
+		#{neLat}
+		AND longitude BETWEEN #{swLng} AND #{neLng}
+		ORDER BY view_count
+		DESC
+		LIMIT 30
+		) i
+		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
+		ORDER BY
+		i.view_count DESC, d.deal_year ASC, d.deal_month ASC, d.deal_day
+	</select>
+
 	<update id="updateViewCount">
-		update houseinfos 
+		update houseinfos
 		set view_count = view_count+1
-		where apt_seq = #{aptSeq};
+		where
+		apt_seq = #{aptSeq};
 	</update>
-	
+
 	<select id="selectViewCount">
 		select view_count from houseinfos
-		where apt_seq = #{aptSeq}; 
+		where apt_seq =
+		#{aptSeq};
 	</select>
+
 </mapper>

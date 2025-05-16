@@ -15,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class HouseServiceImpl implements HouseService {
+	
 	private final DongDAO dongDao;
 	private final HouseinfoDAO houseinfoDAO;
+	
 	@Override
 	public List<HouseinfoDTO> findInfoList(DongDTO dongDTO) {
 		String code = dongDao.selectCode(dongDTO);
@@ -25,6 +27,11 @@ public class HouseServiceImpl implements HouseService {
 		List<HouseinfoDTO> list = houseinfoDAO.selectInfoList(sggCd, umdCd);
 		return list;
 	}
+	
+    @Override
+    public List<HouseinfoDTO> findInBounds(double swLat, double swLng, double neLat, double neLng) {
+        return houseinfoDAO.selectInBounds(swLat, swLng, neLat, neLng);
+    }
 	
 	@Override
 	@Transactional

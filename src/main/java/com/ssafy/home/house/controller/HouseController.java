@@ -1,6 +1,4 @@
 package com.ssafy.home.house.controller;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +6,6 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,7 +18,6 @@ import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
 import com.ssafy.home.house.model.service.HouseService;
 import com.ssafy.home.house.util.HouseCookieHandler;
-import com.ssafy.home.member.model.dto.MemberDTO;
 import com.ssafy.home.search.model.dto.DongDTO;
 import com.ssafy.home.security.dto.CustomUserDetails;
 import com.ssafy.home.starred.model.dto.StarredDTO;
@@ -48,6 +44,19 @@ public class HouseController implements RestControllerHelper{
             e.printStackTrace();
             return handleFail(e);
         }
+	}
+	
+	@GetMapping("/in-bound")
+	private ResponseEntity<?> getHousesInBounds(double swLat, double swLng, double neLat, double neLng) {
+	    try {
+	        List<HouseinfoDTO> houses = hService.findInBounds(swLat, swLng, neLat, neLng);
+	        System.out.println(houses.size());
+	        System.out.println(houses);
+	        return handleSuccess(houses);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return handleFail(e);
+	    }
 	}
 	
 	@PatchMapping("/view/{aptSeq}")
@@ -95,9 +104,6 @@ public class HouseController implements RestControllerHelper{
 			e.printStackTrace();
 			return handleFail(e);
 		}
-		
-		
-		
 		
 	}
 	
