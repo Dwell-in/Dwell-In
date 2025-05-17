@@ -50,6 +50,12 @@
 	</resultMap>
 
 
+	<select id="selectInfo" resultMap="HouseinfoMap">
+		SELECT
+		<include refid="houseinfoColumns" />
+		FROM houseinfos i
+		WHERE apt_seq = #{aptSeq}
+	</select>
 	<select id="selectInfoList" resultMap="InfoDealMap">
 		SELECT
 		<include refid="houseinfoColumns" />
