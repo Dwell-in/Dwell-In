@@ -56,7 +56,6 @@ public class BaordRestController implements RestControllerHelper {
 	@PostMapping("/board-write")
 	public ResponseEntity<?> boardAdd(@RequestBody BoardDTO board) {
 		try {
-			System.out.println(board);
 			board.setRegTime(LocalDateTime.now());
 			boardService.addBoard(board);
 		return handleSuccess(board, HttpStatus.CREATED);
