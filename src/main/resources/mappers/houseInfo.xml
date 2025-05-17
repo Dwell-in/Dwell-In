@@ -50,11 +50,16 @@
 	</resultMap>
 
 
-	<select id="selectInfo" resultMap="HouseinfoMap">
+	<select id="selectInfo" resultMap="InfoDealMap">
 		SELECT
 		<include refid="houseinfoColumns" />
+		,
+		<include refid="housedealColumns" />
 		FROM houseinfos i
-		WHERE apt_seq = #{aptSeq}
+		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
+		WHERE i.apt_seq = #{aptSeq}
+		ORDER BY d.deal_year ASC,
+		d.deal_month ASC, d.deal_day
 	</select>
 	<select id="selectInfoList" resultMap="InfoDealMap">
 		SELECT
