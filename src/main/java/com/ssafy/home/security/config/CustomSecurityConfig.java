@@ -13,6 +13,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.ssafy.home.security.controller.RestAccessDeniedHandler;
+import com.ssafy.home.security.controller.RestAuthenticationEntryPoint;
 import com.ssafy.home.security.jwt.JwtAuthenticationFilter;
 import com.ssafy.home.security.jwt.JwtTokenProvider;
 
@@ -24,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class CustomSecurityConfig {	
 	
 	private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final RestAccessDeniedHandler accessDeniedHandler;
 
 	@Bean
 	RoleHierarchy roleHierachy() {
@@ -48,7 +52,11 @@ public class CustomSecurityConfig {
     			.requestMatchers("/secured/admin/**").hasRole("ADMIN")
     			.requestMatchers("/secured/user/**").hasRole("USER")
     			.requestMatchers("/auth","/auth/**").authenticated()
-    			.anyRequest().permitAll());
+    			.anyRequest().permitAll())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                    );;
     	
     	// JWT 인증 필터 추가
         http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
