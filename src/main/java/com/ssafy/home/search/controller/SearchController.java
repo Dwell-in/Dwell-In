@@ -104,10 +104,13 @@ public class SearchController implements RestControllerHelper{
 	// 네이버 검색 api
     @GetMapping("/naver/{category}")
     @ResponseBody
-    public ResponseEntity<?> getBlogData(@PathVariable String category, @RequestParam String query) {
+    public ResponseEntity<?> getBlogData(@PathVariable String category, @RequestParam String query, @RequestParam(required = false) Integer display) {
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
             String apiUrl = "https://openapi.naver.com/v1/search/"+category+".json?query=" + encodedQuery;
+            if (display != null) {
+            	apiUrl += "&display="+display;
+            }
 
             Map<String, String> headers = new HashMap<>();
             headers.put("X-Naver-Client-Id", "2Pp8EaKyUrb_SEjaLj0y");
