@@ -1,10 +1,13 @@
 package com.ssafy.home.security.jwt;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,7 +35,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				// 토큰이 유효하지 않을 때 401 응답
 				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
 				response.setContentType("application/json");
-				response.getWriter().write("{\"error\": \"Invalid or expired token\"}");
+				new ObjectMapper().writeValue(response.getWriter(),  Map.of(
+			            "status", "FAIL",
+			            "error", "토큰이 유효하지 않거나 만료되었습니다."
+			        ));
 				return;
 			}
 		}

@@ -15,7 +15,7 @@ import com.ssafy.home.common.RestControllerHelper;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/ai")
+@RequestMapping("/api/v1/ai")
 @RequiredArgsConstructor
 public class AiChatController implements RestControllerHelper {
 	
@@ -25,6 +25,7 @@ public class AiChatController implements RestControllerHelper {
 	ResponseEntity<?> simpleGeneration(@RequestBody Map<String, String> userInput){
 		System.out.println("컨트롤러 도착 ==================");
 		Object result = aService.simpleGenration(userInput.get("message"));
+		System.out.println(result);
 		return handleSuccess(Map.of("message",result));
 	}
 
