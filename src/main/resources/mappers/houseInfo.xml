@@ -10,7 +10,10 @@
 		i.build_year,
 		i.latitude,
 		i.longitude,
-		i.view_count
+		i.view_count,
+		i.road_nm,
+		i.road_nm_bonbun,
+		i.road_nm_bubun
 	</sql>
 
 	<sql id="housedealColumns">
@@ -47,6 +50,17 @@
 	</resultMap>
 
 
+	<select id="selectInfo" resultMap="InfoDealMap">
+		SELECT
+		<include refid="houseinfoColumns" />
+		,
+		<include refid="housedealColumns" />
+		FROM houseinfos i
+		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
+		WHERE i.apt_seq = #{aptSeq}
+		ORDER BY d.deal_year ASC,
+		d.deal_month ASC, d.deal_day
+	</select>
 	<select id="selectInfoList" resultMap="InfoDealMap">
 		SELECT
 		<include refid="houseinfoColumns" />

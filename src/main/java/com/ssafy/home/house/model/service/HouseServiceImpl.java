@@ -19,6 +19,12 @@ public class HouseServiceImpl implements HouseService {
 	private final DongDAO dongDao;
 	private final HouseinfoDAO houseinfoDAO;
 	
+
+	@Override
+	public HouseinfoDTO findInfo(String aptSeq) {
+		return houseinfoDAO.selectInfo(aptSeq);
+	}
+	
 	@Override
 	public List<HouseinfoDTO> findInfoList(DongDTO dongDTO) {
 		String code = dongDao.selectCode(dongDTO);
@@ -44,5 +50,6 @@ public class HouseServiceImpl implements HouseService {
 	public int findViewCount(String aptSeq) {
 		return houseinfoDAO.selectViewCount(aptSeq);
 	}
+
 
 }

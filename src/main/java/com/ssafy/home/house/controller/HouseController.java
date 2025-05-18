@@ -35,6 +35,17 @@ public class HouseController implements RestControllerHelper{
 	private final HouseCookieHandler cHandler;
 	private final StarredService sService;
 
+	@GetMapping("/{aptSeq}")
+	private ResponseEntity<?> house(@PathVariable String aptSeq){
+		try {
+			HouseinfoDTO info = hService.findInfo(aptSeq);
+			return handleSuccess(info);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return handleFail(e);
+		}
+	}
+	
 	@GetMapping
 	private ResponseEntity<?> houseList(@ModelAttribute DongDTO dongDTO){
 		try {
