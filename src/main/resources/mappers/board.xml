@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.board.model.dao.BoardDAO">
+
+	<resultMap type="BoardDTO" id="boardMap">
+		<id column="board_id" property="boardId" />
+		<result column="category_id" property="categoryId" />
+		<result column="category_name" property="categoryName" />
+		<result column="title" property="title" />
+		<result column="content" property="content" />
+		<result column="user_id" property="userId" />
+		<result column="name" property="userName" />
+		<result column="view_count" property="viewCount" />
+		<result column="like" property="like" />
+		<result column="dislike" property="dislike" />
+		<result column="reg_date" property="regTime" />
+	</resultMap>
+
+	<sql id="boardJoins">
+		join member m
+		on b.user_id = m.id
+		join post_category p
+		on
+		b.category_id = p.category_id
+	</sql>
+
+	<sql id="condition">
+		<where>
+			<if test="categoryId != null">
+				AND b.category_id = #{categoryId}
+			</if>
+			<if test="userName != null and userName != ''">
+				AND m.name LIKE CONCAT('%', #{userName}, '%')
+			</if>
+			<if test="title != null and title != ''">
+				AND b.title LIKE CONCAT('%', #{title}, '%')
+			</if>
+			<if test="content != null and content != ''">
+				AND b.content LIKE CONCAT('%', #{content}, '%')
+			</if>
+		</where>
+	</sql>
+
+	<select id="searchPosts"
+		parameterType="com.ssafy.home.board.model.dto.PostSearchCondition"
+		resultMap="boardMap">
+		SELECT *
+		FROM board b
+		<include refid="boardJoins" />
+		<include refid="condition" />
+		ORDER BY b.board_id DESC
+		LIMIT #{size} OFFSET #{offset}
+	</select>
+
+	<select id="countPosts">
+		SELECT COUNT(*)
+		FROM board b
+		<include refid="boardJoins" />
+		<include refid="condition" />
+	</select>
+
+	<select id="selectDetailBoard" resultMap="boardMap">
+		select * from board b
+		<include refid="boardJoins" />
+		where board_id = #{boardId}
+	</select>
+
+	<update id="updateViewCount">
+		UPDATE board
+		SET view_count = view_count + 1
+		WHERE
+		board_id = #{boardId}
+	</update>
+
+	<update id="updateBoard">
+		UPDATE board
+		SET title = #{title}, content =
+		#{content}
+		WHERE board_id = #{boardId}
+	</update>
+
+	<insert id="insertBoard"
+		parameterType="com.ssafy.home.board.model.dto.BoardDTO">
+		INSERT INTO board (`category_id`, `title`, `content`,
+		`user_id`, `reg_date`)
+		VALUES (#{categoryId}, #{title}, #{content},
+		#{userId}, #{regTime})
+	</insert>
+
+	<delete id="deleteBoard">
+		delete from board
+		where board_id = #{boardId}
+	</delete>
+
+</mapper>

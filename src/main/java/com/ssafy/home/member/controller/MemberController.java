@@ -1,5 +1,6 @@
 package com.ssafy.home.member.controller;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.springframework.http.HttpEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.ssafy.home.common.RestControllerHelper;
@@ -47,18 +49,21 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController implements RestControllerHelper {
 
 	private final MemberService mService;
-	private final CustomUserDetailsService cService;
 	private final PasswordEncoder pe;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member, HttpSession session) {
+	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member, 
+			@RequestParam(required = false) MultipartFile img, HttpSession session) {
 		try {
 			String hashpw = pe.encode(member.getPassword());
+			if(img != null && !img.isEmpty()) {
+				member.setProfile(img.getBytes());
+			}
 			member.setRole("USER");
 			member.setPassword(hashpw);
 			mService.addMember(member);
 			return handleSuccess(member, HttpStatus.CREATED);
-		} catch (RuntimeException e) {
+		} catch (RuntimeException | IOException e) {
 			e.printStackTrace();
 			return handleFail(e);
 		}
@@ -121,65 +126,16 @@ public class MemberController implements RestControllerHelper {
 		return Map.of("exists", exists);
 	}
 	
-	@GetMapping("/kakao/access-token")
-	public ResponseEntity<?> kakaoCallback(@RequestParam String code){
-		HttpHeaders headers = new HttpHeaders();
-		headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-		MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
-		params.add("grant_type", "authorization_code");
-		params.add("client_id", "7abe84cfdb3ff3310feaca8aa90809c0");
-		params.add("redirect_uri", "http://localhost:8080/member/login");
-		params.add("code", code);
-
-		HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(params, headers);
-		
-		RestTemplate rt = new RestTemplate();
-		ResponseEntity<String> response = rt.postForEntity(
-		    "https://kauth.kakao.com/oauth/token", request, String.class
-		);
-		return response;
+	@GetMapping("/user-info")
+	public ResponseEntity<?> getCurrentUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
+		MemberDTO member = userDetails.getMember();
+		return handleSuccess(Map.of(
+				"id",member.getId()
+				,"email",member.getEmail()
+				,"name",member.getName()
+				,"profileImg",member.getProfileImg()));
 	}
 	
-	@GetMapping("/kakao/user-info")
-	public ResponseEntity<?> getUserInfo(@RequestParam String accessToken){
-		HttpHeaders userInfoHeaders = new HttpHeaders();
-		RestTemplate rt = new RestTemplate();
-		userInfoHeaders.setBearerAuth(accessToken);
-
-		HttpEntity<Void> userInfoRequest = new HttpEntity<>(userInfoHeaders);
-
-		ResponseEntity<String> userInfoResponse = rt.exchange(
-		    "https://kapi.kakao.com/v2/user/me",
-		    HttpMethod.GET,
-		    userInfoRequest,
-		    String.class
-		);
-		return userInfoResponse;
-	}
-	
-	@GetMapping("/kakao/login")
-	public ResponseEntity<?> getUserInfo(@RequestParam String id, @RequestParam String nickname,
-			@RequestParam String profileImage, HttpSession session){
-		try {
-			UserDetails member = cService.loadUserByUsername(id);
-			Authentication auth = new UsernamePasswordAuthenticationToken(member.getUsername(), null, member.getAuthorities());
-			
-			SecurityContext context = SecurityContextHolder.getContext();
-	        context.setAuthentication(auth);
-	        
-	        // 필터 체인을 적용하지 않기 때문에 수동으로 세션 scope에 저장해야 함
-	        session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, context);
-	        
-	        return handleSuccess(Map.of("redirect", "/"));
-		} catch (Exception e) {
-			return handleSuccess(Map.of(
-		            "redirect", "/member/signup",
-		            "id", id,
-		            "name", nickname,
-		            "profileImage", profileImage
-		        ));
-		}
-	}
 	
 //	@PostMapping("/check-email")
 //	public ResponseEntity<?> checkEmailDuplicate(@RequestParam String email, HttpServletResponse response) {

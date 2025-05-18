@@ -9,19 +9,45 @@
     FROM
       star
     WHERE
-      email = #{email}
+     user_id = #{userId}
       AND apt_seq = #{aptSeq}
   	</select>
   	
+  	<select id ="selectStarred" parameterType="int" resultMap="starMap">
+  	SELECT s.apt_seq, h.apt_nm,d.sido_name ,d.gugun_name,d.dong_name,h.view_count,h.latitude,h.longitude,h.build_year,h.road_nm,h.road_nm_bonbun
+	FROM star s
+	JOIN houseinfos h ON h.apt_seq = s.apt_seq
+	JOIN dongcodes d ON CONCAT(h.sgg_cd, h.umd_cd) = d.dong_code
+	WHERE s.user_id = #{userId};
+  	</select>
+  	
+  	<resultMap type ="StarredHouseInfoDTO" id="starMap">
+  		<id column = "apt_seq" property="aptSeq"/>
+		<result column="apt_nm" property="aptNm"/>
+		<result column="build_year" property="buildYear"/>
+		<result column="latitude" property="lat"/>
+		<result column="longitude" property="lon"/>
+		<result column="view_count" property="viewCount"/>
+  		<result column="sido_name" property ="sidoName"/>
+  		<result column="gugun_name" property="gugunName"/>
+  		<result column="dong_name" property ="dongName"/>
+  		<result column="road_nm" property ="roadNm"/>
+  		<result column="road_nm_bonbun" property ="roadNmBonbun"/>
+  		
+  		
+  	</resultMap>
+  	
+  	
+  	
   	<insert id="insertStarred" parameterType="com.ssafy.home.starred.model.dto.StarredDTO" useGeneratedKeys="true">
-  	INSERT INTO star (email , apt_seq)
-  	VALUES (#{email} , #{aptSeq})
+  	INSERT INTO star (user_id , apt_seq)
+  	VALUES (#{userId} , #{aptSeq})
   	</insert>
   	
   	<delete id="deleteStarred" parameterType="com.ssafy.home.starred.model.dto.StarredDTO">
   	DELETE FROM star
   	WHERE
-    email = #{email}
+    user_id = #{userId}
     AND apt_seq = #{aptSeq}
   
   	</delete>

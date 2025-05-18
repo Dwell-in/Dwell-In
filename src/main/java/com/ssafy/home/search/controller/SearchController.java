@@ -85,12 +85,7 @@ public class SearchController implements RestControllerHelper{
         try {
             // 외부 이미지 URL로 GET 요청을 보내서 이미지 바이트 배열을 받음
             byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
-            
-            if (imageBytes == null) {
-                return ResponseEntity.status(404).body(null); // 이미지가 없으면 404 반환
-            }
 
-            // 응답 헤더 설정: Content-Type을 이미지 타입으로 설정
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.IMAGE_JPEG); // JPEG 이미지를 가정 (다른 이미지 형식도 처리 가능)
 
@@ -109,10 +104,13 @@ public class SearchController implements RestControllerHelper{
 	// 네이버 검색 api
     @GetMapping("/naver/{category}")
     @ResponseBody
-    public ResponseEntity<?> getBlogData(@PathVariable String category, @RequestParam String query) {
+    public ResponseEntity<?> getBlogData(@PathVariable String category, @RequestParam String query, @RequestParam(required = false) Integer display) {
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
             String apiUrl = "https://openapi.naver.com/v1/search/"+category+".json?query=" + encodedQuery;
+            if (display != null) {
+            	apiUrl += "&display="+display;
+            }
 
             Map<String, String> headers = new HashMap<>();
             headers.put("X-Naver-Client-Id", "2Pp8EaKyUrb_SEjaLj0y");

@@ -1,7 +1,7 @@
 use ssafyhome;
 
 -- member
-INSERT INTO member
+INSERT INTO member(email, name, password, phone, role)
 VALUES
   ('ssafy@naver.com', 'ssafy', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'ADMIN'),
   ('ssafy1@naver.com', 'ssafy1', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'USER'),
@@ -35,37 +35,45 @@ VALUES
   ('ssafy29@naver.com', 'ssafy29', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'USER'),
   ('ssafy30@naver.com', 'ssafy30', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '010-1234-1235', 'USER');
 
--- noticeboard
-insert into noticeboard
+-- category
+insert into post_category
 values
-	(null, "title", "content", "ssafy@naver.com", 0, default),
-	(null, "title1", "content1", "ssafy@naver.com", 0, default),
-	(null, "title2", "content2", "ssafy@naver.com", 0, default),
-	(null, "title3", "content3", "ssafy@naver.com", 0, default),
-	(null, "title4", "content4", "ssafy@naver.com", 0, default),
-	(null, "title5", "content5", "ssafy@naver.com", 0, default),
-	(null, "title6", "content6", "ssafy@naver.com", 0, default),
-	(null, "title7", "content7", "ssafy@naver.com", 0, default),
-	(null, "title8", "content8", "ssafy@naver.com", 0, default),
-	(null, "title9", "content9", "ssafy@naver.com", 0, default),
-	(null, "title10", "content10", "ssafy@naver.com", 0, default),
-	(null, "title11", "content11", "ssafy@naver.com", 0, default),
-	(null, "title12", "content12", "ssafy@naver.com", 0, default),
-	(null, "title13", "content13", "ssafy@naver.com", 0, default),
-	(null, "title14", "content14", "ssafy@naver.com", 0, default),
-	(null, "title15", "content15", "ssafy@naver.com", 0, default),
-	(null, "title16", "content16", "ssafy@naver.com", 0, default),
-	(null, "title17", "content17", "ssafy@naver.com", 0, default),
-	(null, "title18", "content18", "ssafy@naver.com", 0, default),
-	(null, "title19", "content19", "ssafy@naver.com", 0, default),
-	(null, "title20", "content20", "ssafy@naver.com", 0, default),
-	(null, "title21", "content21", "ssafy@naver.com", 0, default),
-	(null, "title22", "content22", "ssafy@naver.com", 0, default),
-	(null, "title23", "content23", "ssafy@naver.com", 0, default),
-	(null, "title24", "content24", "ssafy@naver.com", 0, default),
-	(null, "title25", "content25", "ssafy@naver.com", 0, default),
-	(null, "title26", "content26", "ssafy@naver.com", 0, default),
-	(null, "title27", "content27", "ssafy@naver.com", 0, default),
-	(null, "title28", "content28", "ssafy@naver.com", 0, default),
-	(null, "title29", "content29", "ssafy@naver.com", 0, default),
-	(null, "title30", "content30", "ssafy@naver.com", 0, default);
+	(1, 'notice'),
+    (2, 'Q&A'),
+    (3, 'general');
+
+INSERT INTO board (`category_id`, `title`, `content`, `user_id`, `view_count`, `reg_date`)
+VALUES
+    (1, "title", "content", 1, 0, DATE_SUB(CURDATE(), INTERVAL 365 DAY)),
+    (1, "title1", "content1", 2, 0, DATE_SUB(CURDATE(), INTERVAL 364 DAY)),
+    (1, "title2", "content2", 3, 0, DATE_SUB(CURDATE(), INTERVAL 363 DAY)),
+    (1, "title3", "content3", 4, 0, DATE_SUB(CURDATE(), INTERVAL 362 DAY)),
+    (1, "title4", "content4", 5, 0, DATE_SUB(CURDATE(), INTERVAL 361 DAY)),
+    (1, "title5", "content5", 6, 0, DATE_SUB(CURDATE(), INTERVAL 360 DAY)),
+    (1, "title6", "content6", 7, 0, DATE_SUB(CURDATE(), INTERVAL 359 DAY)),
+    (1, "title7", "content7", 8, 0, DATE_SUB(CURDATE(), INTERVAL 358 DAY)),
+    (1, "title8", "content8", 9, 0, DATE_SUB(CURDATE(), INTERVAL 357 DAY)),
+    (1, "title9", "content9", 10, 0, DATE_SUB(CURDATE(), INTERVAL 356 DAY)),
+
+    (2, "title10", "content10", 11, 0, DATE_SUB(CURDATE(), INTERVAL 355 DAY)),
+    (2, "title11", "content11", 12, 0, DATE_SUB(CURDATE(), INTERVAL 354 DAY)),
+    (2, "title12", "content12", 13, 0, DATE_SUB(CURDATE(), INTERVAL 353 DAY)),
+    (2, "title13", "content13", 14, 0, DATE_SUB(CURDATE(), INTERVAL 352 DAY)),
+    (2, "title14", "content14", 15, 0, DATE_SUB(CURDATE(), INTERVAL 351 DAY)),
+    (2, "title15", "content15", 16, 0, DATE_SUB(CURDATE(), INTERVAL 350 DAY)),
+    (2, "title16", "content16", 17, 0, DATE_SUB(CURDATE(), INTERVAL 349 DAY)),
+    (2, "title17", "content17", 18, 0, DATE_SUB(CURDATE(), INTERVAL 348 DAY)),
+    (2, "title18", "content18", 19, 0, DATE_SUB(CURDATE(), INTERVAL 347 DAY)),
+    (2, "title19", "content19", 20, 0, DATE_SUB(CURDATE(), INTERVAL 346 DAY)),
+
+    (3, "title20", "content20", 21, 0, DATE_SUB(CURDATE(), INTERVAL 345 DAY)),
+    (3, "title21", "content21", 22, 0, DATE_SUB(CURDATE(), INTERVAL 344 DAY)),
+    (3, "title22", "content22", 23, 0, DATE_SUB(CURDATE(), INTERVAL 343 DAY)),
+    (3, "title23", "content23", 24, 0, DATE_SUB(CURDATE(), INTERVAL 342 DAY)),
+    (3, "title24", "content24", 25, 0, DATE_SUB(CURDATE(), INTERVAL 341 DAY)),
+    (3, "title25", "content25", 26, 0, DATE_SUB(CURDATE(), INTERVAL 340 DAY)),
+    (3, "title26", "content26", 27, 0, DATE_SUB(CURDATE(), INTERVAL 339 DAY)),
+    (3, "title27", "content27", 28, 0, DATE_SUB(CURDATE(), INTERVAL 338 DAY)),
+    (3, "title28", "content28", 29, 0, DATE_SUB(CURDATE(), INTERVAL 337 DAY)),
+    (3, "title29", "content29", 30, 0, DATE_SUB(CURDATE(), INTERVAL 336 DAY));
+

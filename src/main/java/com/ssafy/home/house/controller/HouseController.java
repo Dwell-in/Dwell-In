@@ -1,6 +1,4 @@
 package com.ssafy.home.house.controller;
-
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +6,6 @@ import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -21,8 +18,8 @@ import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
 import com.ssafy.home.house.model.service.HouseService;
 import com.ssafy.home.house.util.HouseCookieHandler;
-import com.ssafy.home.member.model.dto.MemberDTO;
 import com.ssafy.home.search.model.dto.DongDTO;
+import com.ssafy.home.security.dto.CustomUserDetails;
 import com.ssafy.home.starred.model.dto.StarredDTO;
 import com.ssafy.home.starred.model.service.StarredService;
 
@@ -38,6 +35,17 @@ public class HouseController implements RestControllerHelper{
 	private final HouseCookieHandler cHandler;
 	private final StarredService sService;
 
+	@GetMapping("/{aptSeq}")
+	private ResponseEntity<?> house(@PathVariable String aptSeq){
+		try {
+			HouseinfoDTO info = hService.findInfo(aptSeq);
+			return handleSuccess(info);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return handleFail(e);
+		}
+	}
+	
 	@GetMapping
 	private ResponseEntity<?> houseList(@ModelAttribute DongDTO dongDTO){
 		try {
@@ -47,6 +55,19 @@ public class HouseController implements RestControllerHelper{
             e.printStackTrace();
             return handleFail(e);
         }
+	}
+	
+	@GetMapping("/in-bound")
+	private ResponseEntity<?> getHousesInBounds(double swLat, double swLng, double neLat, double neLng) {
+	    try {
+	        List<HouseinfoDTO> houses = hService.findInBounds(swLat, swLng, neLat, neLng);
+	        System.out.println(houses.size());
+	        System.out.println(houses);
+	        return handleSuccess(houses);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return handleFail(e);
+	    }
 	}
 	
 	@PatchMapping("/view/{aptSeq}")
@@ -77,12 +98,15 @@ public class HouseController implements RestControllerHelper{
 	}
 	
 	@GetMapping("/view/starred/{aptSeq}")
-	private ResponseEntity<?> IsStarred(@PathVariable String aptSeq,@AuthenticationPrincipal UserDetails member){
+	private ResponseEntity<?> IsStarred(@PathVariable String aptSeq,@AuthenticationPrincipal CustomUserDetails member){
 		// 현재 아파트가 관심 아파트 매물인지 확인하는 메서드
 		try {
-		String memberEmail = member.getUsername();
+		if(member==null) {
+			return handleSuccess(Map.of("isStarred",""));
+		}
+		int memberId = member.getMember().getId();
 
-		StarredDTO starred = StarredDTO.builder().email(memberEmail).aptSeq(aptSeq).build();
+		StarredDTO starred = StarredDTO.builder().userId(memberId).aptSeq(aptSeq).build();
 		
 		boolean isStarred = sService.isStarred(starred);
 		
@@ -91,9 +115,6 @@ public class HouseController implements RestControllerHelper{
 			e.printStackTrace();
 			return handleFail(e);
 		}
-		
-		
-		
 		
 	}
 	

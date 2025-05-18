@@ -8,8 +8,10 @@ import com.ssafy.home.house.model.dto.HouseinfoDTO;
 
 @Mapper
 public interface HouseinfoDAO {
+	HouseinfoDTO selectInfo(String aptSeq);
 	List<HouseinfoDTO> selectInfoList(String sggCd, String umdCd);
 	int updateViewCount(String aptSeq);
 	int selectViewCount(String aptSeq);
+	List<HouseinfoDTO> selectInBounds(double swLat, double swLng,double neLat, double neLng);
 }
 

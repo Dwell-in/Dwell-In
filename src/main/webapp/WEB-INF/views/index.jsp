@@ -12,7 +12,7 @@
   <body>
     <%@ include file="/WEB-INF/views/fragments/header.jsp" %>
     <main>
-      <div class="info section" style="background: url(${root }/resources/img/indexx.png) top / 100% no-repeat;">
+      <div class="info section" style="background: url(${root }/resources/img/index.png) top / 100% no-repeat;">
       	<div class="title-sub">부제</div>
       	<div class="title"></div>
       	<div class="content">
@@ -23,12 +23,13 @@
 	      	<p>마우스 휠 이동이 가능합니다.</p>
       	</div>
       </div>
-      <div class="section" id="section2" style="background: url(${root }/resources/img/indexx2.png) top / 100% no-repeat;">
+      <div class="section" id="section2" style="background: url(${root }/resources/img/index2.png) top / 100% no-repeat;">
       </div>
-      <div class="section" style="background: url(${root }/resources/img/indexx3.png) top / 100% no-repeat;">
+      <div class="section" style="background: url(${root }/resources/img/index3.png) top / 100% no-repeat;">
       </div>
-      <div class="section" style="background: url(${root }/resources/img/indexx4.png) top / 100% no-repeat;">
+      <div class="section" style="background: url(${root }/resources/img/index4.png) top / 100% no-repeat;">
       </div>
+      <%@ include file="/WEB-INF/views/fragments/side/chat.jsp" %>
     </main>
     <%@ include file="/WEB-INF/views/fragments/footer1.jsp" %>
 	<script src="${root }/resources/js/index.js"></script>

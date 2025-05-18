@@ -1,18 +1,19 @@
 option {
   color: black;
 }
-html, body{
+html,
+body {
   height: 100vh;
   scroll-behavior: smooth;
   scroll-snap-type: x mandatory;
 }
-body{
+body {
   padding: 0 !important;
 }
-header a{
+header a {
   color: white !important;
 }
-header:not(:hover){
+header:not(:hover) {
   transition-delay: 0.5s;
 }
 main {
@@ -24,34 +25,34 @@ main {
   flex-shrink: 0;
   scroll-snap-align: start;
 }
-footer{
+footer {
   position: relative !important;
   display: none !important;
 }
 /* .section:last-child{
   height: calc(100vh - 150px);
 } */
-.info{
+.info {
   padding-top: 300px;
   padding-left: 300px;
   color: white;
   position: relative;
 }
-.info .title-sub{
+.info .title-sub {
   opacity: 0;
   transition: 1s;
 }
-.info .title{
+.info .title {
   font-weight: bold;
   font-size: 2.5em;
 }
-.info .content{
+.info .content {
   margin-top: 50px;
   font-size: 1.5em;
   opacity: 0;
   transition: 1s;
 }
-.info .moveSectionIcon{
+.info .moveSectionIcon {
   cursor: pointer;
   width: 300px;
   position: absolute;
@@ -63,11 +64,17 @@ footer{
   flex-direction: column;
   align-items: end;
 }
-.info .moveSectionIcon img{
+.info .moveSectionIcon img {
   width: 45px;
 }
-.info .moveSectionIcon p{
+.info .moveSectionIcon p {
   font-size: 0.6em;
   line-height: 3em;
   text-align: end;
+}
+
+.sideView:is(.chatView) {
+  position: fixed;
+  margin-top: 65px;
+  height: calc(100% - 65px) !important;
 }

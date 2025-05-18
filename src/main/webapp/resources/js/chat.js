@@ -1,89 +1,225 @@
 // 채팅방 ID와 사용자 정보 (예시: userA와 userB의 1:1 채팅)
 let roomId;
 let stompClient;
-const user1Id = "userA"; // 현재 로그인한 사용자
-const user2Id = "userB";
+let loginUserId; // 현재 로그인한 사용자
+let subscription;
+let lastUser = "default";
+let listOpen = true;
 
-const query = new URLSearchParams({
-  user1Id: user1Id,
-  user2Id: user2Id,
-}).toString();
+// 채팅방 리스트 초기화
+const chatInit = async () => {
+    // 로그인 유저 받아오기
+    loginUserId = await getLoginUser();
 
-console.log('fetch-chat: start');
-fetch(`/chat/roomId?${query}`)
-  .then((res) => res.json())
-  .then((data) => {
-    roomId = data.data; // 서버에서 받은 roomId
-    console.log(data.data);
-    // 채팅 메시지 목록 가져오기
-    fetch(`/chat/${roomId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      const messages = data.data;
-      if (messages){
-        messages.forEach(displayMessage);
-      }
+    // 채팅 UI 오픈
+    document.querySelector(".sideView:has(.chat)").classList.add("open");
+    // sideView 끄기 click 이벤트
+    const closeBtns = document.querySelectorAll("div:has(.chat) .close");
+    closeBtns.forEach((closeBtn) => {
+        closeBtn.addEventListener("click", () => {
+            closeBtn.parentElement.classList.remove("open");
+        });
     });
 
-    // WebSocket 연결
-    const socket = new SockJS("/ws"); // 서버의 WebSocket endpoint
-    stompClient = Stomp.over(socket); // STOMP 클라이언트
-    
-    // 디버그용
-    stompClient.debug = (str) => {
-      console.log("[STOMP DEBUG] ", str);
-    };
-    
-    // 서버로부터 메시지를 받으면 처리
-    stompClient.connect({}, () => {
-      // 채팅방 구독
-      stompClient.subscribe(`/sub/chatroom/${roomId}`, (message) => {
-        const chat = JSON.parse(message.body); // 메시지를 JSON으로 파싱
-        displayMessage(chat); // UI에 표시
-      });
+    const targets = await getTargets(loginUserId);
+
+    const listDiv = document.querySelector(".chat-list");
+    listDiv.innerHTML = "";
+    listDiv.classList.add("open");
+    const closeBtn = document.createElement("img");
+    closeBtn.src = "/resources/img/arrowL.png";
+    closeBtn.classList.add("close");
+    closeBtn.addEventListener("click", (e) => {
+        listOpen = !listOpen;
+        closeBtn.src = `/resources/img/arrow${listOpen ? "L" : "R"}.png`;
+        e.target.parentElement.classList.toggle("open");
     });
-});
+    listDiv.appendChild(closeBtn);
 
-// 메시지 전송
-const sendMessage = (content) => {
-  const message = {
-    roomId: roomId,
-    sender: user1Id,
-    content: content,
-  };
+    // AI 채팅 추가
+    const AIIcon = document.createElement("img");
+    AIIcon.classList.add("chat-room-icon");
+    AIIcon.src = `/resources/img/chat-AI.png`;
+    AIIcon.addEventListener("click", () => {
+        // TODO AI와 연결하기
+        connectAI();
+        document.querySelectorAll(".chat-room-icon").forEach((c) => {
+            c.classList.remove("selected");
+        });
+        AIIcon.classList.add("selected");
+    });
+    listDiv.appendChild(AIIcon);
 
-  // 서버에 메시지 전송
-  stompClient.send("/pub/message", {}, JSON.stringify(message));
+    // 채팅 목록 추가
+    targets.forEach((target) => {
+        const chatIcon = document.createElement("img");
+        chatIcon.classList.add("chat-room-icon");
+        const profileImg = target.profileImg ? target.profileImg : "/resources/img/default_profile.png";
+        chatIcon.src = profileImg;
+        chatIcon.addEventListener("click", () => {
+            connectChatRoom(target.id, profileImg);
+            document.querySelectorAll(".chat-room-icon").forEach((c) => {
+                c.classList.remove("selected");
+            });
+            chatIcon.classList.add("selected");
+        });
+        listDiv.appendChild(chatIcon);
+    });
 };
 
-if (document.getElementById("chat-sub")) {
-  // 전송 버튼에 클릭 이벤트 등록
-  document.getElementById("chat-sub").addEventListener("click", function () {
+// 로그인 유저 얻어오기
+const getLoginUser = async () => {
+    const response = await fetch(`/api/v1/member/user-info`, {
+        method: "GET",
+    });
+    const json = await response.json();
+    return json.data.id;
+};
+
+// 채팅 상대 얻어오기
+const getTargets = async (userId) => {
+    const response = await fetch(`/chat/targets/${userId}`, {
+        method: "GET",
+    });
+    const json = await response.json();
+    return json.data;
+};
+
+// AI 접속
+const connectAI = () => {
+    // 채팅방 초기화
+    document.querySelector(".chat-output").innerHTML = "";
+};
+
+// 채팅방 접속
+const connectChatRoom = (user2Id, user2Img) => {
+    // 채팅방 초기화
+    document.querySelector(".chat-output").innerHTML = "";
+
+    // 채팅방 데이터 얻기 위한 쿼리
+    const query = new URLSearchParams({
+        user1Id: loginUserId,
+        user2Id: user2Id,
+    }).toString();
+
+    // 채팅방 데이터 요청 rest api
+    fetch(`/chat/roomId?${query}`)
+        .then((res) => res.json())
+        .then((data) => {
+            roomId = data.data; // 서버에서 받은 roomId
+            // 채팅 메시지 목록 가져오기
+            fetch(`/chat/${roomId}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    const messages = data.data;
+                    if (messages) {
+                        messages.forEach((message) => displayMessage(message, user2Img));
+                    }
+                });
+
+            // WebSocket 연결
+            const socket = new SockJS("/ws"); // 서버의 WebSocket endpoint
+            stompClient = Stomp.over(socket); // STOMP 클라이언트
+
+            // 디버그용
+            stompClient.debug = (str) => {
+                console.log("[STOMP DEBUG] ", str);
+            };
+
+            // 서버로부터 메시지를 받으면 처리
+            stompClient.connect({}, () => {
+                // 이전 구독 취소
+                if (subscription) {
+                    subscription.unsubscribe();
+                }
+                // 채팅방 구독
+                subscription = stompClient.subscribe(`/sub/chatroom/${roomId}`, (message) => {
+                    const chat = JSON.parse(message.body); // 메시지를 JSON으로 파싱
+                    displayMessage(chat, user2Img); // UI에 표시
+                });
+            });
+
+            // 모두 정상 연결되면 채팅 입력 버튼에 이벤트 추가
+            if (document.getElementById("chat-sub")) {
+                document.getElementById("chat-sub").removeEventListener("click", subClickEvent);
+                document.getElementById("chat-sub").addEventListener("click", subClickEvent);
+            }
+        });
+};
+
+// 채팅 입력 버튼에 클릭 이벤트로 추가할 함수
+// add, remove하기 위해 함수로 선언
+const subClickEvent = () => {
     if (!roomId || !stompClient) return;
     const messageInput = document.getElementById("messageInput"); // 메시지 입력 필드 선택
     const messageContent = messageInput.value; // 입력된 메시지 내용 가져오기
     sendMessage(messageContent); // 메시지 전송
     messageInput.value = ""; // 메시지 입력 필드를 비우기
-  });
-}
+};
+
+// 메시지 전송
+const sendMessage = (content) => {
+    const message = {
+        roomId: roomId,
+        sender: loginUserId,
+        content: content,
+        sentAt: new Date(),
+    };
+
+    // 서버에 메시지 전송
+    stompClient.send("/pub/message", {}, JSON.stringify(message));
+};
 
 // 메시지 UI에 표시하는 함수
-const displayMessage = (chat) => {
-  console.log(chat);
-  // if (!document.getElementById("chatBox")) return;
+const displayMessage = (chat, user2Img) => {
+    console.log(lastUser);
+    const chatBox = document.querySelector(".chat-output");
+    const messageElement = document.createElement("div");
+    messageElement.classList.add("chat-message");
+    const contentElement = document.createElement("div");
+    contentElement.innerHTML = chat.content.replace(/\n/g, "<br/>");
+    messageElement.appendChild(contentElement);
 
-  // const chatBox = document.getElementById("chatBox");
-  // const messageElement = document.createElement("div");
-  // messageElement.textContent = chat.content;
-  // if (chat.sender === loginUserName) {
-  //   messageElement.classList.add("sender");
-  // }
-  // // 시간 표시용 div 생성
-  // const timeElement = document.createElement("div");
-  // timeElement.classList.add("time");
-  // timeElement.textContent = chat.regDateTime; // chat.dateTime에 날짜/시간 정보가 들어있다고 가정
+    // 시간 표시용 div 생성
+    const timeElement = document.createElement("div");
+    timeElement.classList.add("time");
+    timeElement.textContent = formatToKoreanTime(chat.sentAt);
 
-  // // 메시지와 시간 div를 메시지 div 안에 추가
-  // messageElement.appendChild(timeElement);
-  // chatBox.appendChild(messageElement);
+    if (chat.sender == loginUserId) {
+        messageElement.classList.add("sender");
+        messageElement.prepend(timeElement);
+    } else {
+        messageElement.appendChild(timeElement);
+    }
+    if (lastUser != chat.sender && chat.sender != loginUserId) {
+        const profile = document.createElement("img");
+        profile.src = user2Img;
+        messageElement.prepend(profile);
+    }
+
+    lastUser = chat.sender;
+
+    chatBox.appendChild(messageElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+};
+
+// Date formmat
+const formatToKoreanTime = (datetimeString) => {
+    const date = new Date(datetimeString);
+
+    // 시간 추출
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const isPM = hours >= 12;
+    const period = isPM ? "오후" : "오전";
+
+    // 12시간제로 변환
+    hours = hours % 12 || 12;
+
+    // 두 자리수로 포맷
+    const pad = (n) => String(n).padStart(2, "0");
+
+    return `${period} ${hours}:${pad(minutes)}:${pad(seconds)}`;
 };

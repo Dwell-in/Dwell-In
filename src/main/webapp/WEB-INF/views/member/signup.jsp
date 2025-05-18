@@ -11,7 +11,14 @@
 	<link rel="stylesheet" href="${root }/resources/css/signup.css">
 	<main>
         <p class="hi">SSAFY HOME에 오신걸 환영합니다!!</p>
-        <form action="${root}/api/v1/member/signup" method="post">
+        <form action="${root}/api/v1/member/signup" method="post" enctype="multipart/form-data">
+        	<input type="hidden" name="kakaoId" value=${param.id}>
+        	<div>
+                <div>
+                    <label for="profile">프로필 사진</label>
+                    <input type="file" name="img">
+                </div>
+            </div>
             <div>
                 <div>
                     <label for="email">아이디(이메일)<span class="essential"></span></label>
@@ -57,11 +64,7 @@
                     <span>※ 정확한 연락처 정보를 입력해 주세요.</span>
                 </div>
             </div>
-            <div>
-                <div>
-                    <label for=""></label>
-                </div>
-            </div>
+            
             <div class="btns flex flex-j-c flex-a-c">
                 <button class="btn lb" type="button" id="loginBtn" onclick="location.href='login.jsp'">로그인 이동</button>
                 <button class="btn sb" type="submit" id="signupBtn"  >회원가입</button>

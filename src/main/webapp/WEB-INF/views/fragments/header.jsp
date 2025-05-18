@@ -12,7 +12,7 @@
 
 <!-- jquery CDN -->
 <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=6d77a7fd96523299409a856fca87deb5&libraries=services,clusterer,drawing"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=&libraries=services,clusterer,drawing"></script>
 
 
 <link rel="stylesheet" href="${root }/resources/css/default.css">
@@ -26,7 +26,7 @@
 			<a class="noti" href="${root }/board/notification-list">메뉴2</a>
 			<a class="noti" href="${root }/board/notification-list">메뉴3</a>
 			<a class="noti" href="${root }/board/notification-list">메뉴4</a>
-			<a class="noti" href="${root }/board/notification-list">메뉴5</a>
+			<a class="noti" href="${root }/api/v1/starred">수정중</a>
 		</div>
 		<div>
 			<div class="search-div">
@@ -50,9 +50,7 @@
 					<a href="${root }/member/signup">회원가입</a>
 				</c:if>
 				<c:if test="${!empty SPRING_SECURITY_CONTEXT}">
-					<a href="${root }/api/v1/member/logout">로그아웃</a>
-					<a href="${root }/member/mypage">마이페이지</a>
-					<a href="${root }/#">관리자</a>
+					<a href="${root }/api/v1/member/logout"><img class="profile"/></a>
 				</c:if>
 			</div>
 		</div>

@@ -16,7 +16,7 @@ var latlon = { y: 0, x: 0 };
 // 메인 지도창
 var map;
 // 지도를 생성하는 function입니다.
-function createMap(id, lv, num) {
+function createMap(id, lv) {
   var mapContainer = document.getElementById(id), // 지도를 표시할 div
     mapOption = {
       center: new kakao.maps.LatLng(latlon.y, latlon.x), // 지도의 중심좌표
@@ -27,7 +27,7 @@ function createMap(id, lv, num) {
   map = new kakao.maps.Map(mapContainer, mapOption);
 }
 
-var imageSrc = `${root}/resources/img/marker.png`, // 마커이미지의 주소입니다
+var imageSrc = `/src/assets/img/marker.png`, // 마커이미지의 주소입니다
   imageSize = new kakao.maps.Size(30, 41), // 마커이미지의 크기입니다
   imageOption = { offset: new kakao.maps.Point(15, 29) }; // 마커 이미지 좌표 설정
 
@@ -68,7 +68,7 @@ const createMarker = async (infos) => {
   // infos.forEach( async (info) => {   // forEach는 await를 기다려 주지 않는다.
   for (const info of infos) {
     await createOverlay(info);
-    await displayMarker(marker, map, { y: info.lat, x: info.lon }, `${root}/resources/img/marker.png`);
+    await displayMarker(marker, map, { y: info.lat, x: info.lon }, `/src/assets/img/marker.png`);
     await addEvent(num);
     num++;
   }
@@ -118,13 +118,13 @@ async function addressSearch(address) {
       latlon.x = result[0].x;
       mapinit();
 
-      localSearch("FD6", latlon, marker_FD6, `${root}/resources/img/marker_FD6.png`);
-      localSearch("CE7", latlon, marker_CE7, `${root}/resources/img/marker_CE7.png`);
-      localSearch("HP8", latlon, marker_HP8, `${root}/resources/img/marker_HP8.png`);
-      localSearch("BK9", latlon, marker_BK9, `${root}/resources/img/marker_BK9.png`);
-      localSearch("SC4", latlon, marker_SC4, `${root}/resources/img/marker_SC4.png`);
-      localSearch("CS2", latlon, marker_CS2, `${root}/resources/img/marker_CS2.png`);
-      localSearch("AG2", latlon, marker_CS2, `${root}/resources/img/marker_CS2.png`);
+      localSearch("FD6", latlon, marker_FD6, `/src/assets/img/marker_FD6.png`);
+      localSearch("CE7", latlon, marker_CE7, `/src/assets/img/marker_CE7.png`);
+      localSearch("HP8", latlon, marker_HP8, `/src/assets/img/marker_HP8.png`);
+      localSearch("BK9", latlon, marker_BK9, `/src/assets/img/marker_BK9.png`);
+      localSearch("SC4", latlon, marker_SC4, `/src/assets/img/marker_SC4.png`);
+      localSearch("CS2", latlon, marker_CS2, `/src/assets/img/marker_CS2.png`);
+      localSearch("AG2", latlon, marker_CS2, `/src/assets/img/marker_CS2.png`);
     }
   });
 }

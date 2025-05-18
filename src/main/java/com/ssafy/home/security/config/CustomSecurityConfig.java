@@ -4,15 +4,30 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.ssafy.home.security.controller.RestAccessDeniedHandler;
+import com.ssafy.home.security.controller.RestAuthenticationEntryPoint;
+import com.ssafy.home.security.jwt.JwtAuthenticationFilter;
+import com.ssafy.home.security.jwt.JwtTokenProvider;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-public class CustomSecurityConfig {
+@RequiredArgsConstructor
+public class CustomSecurityConfig {	
+	
+	private final JwtTokenProvider jwtTokenProvider;
+    private final RestAuthenticationEntryPoint authenticationEntryPoint;
+    private final RestAccessDeniedHandler accessDeniedHandler;
 
 	@Bean
 	RoleHierarchy roleHierachy() {
@@ -31,27 +46,28 @@ public class CustomSecurityConfig {
 	SecurityFilterChain normalFileterChain(HttpSecurity http) throws Exception {
 		// 임시로 수업때 사용한 경로 사용
 		// 권한에 따라 접근할 수 있는 경로 지정해줘야 할 듯
-    	http.authorizeHttpRequests(authorize -> authorize
+    	http.cors(cors -> {})
+    			.csrf(t->t.disable())
+    			.authorizeHttpRequests(authorize -> authorize
     			.requestMatchers("/secured/admin/**").hasRole("ADMIN")
     			.requestMatchers("/secured/user/**").hasRole("USER")
-    			.requestMatchers("/auth/**").authenticated()
-    			.anyRequest().permitAll());
-    	// csrf 토큰이 뭔지 아직 잘 몰라서 나중에 해보는 것도 좋을 것 같습니다
-    	http.csrf(t -> t.disable());// csrf 생략
+    			.requestMatchers("/auth","/auth/**").authenticated()
+    			.anyRequest().permitAll())
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler)
+                    );;
     	
-    	http.formLogin(t -> t.loginPage("/member/login")
-    			.loginProcessingUrl("/api/v1/member/login")
-    			.usernameParameter("email")
-    			.failureUrl("/member/login-form?error")
-    			.permitAll() // 모든 사용자가 로그인 페이지에 접근할 수 있도록 하는 설정
-    			);
-    	
-    	http.logout(t -> t.logoutUrl("/api/v1/member/logout")
-    			.invalidateHttpSession(true)
-    			.logoutSuccessUrl("/"));
-//    			.deleteCookies("loginIdCooke")); // 나중에 쿠키 사용할 때 활성화
-//    	로그인 폼에서 <input type="checkbox" name="remember-me"> 하면 로그인 유지하기 기능 사용할 수 있음
-//    	http.rememberMe(t-> t.tokenValiditySeconds(60));
-    	return http.build();
+    	// JWT 인증 필터 추가
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+	
+
+    // AuthenticationManager 등록
+    @Bean
+    AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+        return configuration.getAuthenticationManager();
     }
 }
