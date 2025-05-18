@@ -1,25 +1,24 @@
 name: Fix mvnw permission
 
 on:
-  workflow_dispatch:  # 수동 실행 가능하게 설정
+  workflow_dispatch:
 
 jobs:
   fix-permission:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout repo with write access
         uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Fix mvnw permission and push
         run: |
           chmod +x mvnw
-
-          # Git 설정
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
 
-          # 변경이 있는 경우에만 커밋/푸시
           if ! git diff --quiet; then
             git add mvnw
             git commit -m "fix: make mvnw executable via GitHub Actions"
