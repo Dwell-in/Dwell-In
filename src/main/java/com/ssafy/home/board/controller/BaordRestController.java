@@ -38,7 +38,7 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardList(@ModelAttribute PostSearchCondition condition) {
 	    // 전체 개수 조회
 	    int totalCount = boardService.countPosts(condition);
-
+	    System.out.println(condition);
 	    // 페이지 정보 생성 및 계산
 	    Page page = Page.builder()
 	        .page(condition.getPage())
