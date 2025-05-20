@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.ssafy.home.board.model.dto.Page;
 import com.ssafy.home.board.model.dto.PostSearchCondition;
 import com.ssafy.home.board.model.service.BoardServiceImpl;
 import com.ssafy.home.common.RestControllerHelper;
+import com.ssafy.home.security.dto.CustomUserDetails;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +38,7 @@ public class BaordRestController implements RestControllerHelper {
 	public ResponseEntity<?> boardList(@ModelAttribute PostSearchCondition condition) {
 	    // 전체 개수 조회
 	    int totalCount = boardService.countPosts(condition);
-
+	    System.out.println(condition);
 	    // 페이지 정보 생성 및 계산
 	    Page page = Page.builder()
 	        .page(condition.getPage())
@@ -54,9 +56,11 @@ public class BaordRestController implements RestControllerHelper {
 	}
 	
 	@PostMapping("/board-write")
-	public ResponseEntity<?> boardAdd(@RequestBody BoardDTO board) {
+	public ResponseEntity<?> boardAdd(@RequestBody BoardDTO board, @AuthenticationPrincipal CustomUserDetails userDetails) {
 		try {
+			board.setUserId(userDetails.getMember().getId());
 			board.setRegTime(LocalDateTime.now());
+			System.out.println(board);
 			boardService.addBoard(board);
 		return handleSuccess(board, HttpStatus.CREATED);
 		}catch(RuntimeException e) {

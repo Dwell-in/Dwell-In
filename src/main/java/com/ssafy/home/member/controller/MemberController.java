@@ -133,7 +133,8 @@ public class MemberController implements RestControllerHelper {
 				"id",member.getId()
 				,"email",member.getEmail()
 				,"name",member.getName()
-				,"profileImg",member.getProfileImg()));
+				,"profileImg",member.getProfileImg(),
+				"role",member.getRole()));
 	}
 	
 	

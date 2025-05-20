@@ -7,7 +7,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.test.web.servlet.MockMvc;
 
 import com.ssafy.home.security.config.CustomSecurityConfig;
 import com.ssafy.home.security.controller.SecureController;
@@ -15,8 +14,9 @@ import com.ssafy.home.security.controller.SecureController;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@WebMvcTest(value = SecureController.class) // webMvcTest는 지정된 컨트롤러 빈만 로딩. 서비스 이런거 x
-@Import(CustomSecurityConfig.class) // 필요한 config만 로딩
+@Import({ CustomSecurityConfig.class, MockSecurityConfig.class })  // webMvcTest는 지정된 컨트롤러 빈만 로딩. 서비스 이런거 x
+//@SpringBootTest
+@WebMvcTest(SecureController.class)
 public class UserDetailsServiceTest {
 	
     @Autowired
@@ -25,8 +25,8 @@ public class UserDetailsServiceTest {
     @Autowired
     PasswordEncoder passEncoder;
 
-    @Autowired
-    MockMvc mockMvc;
+//    @Autowired
+//    MockMvc mockMvc;
     
     @Test
     void passwordEncoderTest() {

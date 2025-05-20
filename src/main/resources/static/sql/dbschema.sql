@@ -1,4 +1,3 @@
--- 더 이상 사용하지 않는 테이블
 drop table if exists `ssafyhome`.`noticeboard`;
 
 drop table if exists `ssafyhome`.`comment`;
@@ -11,7 +10,7 @@ drop table if exists `ssafyhome`.`star`;
 drop table if exists `ssafyhome`.`member`;
 
 -- 매물별 조회수 컬럼 추가 
--- alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
+alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT,

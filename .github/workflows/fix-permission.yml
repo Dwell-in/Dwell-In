@@ -1,0 +1,28 @@
+name: Fix mvnw permission
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-permission:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo with write access
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fix mvnw permission and push
+        run: |
+          chmod +x mvnw
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+
+          if ! git diff --quiet; then
+            git add mvnw
+            git commit -m "fix: make mvnw executable via GitHub Actions"
+            git push
+          else
+            echo "No permission changes to commit"
+          fi

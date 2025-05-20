@@ -61,8 +61,6 @@ public class HouseController implements RestControllerHelper{
 	private ResponseEntity<?> getHousesInBounds(double swLat, double swLng, double neLat, double neLng) {
 	    try {
 	        List<HouseinfoDTO> houses = hService.findInBounds(swLat, swLng, neLat, neLng);
-	        System.out.println(houses.size());
-	        System.out.println(houses);
 	        return handleSuccess(houses);
 	    } catch (Exception e) {
 	        e.printStackTrace();
