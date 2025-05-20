@@ -20,7 +20,7 @@ public class StarredHouseInfoDTO {
 	private String sidoName;		// 시 이름
 	private String gugunName;		// 구 이름
 	private String dongName;		// 동 이름
-	private String roadNm;
+	private String roadNm;			// 길 이름
 	private String roadNmBonbun;
 	private int viewCount;			// 매물 조회수
 	
