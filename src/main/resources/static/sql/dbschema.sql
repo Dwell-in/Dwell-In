@@ -8,9 +8,10 @@ drop table if exists `ssafyhome`.`chat_room`;
 drop table if exists `ssafyhome`.`pattern`;
 drop table if exists `ssafyhome`.`star`;
 drop table if exists `ssafyhome`.`member`;
+drop table if exists `ssafyhome`.`email_verification_token`;
 
 -- 매물별 조회수 컬럼 추가 
-alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
+-- alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -43,6 +44,12 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`post_category`(
     PRIMARY KEY (`category_id`)
     )
 ENGINE = InnoDB;
+insert into post_category
+values
+	(0, 'notice'),
+    (1, '커뮤니티'),
+    (2, 'FAQ'),
+    (3, '1:1 문의');
 
 -- -----------------------------------------------------
 -- Table `ssafyhome`.`board`
@@ -52,7 +59,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`board` (
   `board_id` INT NOT NULL auto_increment,
   `category_id` int NOT NULL, 
   `title` VARCHAR(45) NOT NULL,
-  `content` VARCHAR(200) NOT NULL,
+  `content` VARCHAR(2000) NOT NULL,
   `user_id` INT NOT NULL,
   `view_count` INT DEFAULT 0,
   `like` INT DEFAULT 0,
@@ -121,7 +128,7 @@ ENGINE = InnoDB;
 
 -- ---------------------------------------------
 -- UUID 토큰
-CREATE TABLE `ssafyhome`.`email_verification_token` (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`email_verification_token` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     email VARCHAR(255) NOT NULL,
     token VARCHAR(255) NOT NULL,
