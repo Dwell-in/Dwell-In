@@ -51,7 +51,7 @@ public class StarredController implements RestControllerHelper {
 	@GetMapping
 	public ResponseEntity<?> starredList(@AuthenticationPrincipal CustomUserDetails member){
 		try {
-			System.out.println("관심지역리스트 도착");
+		
 			int memberId = member.getMember().getId();
 			StarredDTO starred = StarredDTO.builder().userId(memberId).build();
 			List<StarredHouseInfoDTO> starredList = sService.findStarred(starred);

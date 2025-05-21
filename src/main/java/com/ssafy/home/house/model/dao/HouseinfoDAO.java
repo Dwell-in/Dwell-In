@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.ssafy.home.house.model.dto.HouseSearchCondition;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
+import com.ssafy.home.house.model.dto.HouserdealDTO;
 
 @Mapper
 public interface HouseinfoDAO {
@@ -15,6 +16,5 @@ public interface HouseinfoDAO {
 	int selectViewCount(String aptSeq);
 	List<HouseinfoDTO> selectInBounds(double swLat, double swLng,double neLat, double neLng);
 	List<HouseinfoDTO> selectInfoListByCondition(HouseSearchCondition condition);
-
 }
 
