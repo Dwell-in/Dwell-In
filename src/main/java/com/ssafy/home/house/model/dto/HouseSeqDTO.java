@@ -5,8 +5,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CompareSeqNmRequestDTO {
+@AllArgsConstructor
+public class HouseSeqDTO {
+
 	String aptSeq;
 }
