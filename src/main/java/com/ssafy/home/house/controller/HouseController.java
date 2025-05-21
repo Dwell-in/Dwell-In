@@ -11,10 +11,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.home.common.RestControllerHelper;
+import com.ssafy.home.house.model.dto.HouseSearchCondition;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
 import com.ssafy.home.house.model.service.HouseService;
 import com.ssafy.home.house.util.HouseCookieHandler;
@@ -50,6 +52,17 @@ public class HouseController implements RestControllerHelper{
 	private ResponseEntity<?> houseList(@ModelAttribute DongDTO dongDTO){
 		try {
             List<HouseinfoDTO> list = hService.findInfoList(dongDTO);
+            return handleSuccess(list);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return handleFail(e);
+        }
+	}
+	
+	@GetMapping("/condition")
+	private ResponseEntity<?> houseList(@ModelAttribute HouseSearchCondition condition){
+		try {
+            List<HouseinfoDTO> list = hService.findInfoListByCondition(condition);
             return handleSuccess(list);
         } catch (RuntimeException e) {
             e.printStackTrace();
