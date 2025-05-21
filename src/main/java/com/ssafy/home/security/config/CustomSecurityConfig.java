@@ -28,6 +28,7 @@ public class CustomSecurityConfig {
 	private final JwtTokenProvider jwtTokenProvider;
     private final RestAuthenticationEntryPoint authenticationEntryPoint;
     private final RestAccessDeniedHandler accessDeniedHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
 	@Bean
 	RoleHierarchy roleHierachy() {
@@ -59,7 +60,7 @@ public class CustomSecurityConfig {
                     );;
     	
     	// JWT 인증 필터 추가
-        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         
         return http.build();
     }

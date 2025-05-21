@@ -1,12 +1,5 @@
 use ssafyhome;
 
-DROP TABLE IF EXISTS property_safety_mapping;
-DROP TABLE IF EXISTS safety_feature;
-DROP TABLE IF EXISTS property_option_mapping;
-DROP TABLE IF EXISTS property_option;
-DROP TABLE IF EXISTS property_price;
-DROP TABLE IF EXISTS property;
-
 CREATE TABLE IF NOT EXISTS property (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     apt_seq VARCHAR(20) NOT NULL,             

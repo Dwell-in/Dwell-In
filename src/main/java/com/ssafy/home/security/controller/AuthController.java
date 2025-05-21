@@ -60,7 +60,7 @@ public class AuthController implements RestControllerHelper {
             mService.modifyRefreshToken(dto.getEmail(), refreshToken);
 
             return ResponseEntity.ok(Map.of(
-                "accessToken", accessToken,
+                "token", accessToken,
                 "refreshToken", refreshToken
             ));
 
