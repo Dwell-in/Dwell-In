@@ -27,10 +27,13 @@ CREATE TABLE IF NOT EXISTS property (
     description TEXT,
     view_count INT DEFAULT 0,
     registered_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    picture MEDIUMBLOB DEFAULT NULL,
     
     FOREIGN KEY (apt_seq) REFERENCES houseinfos(apt_seq),
     FOREIGN KEY (member_id) REFERENCES member(id)
 );
+-- ALTER TABLE `ssafyhome`.`property`
+-- ADD COLUMN `picture` MEDIUMBLOB DEFAULT NULL;
 
 CREATE TABLE IF NOT EXISTS property_price (
     property_id BIGINT PRIMARY KEY,

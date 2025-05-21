@@ -64,6 +64,11 @@ public class MemberServiceImpl implements MemberService {
 		}
 		return targets;
 	}
+	
+	@Override
+	public void modifyRefreshToken(String email, String refreshToken) {
+	    dao.updateRefreshToken(email, refreshToken);
+	}
 
 	
 }
