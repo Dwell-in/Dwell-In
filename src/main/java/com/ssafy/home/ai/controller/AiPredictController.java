@@ -33,6 +33,7 @@ public class AiPredictController implements RestControllerHelper {
 		HouseinfoDTO houseInfo = hService.findInfo(aptSeq.getAptSeq());
 		String prompt = aPrompt.buildPricePredictPrompt(houseInfo);
 		Object result = aService.simpleGenration(prompt);
+		System.out.println(result);
 		return handleSuccess(Map.of("message",result));
 	}
 }
