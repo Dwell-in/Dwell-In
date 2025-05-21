@@ -13,6 +13,9 @@
 
 	<sql id="propertyConditions">
 		<where>
+			<if test="aptSeq != null and aptSeq != ''">
+				AND h.apt_seq = #{aptSeq}
+			</if>		
 			<if test="aptName != null and aptName != ''">
 				AND h.apt_nm LIKE CONCAT('%', #{aptName}, '%')
 			</if>

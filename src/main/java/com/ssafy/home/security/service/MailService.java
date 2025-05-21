@@ -18,7 +18,7 @@ public class MailService {
 		try {
 
 			String subject = "[Dwell-In] 이메일 인증 요청";
-			String frontUrl = "http://localhost:8080";
+			String frontUrl = "http://localhost:8080/#";
 			String verificationUrl = frontUrl + "/email/verify?token=" + token;
 
 			String htmlContent = """
