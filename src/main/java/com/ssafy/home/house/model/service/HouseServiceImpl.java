@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.home.house.model.dao.HouseinfoDAO;
+import com.ssafy.home.house.model.dto.HouseSearchCondition;
 import com.ssafy.home.house.model.dto.CompareSeqNmRequestDTO;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
 import com.ssafy.home.house.model.dto.HouserdealDTO;
@@ -43,6 +44,11 @@ public class HouseServiceImpl implements HouseService {
         return houseinfoDAO.selectInBounds(swLat, swLng, neLat, neLng);
     }
 	
+    @Override
+    public List<HouseinfoDTO> findInfoListByCondition(HouseSearchCondition condition) {
+    	return houseinfoDAO.selectInfoListByCondition(condition);
+    }
+    
 	@Override
 	@Transactional
 	public int modifyViewCount(String aptSeq) {
@@ -55,6 +61,7 @@ public class HouseServiceImpl implements HouseService {
 		return houseinfoDAO.selectViewCount(aptSeq);
 	}
 
+
 	@Override
 	public List<HouseinfoDTO> findInfoList(List<CompareSeqNmRequestDTO> aptList) {
 		// TODO Auto-generated method stub
@@ -63,7 +70,5 @@ public class HouseServiceImpl implements HouseService {
                 .filter(Objects::nonNull) // 혹시 null 방지
                 .collect(Collectors.toList());
 	}
-
-
 
 }
