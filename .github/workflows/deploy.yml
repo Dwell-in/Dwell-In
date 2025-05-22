@@ -1,69 +1,66 @@
 name: Deploy to EC2
 
 on:
-    push:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
-    build-and-deploy:
-        runs-on: ubuntu-latest
+  build-and-deploy:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout source code
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
 
-            - name: Set up Java
-              uses: actions/setup-java@v3
-              with:
-                  java-version: "17"
-                  distribution: "temurin"
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-            - name: Build with Maven
-              run: ./mvnw clean package -DskipTests
+      - name: Build with Maven
+        run: |
+          ./mvnw clean package -DskipTests
 
-            - name: Debug build artifacts
-              run: |
-                  echo "== JAR files =="
-                  ls -lh target/*.jar || echo "No JARs found"
-                  echo "== SQL files =="
-                  ls -lh src/main/resources/static/sql/*.sql || echo "No SQLs found"
+      - name: Debug Check build artifacts
+        run: |
+          echo "== JAR files =="
+          ls -lh target/*.jar || echo "No JARs found"
+          echo "== SQL files =="
+          ls -lh src/main/resources/static/sql/*.sql || echo "No SQLs found"
 
-            - name: Copy JAR file to EC2
-              uses: appleboy/scp-action@v0.1.4
-              with:
-                  host: ${{ secrets.EC2_HOST }}
-                  username: ${{ secrets.EC2_USER }}
-                  key: ${{ secrets.EC2_KEY }}
-                  source: "target/*.jar"
-                  target: /home/ubuntu/app
+      - name: Copy artifacts to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: |
+            target/*.jar
+            src/main/resources/static/sql/*.sql
+          target: /home/ubuntu/app
 
-            - name: Copy SQL files to EC2
-              uses: appleboy/scp-action@v0.1.4
-              with:
-                  host: ${{ secrets.EC2_HOST }}
-                  username: ${{ secrets.EC2_USER }}
-                  key: ${{ secrets.EC2_KEY }}
-                  source: "src/main/resources/static/sql/*.sql"
-                  target: /home/ubuntu/app
+      - name: Deploy and restart on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script_stop: false
+          script: |
+            cd /home/ubuntu/app
 
-            - name: Deploy and restart on EC2
-              uses: appleboy/ssh-action@v1.0.0
-              with:
-                  host: ${{ secrets.EC2_HOST }}
-                  username: ${{ secrets.EC2_USER }}
-                  key: ${{ secrets.EC2_KEY }}
-                  script: |
-                      cd /home/ubuntu/app
+            echo "서버 중지"
+            pkill -f 'jar' || true
 
-                      echo "서버 중지"
-                      pkill -f 'jar' || true
+            echo "SQL 실행"
+            for file in *.sql; do
+              echo "Importing $file"
+              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
+            done
 
-                      echo "SQL 실행"
-                      for file in *.sql; do
-                        echo "Importing $file"
-                        mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
-                      done
-
-                      echo "서버 재시작"
-                      nohup java -jar *.jar > log.txt 2>&1 &
+            echo "서버 재시작"
+            nohup java -jar *.jar > log.txt 2>&1 < /dev/null &
+            disown
