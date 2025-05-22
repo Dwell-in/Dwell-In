@@ -49,15 +49,15 @@ jobs:
           source: "src/main/resources/static/sql/*.sql"
           target: /home/ubuntu/app
 
-      - name: Deploy and restart on EC2
+      - name: Create start.sh script on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          script_stop: false
           script: |
-            cd /home/ubuntu/app
+            cat << 'EOF' > /home/ubuntu/app/start.sh
+            #!/bin/bash
 
             echo "서버 중지"
             pkill -f 'jar' || true
@@ -65,9 +65,22 @@ jobs:
 
             echo "SQL 실행"
             for file in *.sql; do
-              echo "Importing $file"
-              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
+              echo "Importing \$file"
+              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "\$file"
             done
 
             echo "서버 재시작"
-            setsid nohup java -jar *.jar > log.txt 2>&1 < /dev/null &
+            nohup java -jar *.jar > log.txt 2>&1 < /dev/null &
+            EOF
+
+            chmod +x /home/ubuntu/app/start.sh
+
+      - name: Run start.sh on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd /home/ubuntu/app
+            ./start.sh
