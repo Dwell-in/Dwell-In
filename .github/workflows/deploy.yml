@@ -23,7 +23,7 @@ jobs:
         run: |
           ./mvnw clean package -DskipTests
 
-      - name: Debug: Check build artifacts
+      - name: Debug Check build artifacts
         run: |
           echo "== JAR files =="
           ls -lh target/*.jar || echo "No JARs found"
