@@ -70,9 +70,20 @@ jobs:
             sleep 2
 
             echo "SQL 실행"
-            for file in /home/ubuntu/app/*.sql; do
+
+            FILES=(
+              "dbschema(1).sql"
+              "sale_schema(2).sql"
+              "member_dump(3).sql"
+              "board_dump(4).sql"
+              "comment_dump(5).sql"
+              "property_dump(6).sql"
+              "property_etc_dump(7).sql"
+            )
+
+            for file in "\${FILES[@]}"; do
               echo "Importing \$file"
-              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "\$file"
+              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "/home/ubuntu/app/\$file"
               if [ \$? -ne 0 ]; then
                 echo " Failed to import \$file"
               fi
