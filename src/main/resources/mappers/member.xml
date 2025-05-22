@@ -62,5 +62,11 @@
 		from chat_room
 		where user1_id = #{id};
     </select>
+    
+    <update id="updateRefreshToken">
+	    UPDATE member
+	    SET refresh_token = #{refreshToken}
+	    WHERE email = #{email}
+	</update>
 
 </mapper>

@@ -44,29 +44,32 @@ public class AuthController implements RestControllerHelper {
     private String kakaoClientId;
 
     @PostMapping("/login")
-    // json 요청이면 @RequestBody, form이면 @ModelAttribute
     public ResponseEntity<?> login(@RequestBody LoginRequest dto) {
         try {
-        	// 인증 시도
             Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
             );
 
-            // 토큰 생성
-            String token = jwtTokenProvider.createToken(
+            String accessToken = jwtTokenProvider.createToken(
                 dto.getEmail(),
                 authentication.getAuthorities()
             );
+            String refreshToken = jwtTokenProvider.createRefreshToken(dto.getEmail());
 
-            // 응답
-            return ResponseEntity.ok(Map.of("token", token));
+            // 새 로그인 시 기존 토큰 무효화 (덮어쓰기)
+            mService.modifyRefreshToken(dto.getEmail(), refreshToken);
+
+            return ResponseEntity.ok(Map.of(
+                "token", accessToken,
+                "refreshToken", refreshToken
+            ));
 
         } catch (AuthenticationException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("error", "Invalid email or password"));
         }
     }
-
+    
 	@GetMapping("/kakao/login")
 	public ResponseEntity<?> kakaoLogin(@RequestParam String code) {
 	    String accessToken = kService.requestAccessToken(code);

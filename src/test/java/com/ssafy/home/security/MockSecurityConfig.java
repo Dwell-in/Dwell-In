@@ -5,6 +5,7 @@ import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
+import com.ssafy.home.member.model.service.MemberService;
 import com.ssafy.home.security.controller.RestAccessDeniedHandler;
 import com.ssafy.home.security.controller.RestAuthenticationEntryPoint;
 import com.ssafy.home.security.jwt.JwtTokenProvider;
@@ -30,5 +31,10 @@ public class MockSecurityConfig {
     @Bean
     UserDetailsService userDetailsService() {
         return Mockito.mock(UserDetailsService.class);
+    }
+    
+    @Bean
+    MemberService memberService() {
+    	return Mockito.mock(MemberService.class);
     }
 }
