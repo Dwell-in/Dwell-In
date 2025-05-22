@@ -18,7 +18,7 @@ drop table if exists `ssafyhome`.`email_verification_token`;
 drop table if exists `ssafyhome`.`member`;
 
 -- 매물별 조회수 컬럼 추가 
-alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
+-- alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `id` INT NOT NULL AUTO_INCREMENT,

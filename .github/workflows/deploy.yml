@@ -24,7 +24,7 @@ jobs:
         run: |
           ./mvnw clean package -DskipTests
 
-      - name: Debug - Check build artifacts
+      - name: Debug - Check included files
         run: |
           echo "== JAR files =="
           ls -lh target/*.jar || echo "No JARs found"
@@ -44,7 +44,7 @@ jobs:
         env:
           EC2_KEY: ${{ secrets.EC2_KEY }}
 
-      - name: Extract bundle on EC2
+      - name: Extract bundle on EC2 (keep archive)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -53,9 +53,9 @@ jobs:
           script: |
             cd /home/ubuntu/app
             tar -xzf deploy_bundle.tar.gz
-            rm deploy_bundle.tar.gz
+            echo " Archive kept at: /home/ubuntu/app/deploy_bundle.tar.gz"
 
-      - name: Create start.sh script on EC2
+      - name: Create start.sh script on EC2 (ordered SQL execution)
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
