@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -24,7 +23,7 @@ jobs:
         run: |
           ./mvnw clean package -DskipTests
 
-      - name: Debug Check build artifacts
+      - name: Debug: Check build artifacts
         run: |
           echo "== JAR files =="
           ls -lh target/*.jar || echo "No JARs found"
@@ -48,7 +47,6 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          script_stop: false
           script: |
             cd /home/ubuntu/app
 
