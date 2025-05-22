@@ -31,17 +31,29 @@ jobs:
           echo "== SQL files =="
           ls -lh src/main/resources/static/sql/*.sql || echo "No SQLs found"
 
-      - name: Copy JAR & SQL files to EC2 manually
+      - name: Compress and transfer to EC2
         run: |
           echo "$EC2_KEY" > ec2_key.pem
           chmod 600 ec2_key.pem
 
+          tar -czf deploy_bundle.tar.gz target/*.jar src/main/resources/static/sql/*.sql
+
           scp -i ec2_key.pem -o StrictHostKeyChecking=no \
-            target/*.jar \
-            src/main/resources/static/sql/*.sql \
+            deploy_bundle.tar.gz \
             ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
         env:
           EC2_KEY: ${{ secrets.EC2_KEY }}
+
+      - name: Extract bundle on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd /home/ubuntu/app
+            tar -xzf deploy_bundle.tar.gz
+            rm deploy_bundle.tar.gz
 
       - name: Create start.sh script on EC2
         uses: appleboy/ssh-action@v1.0.0
@@ -68,7 +80,7 @@ jobs:
 
             echo "서버 재시작"
             export SPRING_PROFILES_ACTIVE=prod
-            nohup java -jar /home/ubuntu/app/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
+            nohup java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
             EOF
 
             chmod +x /home/ubuntu/app/start.sh
