@@ -24,7 +24,7 @@ jobs:
         run: |
           ./mvnw clean package -DskipTests
 
-      - name: Debug Check build artifacts
+      - name: Debug - Check build artifacts
         run: |
           echo "== JAR files =="
           ls -lh target/*.jar || echo "No JARs found"
@@ -61,6 +61,7 @@ jobs:
 
             echo "서버 중지"
             pkill -f 'jar' || true
+            sleep 2
 
             echo "SQL 실행"
             for file in *.sql; do
@@ -69,5 +70,4 @@ jobs:
             done
 
             echo "서버 재시작"
-            nohup java -jar *.jar > log.txt 2>&1 < /dev/null &
-            disown
+            setsid nohup java -jar *.jar > log.txt 2>&1 < /dev/null &
