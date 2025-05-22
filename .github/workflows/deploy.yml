@@ -3,7 +3,7 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # 혹은 배포 브랜치
+      - main
 
 jobs:
   build-and-deploy:
@@ -22,6 +22,11 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
+      - name: Debug: Check built files
+        run: |
+          ls -R target
+          ls -R src/main/resources/static/sql
+
       - name: Copy JAR and SQL files to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
@@ -30,7 +35,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           source: |
             target/*.jar
-            sql/*.sql
+            src/main/resources/static/sql/*.sql
           target: /home/ubuntu/app
 
       - name: Deploy and restart on EC2
@@ -46,7 +51,7 @@ jobs:
             pkill -f 'jar' || true
 
             echo " SQL 실행"
-            for file in sql/*.sql; do
+            for file in src/main/resources/static/sql/*.sql; do
               echo "Importing $file"
               mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
             done
