@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private final long validityInMilliseconds = 60 * 60 * 1000; // 1시간
+    private final long validityInMilliseconds = 15 * 60 * 1000; // 15분
 
     private final CustomUserDetailsService userDetailsService;
 
@@ -49,6 +49,20 @@ public class JwtTokenProvider {
 
         Date now = new Date();
         Date expiry = new Date(now.getTime() + validityInMilliseconds);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setIssuedAt(now)
+                .setExpiration(expiry)
+                .signWith(secretKey, SignatureAlgorithm.HS256)
+                .compact();
+    }
+    
+    public String createRefreshToken(String username) {
+        Date now = new Date();
+        Date expiry = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000); // 7일
+
+        Claims claims = Jwts.claims().setSubject(username);
 
         return Jwts.builder()
                 .setClaims(claims)

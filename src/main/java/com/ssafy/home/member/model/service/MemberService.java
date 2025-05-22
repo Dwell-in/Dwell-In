@@ -21,6 +21,7 @@ public interface MemberService {
 
     int removeMember(String email);
     
+    void modifyRefreshToken(String email, String refreshToken);
     
     List<Map<String, ?>> findChatTargetList(int id);
 }
