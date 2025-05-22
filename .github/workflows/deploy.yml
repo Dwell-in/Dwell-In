@@ -31,23 +31,17 @@ jobs:
           echo "== SQL files =="
           ls -lh src/main/resources/static/sql/*.sql || echo "No SQLs found"
 
-      - name: Copy JAR file to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          source: "target/*.jar"
-          target: /home/ubuntu/app
+      - name: Copy JAR & SQL files to EC2 manually
+        run: |
+          echo "$EC2_KEY" > ec2_key.pem
+          chmod 600 ec2_key.pem
 
-      - name: Copy SQL files to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          source: "src/main/resources/static/sql/*.sql"
-          target: /home/ubuntu/app
+          scp -i ec2_key.pem -o StrictHostKeyChecking=no \
+            target/*.jar \
+            src/main/resources/static/sql/*.sql \
+            ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:/home/ubuntu/app/
+        env:
+          EC2_KEY: ${{ secrets.EC2_KEY }}
 
       - name: Create start.sh script on EC2
         uses: appleboy/ssh-action@v1.0.0
@@ -64,14 +58,17 @@ jobs:
             sleep 2
 
             echo "SQL 실행"
-            for file in *.sql; do
+            for file in /home/ubuntu/app/*.sql; do
               echo "Importing \$file"
               mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "\$file"
+              if [ \$? -ne 0 ]; then
+                echo " Failed to import \$file"
+              fi
             done
 
             echo "서버 재시작"
             export SPRING_PROFILES_ACTIVE=prod
-            nohup java -jar target/*.jar > log.txt 2>&1 < /dev/null &
+            nohup java -jar /home/ubuntu/app/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
             EOF
 
             chmod +x /home/ubuntu/app/start.sh
@@ -83,5 +80,4 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           script: |
-            cd /home/ubuntu/app
-            ./start.sh
+            /home/ubuntu/app/start.sh
