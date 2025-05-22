@@ -46,7 +46,7 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
           source: "src/main/resources/static/sql/*.sql"
-          target: /home/ubuntu/app
+          target: /home/ubuntu/app/src/main/resources/static/sql
 
       - name: Create start.sh script on EC2
         uses: appleboy/ssh-action@v1.0.0
@@ -57,12 +57,10 @@ jobs:
           script: |
             cat << 'EOF' > /home/ubuntu/app/start.sh
             #!/bin/bash
+
             echo "서버 중지"
             pkill -f 'jar' || true
             sleep 2
-
-            echo "기존 SQL 제거"
-            rm -f *.sql
 
             echo "SQL 실행"
             FILES=(
@@ -75,9 +73,11 @@ jobs:
               "property_etc_dump(7).sql"
             )
 
+            SQL_DIR="/home/ubuntu/app/src/main/resources/static/sql"
+
             for file in "${FILES[@]}"; do
               echo "Importing $file"
-              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
+              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
               if [ $? -ne 0 ]; then
                 echo "❌ Failed to import $file"
               fi
@@ -85,7 +85,7 @@ jobs:
 
             echo "서버 재시작"
             export SPRING_PROFILES_ACTIVE=prod
-            nohup java -jar target/*.jar > log.txt 2>&1 < /dev/null &
+            nohup java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
             EOF
 
             chmod +x /home/ubuntu/app/start.sh
