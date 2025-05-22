@@ -22,11 +22,6 @@ jobs:
       - name: Build with Maven
         run: mvn clean package -DskipTests
 
-      - name: Debug: Check built files
-        run: |
-          ls -R target
-          ls -R src/main/resources/static/sql
-
       - name: Copy JAR and SQL files to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
