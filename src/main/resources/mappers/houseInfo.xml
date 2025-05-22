@@ -25,15 +25,19 @@
 	</sql>
 
 	<resultMap type="HouseinfoDTO" id="HouseinfoMap">
-		<id column="apt_seq" property="aptSeq"/>
-		<result column="road_nm" property="roadNm"/>
-		<result column="road_nm_bonbun" property="roadNmBonbun"/>
-		<result column="road_nm_bubun" property="roadNmBubun"/>
-		<result column="apt_nm" property="aptNm"/>
-		<result column="build_year" property="buildYear"/>
-		<result column="latitude" property="lat"/>
-		<result column="longitude" property="lon"/>
-		<result column="view_count" property="viewCount"/>
+		<id column="apt_seq" property="aptSeq" />
+		<result column="road_nm" property="roadNm" />
+		<result column="road_nm_bonbun" property="roadNmBonbun" />
+		<result column="road_nm_bubun" property="roadNmBubun" />
+		<result column="jibun" property="jibun" />
+		<result column="apt_nm" property="aptNm" />
+		<result column="build_year" property="buildYear" />
+		<result column="latitude" property="lat" />
+		<result column="longitude" property="lon" />
+		<result column="view_count" property="viewCount" />
+		<result column="sido_name" property="sidoName" />
+		<result column="gugun_name" property="gugunName" />
+		<result column="dong_name" property="dongName" />
 	</resultMap>
 
 	<resultMap type="HouseinfoDTO" id="InfoDealMap"
@@ -57,9 +61,11 @@
 		<include refid="housedealColumns" />
 		FROM houseinfos i
 		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
-		WHERE i.apt_seq = #{aptSeq}
+		WHERE
+		i.apt_seq = #{aptSeq}
 		ORDER BY d.deal_year ASC,
-		d.deal_month ASC, d.deal_day
+		d.deal_month ASC,
+		d.deal_day
 	</select>
 	<select id="selectInfoList" resultMap="InfoDealMap">
 		SELECT
@@ -92,6 +98,39 @@
 		LEFT JOIN housedeals d ON i.apt_seq = d.apt_seq
 		ORDER BY
 		i.view_count DESC, d.deal_year ASC, d.deal_month ASC, d.deal_day
+	</select>
+
+	<select id="selectInfoListByCondition" resultMap="HouseinfoMap">
+		SELECT *
+		FROM houseinfos h
+		JOIN dongcodes d ON h.sgg_cd = SUBSTRING(d.dong_code, 1, 5)
+		AND h.umd_cd = SUBSTRING(d.dong_code, 6, 5)
+		<where>
+			<if test="sidoName != null and sidoName != ''">
+				d.sido_name = #{sidoName}
+			</if>
+			<if test="gugunName != null and gugunName != ''">
+				AND d.gugun_name = #{gugunName}
+			</if>
+			<if test="dongName != null and dongName != ''">
+				AND d.dong_name = #{dongName}
+			</if>
+			<if test="jibun != null and jibun != ''">
+				AND h.jibun = #{jibun}
+			</if>
+			<if test="roadNm != null and roadNm != ''">
+				AND h.road_nm = #{roadNm}
+			</if>
+			<if test="roadNmBonbun != null and roadNmBonbun != ''">
+				AND h.road_nm_bonbun = #{roadNmBonbun}
+			</if>
+			<if test="roadNmBubun != null and roadNmBubun != ''">
+				AND h.road_nm_bubun = #{roadNmBubun}
+			</if>
+			<if test="aptNm != null and aptNm != ''">
+				AND h.apt_nm LIKE CONCAT('%', #{aptNm}, '%')
+			</if>
+		</where>
 	</select>
 
 	<update id="updateViewCount">

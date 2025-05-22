@@ -9,6 +9,7 @@
 		<id property="commentId" column="comment_id" />
 		<result property="boardId" column="board_id" />
 		<result property="userId" column="user_id" />
+		<result property="userName" column="name" />
 		<result property="content" column="content" />
 		<result property="like" column="like" />
 		<result property="dislike" column="dislike" />
@@ -22,7 +23,8 @@
 	</insert>
 
 	<select id="selectComment" resultMap="commentMap">
-		SELECT * FROM comment
+		SELECT * FROM comment c
+		JOIN member m on c.user_id=m.id  
 		WHERE board_id = #{boardId}
 		ORDER BY reg_date ASC
 	</select>

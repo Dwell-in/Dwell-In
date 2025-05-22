@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 public class PropertySearchCondition {
 
     // 기본 검색 조건
+	private String aptSeq;
     private String aptName;             // 아파트 이름 (LIKE)
     private String type;                // 매매 / 전세 / 월세
     private String direction;           // 방향 (남, 북 등)

@@ -30,8 +30,8 @@ public class HouseCookieHandler implements CookieHelper{
 		list.remove(aptSeq); // 리스트에 현재 아파트가 있으면 삭제
 		list.add(0, aptSeq); // 맨 앞에 현재 아파트 번호 추가
 		// 최대 5개만 유지
-		if (list.size() > 5) {
-			list = list.subList(0, 5);
+		if (list.size() > 10) {
+			list = list.subList(0, 10);
 		}
 		// 다시 String 타입으로 변경해서 쿠키 저장
 		String value = URLEncoder.encode(String.join(",", list), StandardCharsets.UTF_8);

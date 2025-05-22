@@ -1,12 +1,17 @@
 package com.ssafy.home.house.model.service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.home.house.model.dao.HouseinfoDAO;
+import com.ssafy.home.house.model.dto.HouseSearchCondition;
+import com.ssafy.home.house.model.dto.CompareSeqNmRequestDTO;
 import com.ssafy.home.house.model.dto.HouseinfoDTO;
+import com.ssafy.home.house.model.dto.HouserdealDTO;
 import com.ssafy.home.search.model.dao.DongDAO;
 import com.ssafy.home.search.model.dto.DongDTO;
 
@@ -39,6 +44,11 @@ public class HouseServiceImpl implements HouseService {
         return houseinfoDAO.selectInBounds(swLat, swLng, neLat, neLng);
     }
 	
+    @Override
+    public List<HouseinfoDTO> findInfoListByCondition(HouseSearchCondition condition) {
+    	return houseinfoDAO.selectInfoListByCondition(condition);
+    }
+    
 	@Override
 	@Transactional
 	public int modifyViewCount(String aptSeq) {
@@ -51,5 +61,14 @@ public class HouseServiceImpl implements HouseService {
 		return houseinfoDAO.selectViewCount(aptSeq);
 	}
 
+
+	@Override
+	public List<HouseinfoDTO> findInfoList(List<CompareSeqNmRequestDTO> aptList) {
+		// TODO Auto-generated method stub
+		return aptList.stream()
+                .map(dto -> houseinfoDAO.selectInfo(dto.getAptSeq()))
+                .filter(Objects::nonNull) // 혹시 null 방지
+                .collect(Collectors.toList());
+	}
 
 }
