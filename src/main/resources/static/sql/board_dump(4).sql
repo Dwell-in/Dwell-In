@@ -1,4 +1,4 @@
-INSERT INTO board (category_id, title, content, user_id, view_count, `like`, dislike, reg_date) VALUES
+INSERT INTO `ssafyhome`.`board` (category_id, title, content, user_id, view_count, `like`, dislike, reg_date) VALUES
 ('0', '[중요] 서비스 점검 안내', '안녕하세요, Dwell-IN입니다.
 
 서비스 점검 안내 관련하여 안내드립니다. 보다 안정적인 서비스 제공을 위해 아래와 같은 내용으로 진행될 예정입니다.

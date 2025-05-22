@@ -1,6 +1,4 @@
-use ssafyhome;
-
-CREATE TABLE IF NOT EXISTS property (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`property` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     apt_seq VARCHAR(20) NOT NULL,             
     member_id INT NOT NULL,                
@@ -28,7 +26,7 @@ CREATE TABLE IF NOT EXISTS property (
 -- ALTER TABLE `ssafyhome`.`property`
 -- ADD COLUMN `picture` MEDIUMBLOB DEFAULT NULL;
 
-CREATE TABLE IF NOT EXISTS property_price (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`property_price` (
     property_id BIGINT PRIMARY KEY,
     sale_price BIGINT,
     deposit BIGINT,
@@ -39,12 +37,12 @@ CREATE TABLE IF NOT EXISTS property_price (
         ON UPDATE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS property_option (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`property_option` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS property_option_mapping (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`property_option_mapping` (
     property_id BIGINT,
     option_id BIGINT,
     PRIMARY KEY (property_id, option_id),
@@ -54,12 +52,12 @@ CREATE TABLE IF NOT EXISTS property_option_mapping (
     FOREIGN KEY (option_id) REFERENCES property_option(id)
 );
 
-CREATE TABLE IF NOT EXISTS safety_feature (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`safety_feature` (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS property_safety_mapping (
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`property_safety_mapping` (
     property_id BIGINT,
     safety_id BIGINT,
     PRIMARY KEY (property_id, safety_id),

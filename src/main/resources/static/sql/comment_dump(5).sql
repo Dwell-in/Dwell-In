@@ -1,4 +1,4 @@
-INSERT INTO comment (board_id, user_id, content, `like`, dislike, reg_date) VALUES
+INSERT INTO `ssafyhome`.`comment` (board_id, user_id, content, `like`, dislike, reg_date) VALUES
 ('77', '6620', '정말 유용한 내용이네요.', '1', '0', '2025-04-02 17:20:32'),
 ('124', '6499', '이런 정보는 어디서 얻으셨나요?', '9', '5', '2025-03-13 15:49:17'),
 ('306', '2827', '같은 문제 겪고 있었는데 참고할게요.', '12', '5', '2024-12-05 09:33:15'),

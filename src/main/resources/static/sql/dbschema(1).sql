@@ -1,4 +1,3 @@
-use ssafyhome;
 drop table if exists `ssafyhome`.`noticeboard`;
 
 drop table if exists `ssafyhome`.`comment`;
@@ -11,12 +10,12 @@ drop table if exists `ssafyhome`.`star`;
 drop table if exists `ssafyhome`.`member`;
 drop table if exists `ssafyhome`.`email_verification_token`;
 
-DROP TABLE IF EXISTS property_safety_mapping;
-DROP TABLE IF EXISTS safety_feature;
-DROP TABLE IF EXISTS property_option_mapping;
-DROP TABLE IF EXISTS property_option;
-DROP TABLE IF EXISTS property_price;
-DROP TABLE IF EXISTS property;
+DROP TABLE IF EXISTS `ssafyhome`.`property_safety_mapping`;
+DROP TABLE IF EXISTS `ssafyhome`.`safety_feature`;
+DROP TABLE IF EXISTS `ssafyhome`.`property_option_mapping`;
+DROP TABLE IF EXISTS `ssafyhome`.`property_option`;
+DROP TABLE IF EXISTS `ssafyhome`.`property_price`;
+DROP TABLE IF EXISTS `ssafyhome`.`property`;
 -- 매물별 조회수 컬럼 추가 
 -- alter table `ssafyhome`.`houseinfos` add column view_count int default 0;
 
