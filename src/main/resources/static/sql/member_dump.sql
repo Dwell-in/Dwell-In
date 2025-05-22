@@ -2,6 +2,7 @@ use ssafyhome;
 
 -- member
 INSERT INTO member (email, name, password, phone, role, kakao_id, state, profile) VALUES
+('ssafy@naver.com', '김싸피', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01013356886', 'ADMIN', NULL, 'NORMAL', NULL),
 ('jinhojo@hanmail.net', '나미정', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01013356886', 'ADMIN', NULL, 'NORMAL', NULL),
 ('yunyujin@ju.com', '김성수', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01046913810', 'USER', NULL, 'NORMAL', NULL),
 ('sanghun09@live.com', '이종수', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01042868828', 'USER', NULL, 'NORMAL', NULL),
