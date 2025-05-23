@@ -1,9 +1,11 @@
 package com.ssafy.home.member.model.service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.home.member.model.dao.MemberDAO;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberDAO dao;
+	private final StringRedisTemplate redisTemplate;
 	
 	@Override
 	public int addMember(MemberDTO emp) {
@@ -66,9 +69,22 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-	public void modifyRefreshToken(String email, String refreshToken) {
-	    dao.updateRefreshToken(email, refreshToken);
-	}
-
+    public void modifyRefreshToken(String email, String refreshToken) {
+        redisTemplate.opsForValue().set(
+            "refresh:" + email,
+            refreshToken,
+            Duration.ofDays(7)
+        );
+    }
+	
+	@Override
+    public String getRefreshToken(String email) {
+        return redisTemplate.opsForValue().get("refresh:" + email);
+    }
+	
+	@Override
+    public void deleteRefreshToken(String email) {
+        redisTemplate.delete("refresh:" + email);
+    }
 	
 }

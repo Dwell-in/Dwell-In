@@ -29,7 +29,5 @@ public interface MemberDAO {
 	String selectEmailByKakaoId(String id);
 	
 	List<Integer> selectChatTargetId(int id);
-	
-	int updateRefreshToken(@Param("email") String email, @Param("refreshToken") String refreshToken);
 
 }

@@ -30,12 +30,9 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `kakao_id` VARCHAR(45) NULL, 
   `state` VARCHAR(45) DEFAULT 'NORMAL',
   `profile` MEDIUMBLOB,
-  `refresh_token` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE (`email`)
 ) ENGINE = InnoDB;
--- ALTER TABLE `ssafyhome`.`member`
--- ADD COLUMN `refresh_token` VARCHAR(255) DEFAULT NULL;
 
 -- -----------------------------------------------------
 -- Table `mydb`.`star`

@@ -23,5 +23,9 @@ public interface MemberService {
     
     void modifyRefreshToken(String email, String refreshToken);
     
+    public String getRefreshToken(String email);
+    
+    public void deleteRefreshToken(String email);
+    
     List<Map<String, ?>> findChatTargetList(int id);
 }
