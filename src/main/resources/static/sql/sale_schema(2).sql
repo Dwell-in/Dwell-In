@@ -68,20 +68,20 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`property_safety_mapping` (
 );
 
 -- 옵션 및 보안시설
-INSERT INTO property_option (name) VALUES ('붙박이장');
-INSERT INTO property_option (name) VALUES ('천장형 에어컨');
-INSERT INTO property_option (name) VALUES ('식탁');
-INSERT INTO property_option (name) VALUES ('세탁기');
-INSERT INTO property_option (name) VALUES ('냉장고');
-INSERT INTO property_option (name) VALUES ('전자레인지');
-INSERT INTO property_option (name) VALUES ('TV');
-INSERT INTO property_option (name) VALUES ('가스레인지');
-INSERT INTO property_option (name) VALUES ('인덕션');
-INSERT INTO property_option (name) VALUES ('신발장');
-INSERT INTO safety_feature (name) VALUES ('비디오폰');
-INSERT INTO safety_feature (name) VALUES ('인터폰');
-INSERT INTO safety_feature (name) VALUES ('CCTV');
-INSERT INTO safety_feature (name) VALUES ('현관 보안');
-INSERT INTO safety_feature (name) VALUES ('경비실');
-INSERT INTO safety_feature (name) VALUES ('카드키');
-INSERT INTO safety_feature (name) VALUES ('무인택배함');
+INSERT INTO `ssafyhome`.`property_option` (name) VALUES ('붙박이장');
+INSERT INTO `ssafyhome`.`property_option` (name) VALUES ('천장형 에어컨');
+INSERT INTO `ssafyhome`.`property_option` (name) VALUES ('식탁');
+INSERT INTO `ssafyhome`.`property_option` (name) VALUES ('세탁기');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('냉장고');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('전자레인지');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('TV');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('가스레인지');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('인덕션');
+INSERT INTO `ssafyhome`.`property_option`(name) VALUES ('신발장');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('비디오폰');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('인터폰');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('CCTV');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('현관 보안');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('경비실');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('카드키');
+INSERT INTO `ssafyhome`.`safety_feature` (name) VALUES ('무인택배함');

@@ -30,6 +30,10 @@ public interface MemberDAO {
 	
 	List<Integer> selectChatTargetId(int id);
 	
-	int updateRefreshToken(@Param("email") String email, @Param("refreshToken") String refreshToken);
+    String selectRefreshTokenByEmail(String email);
+
+    void updateRefreshTokenByEmail(@Param("email") String email, @Param("refreshToken") String refreshToken);
+
+    void deleteRefreshTokenByEmail(String email);
 
 }

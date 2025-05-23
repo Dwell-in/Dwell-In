@@ -3,70 +3,85 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ssafy.home.member.model.dao.MemberDAO">
-	<!--  useGeneratedKeys="true" keyProperty="mno"은 insert에서 auto increment 컬럼에서 사용 -->
+	<!-- useGeneratedKeys="true" keyProperty="mno"은 insert에서 auto increment 
+		컬럼에서 사용 -->
 	<resultMap type="MemberDTO" id="memberMap">
-		<id column="id" property="id"/>
-		<result column="email" property="email"/>
-		<result column="name" property="name"/>
-		<result column="password" property="password"/>
-		<result column="phone" property="phone"/>
-		<result column="role" property="role"/>
-		<result column="kakao_id" property="kakaoId"/>
-		<result column="state" property="state"/>
-		<result column="profile" property="profile"/>
+		<id column="id" property="id" />
+		<result column="email" property="email" />
+		<result column="name" property="name" />
+		<result column="password" property="password" />
+		<result column="phone" property="phone" />
+		<result column="role" property="role" />
+		<result column="kakao_id" property="kakaoId" />
+		<result column="state" property="state" />
+		<result column="profile" property="profile" />
 	</resultMap>
-	
-    <insert id="insertMember">
-        insert into member(email,name,password,phone,role,kakao_id,profile) 
-        values(#{email},#{name}, #{password},#{phone},#{role},#{kakaoId},#{profile})
-    </insert>
-	
+
+	<insert id="insertMember">
+		insert into member(email,name,password,phone,role,kakao_id,profile)
+		values(#{email},#{name},
+		#{password},#{phone},#{role},#{kakaoId},#{profile})
+	</insert>
+
 	<select id="selectMemberById" resultMap="memberMap">
-        select * from member 
-        where id=#{id} 
-    </select>
-	
+		select * from member
+		where id=#{id}
+	</select>
+
 	<select id="selectMemberByEmail" resultMap="memberMap">
-        select * from member 
-        where email=#{email} 
-    </select>
-	
+		select * from member
+		where email=#{email}
+	</select>
+
 	<select id="selectAllMember" resultMap="memberMap">
-        select * from member 
-    </select>
-    
-    <select id="selectEmailByKakaoId">
-    	select email from member where kakao_id=#{id}
-    </select>
-		    
-    <update id="updateMember">
-    	update member 
-    	set name=#{name},password=#{password},phone=#{phone}, profile=#{profile} 
-    	where email=#{email}
-    </update>
-    
-    <delete id="deleteMemberByEmail">
-    	delete from member where email=#{email}
-    </delete>
-    
-    <delete id="deleteMember">
-    	delete from member where email=#{email} and password=#{password}
-    </delete>
-	
+		select * from member
+	</select>
+
+	<select id="selectEmailByKakaoId">
+		select email from member where kakao_id=#{id}
+	</select>
+
+	<update id="updateMember">
+		update member
+		set name=#{name},password=#{password},phone=#{phone}, profile=#{profile}
+		where email=#{email}
+	</update>
+
+	<delete id="deleteMemberByEmail">
+		delete from member where email=#{email}
+	</delete>
+
+	<delete id="deleteMember">
+		delete from member where email=#{email} and password=#{password}
+	</delete>
+
 	<select id="selectChatTargetId">
-    	select user1_id as id
+		select user1_id as id
 		from chat_room
 		where user2_id = #{id}
 		union
-		select user2_id as id
+		select
+		user2_id as id
 		from chat_room
 		where user1_id = #{id};
-    </select>
-    
-    <update id="updateRefreshToken">
-	    UPDATE member
-	    SET refresh_token = #{refreshToken}
-	    WHERE email = #{email}
+	</select>
+
+	<select id="selectRefreshTokenByEmail">
+		SELECT refresh_token
+		FROM member
+		WHERE email = #{email}
+	</select>
+
+	<update id="updateRefreshTokenByEmail">
+		UPDATE member
+		SET refresh_token = #{refreshToken}
+		WHERE email = #{email}
+	</update>
+
+	<update id="deleteRefreshTokenByEmail">
+		UPDATE member
+		SET refresh_token = NULL
+		WHERE email = #{email}
 	</update>
 
 </mapper>
