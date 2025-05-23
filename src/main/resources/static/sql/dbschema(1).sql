@@ -30,6 +30,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`member` (
   `kakao_id` VARCHAR(45) NULL, 
   `state` VARCHAR(45) DEFAULT 'NORMAL',
   `profile` MEDIUMBLOB,
+  `refresh_token` VARCHAR(512) NULL, 
   PRIMARY KEY (`id`),
   UNIQUE (`email`)
 ) ENGINE = InnoDB;

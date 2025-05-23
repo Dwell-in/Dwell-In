@@ -78,7 +78,7 @@ public class AuthController implements RestControllerHelper {
 
 		try {
 			String email = jwtTokenProvider.getUsername(refreshToken);
-			mService.deleteRefreshToken(email);
+			mService.removeRefreshToken(email);
 			return handleSuccess(Map.of("message", "로그아웃 성공"));
 		} catch (JwtException e) {
 			return handleSuccess(Map.of("message", "유효하지 않은 토큰"), HttpStatus.UNAUTHORIZED);

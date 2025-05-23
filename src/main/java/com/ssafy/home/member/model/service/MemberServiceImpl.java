@@ -69,22 +69,38 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
-    public void modifyRefreshToken(String email, String refreshToken) {
-        redisTemplate.opsForValue().set(
-            "refresh:" + email,
-            refreshToken,
-            Duration.ofDays(7)
-        );
-    }
-	
+	public String getRefreshToken(String email) {
+	    try {
+	        String redisToken = redisTemplate.opsForValue().get("refresh:" + email);
+	        if (redisToken != null) {
+	            return redisToken;
+	        }
+	        System.out.println("[INFO] Redis에 값 없음 → DB fallback");
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 연결 실패 → DB fallback");
+	    }
+	    return dao.selectRefreshTokenByEmail(email);
+	}
+
 	@Override
-    public String getRefreshToken(String email) {
-        return redisTemplate.opsForValue().get("refresh:" + email);
-    }
-	
+	public void modifyRefreshToken(String email, String refreshToken) {
+	    try {
+	        redisTemplate.opsForValue().set("refresh:" + email, refreshToken, Duration.ofDays(7));
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 저장 실패 → DB fallback");
+	    }
+	    dao.updateRefreshTokenByEmail(email, refreshToken);
+	}
+
 	@Override
-    public void deleteRefreshToken(String email) {
-        redisTemplate.delete("refresh:" + email);
-    }
+	public void removeRefreshToken(String email) {
+	    try {
+	        redisTemplate.delete("refresh:" + email);
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 삭제 실패 → DB fallback");
+	    }
+	    dao.deleteRefreshTokenByEmail(email);
+	}
+
 	
 }
