@@ -130,6 +130,7 @@
 		<result column="deposit" property="deposit" />
 		<result column="monthly_rent" property="monthlyRent" />
 		<result column="management_fee" property="managementFee" />
+		<result column="picture" property="picture" />
 		<collection property="optionIds" ofType="long" column="id"
 			select="selectOptionIdsByPropertyId" />
 		<collection property="safetyIds" ofType="long" column="id"
@@ -175,7 +176,7 @@
 		rooms, bathrooms,
 		direction,
 		elevator, parking_available, immediate_move_in, structure_type,
-		description
+		description, picture
 		) VALUES (
 		#{aptSeq}, #{memberId}, #{title}, #{type},
 		#{netArea}, #{supplyArea}, #{floor},
@@ -183,7 +184,7 @@
 		#{rooms},
 		#{bathrooms}, #{direction}, #{elevator}, #{parkingAvailable},
 		#{immediateMoveIn},
-		#{structureType}, #{description}
+		#{structureType}, #{description}, #{picture}
 		)
 	</insert>
 
