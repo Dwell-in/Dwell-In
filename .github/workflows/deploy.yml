@@ -3,7 +3,8 @@ name: Deploy to EC2
 on:
   push:
     branches:
-      - main  # 혹은 배포 브랜치
+      - main
+  workflow_dispatch:
 
 jobs:
   build-and-deploy:
@@ -20,20 +21,76 @@ jobs:
           distribution: 'temurin'
 
       - name: Build with Maven
-        run: mvn clean package -DskipTests
+        run: ./mvnw clean package -DskipTests
 
-      - name: Copy JAR and SQL files to EC2
+      - name: Debug - Check build artifacts
+        run: |
+          echo "== JAR files =="
+          ls -lh target/*.jar || echo "No JARs found"
+          echo "== SQL files =="
+          ls -lh src/main/resources/static/sql/*.sql || echo "No SQLs found"
+
+      - name: Copy JAR file to EC2
         uses: appleboy/scp-action@v0.1.4
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          source: |
-            target/*.jar
-            sql/*.sql
+          source: "target/*.jar"
           target: /home/ubuntu/app
 
-      - name: Deploy and restart on EC2
+      - name: Copy SQL files to EC2
+        uses: appleboy/scp-action@v0.1.4
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: "src/main/resources/static/sql/*.sql"
+          target: /home/ubuntu/app/src/main/resources/static/sql
+
+      - name: Create start.sh script on EC2
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cat << 'EOF' > /home/ubuntu/app/start.sh
+            #!/bin/bash
+
+            echo "서버 중지"
+            pkill -f 'jar' || true
+            sleep 2
+
+            echo "SQL 실행"
+            FILES=(
+              "dbschema(1).sql"
+              "sale_schema(2).sql"
+              "member_dump(3).sql"
+              "board_dump(4).sql"
+              "comment_dump(5).sql"
+              "property_dump(6).sql"
+              "property_etc_dump(7).sql"
+            )
+
+            SQL_DIR="/home/ubuntu/app/src/main/resources/static/sql"
+
+            for file in "${FILES[@]}"; do
+              echo "Importing $file"
+              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
+              if [ $? -ne 0 ]; then
+                echo "❌ Failed to import $file"
+              fi
+            done
+
+            echo "서버 재시작"
+            export SPRING_PROFILES_ACTIVE=prod
+            nohup java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
+            EOF
+
+            chmod +x /home/ubuntu/app/start.sh
+
+      - name: Run start.sh on EC2
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.EC2_HOST }}
@@ -41,15 +98,4 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             cd /home/ubuntu/app
-
-            echo " 서버 중지"
-            pkill -f 'jar' || true
-
-            echo " SQL 실행"
-            for file in sql/*.sql; do
-              echo "Importing $file"
-              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$file"
-            done
-
-            echo " 서버 재시작"
-            nohup java -jar target/*.jar > log.txt 2>&1 &
+            ./start.sh
