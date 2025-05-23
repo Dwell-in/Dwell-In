@@ -9999,7 +9999,7 @@ INSERT INTO `ssafyhome`.`property_price` (property_id, sale_price, deposit, mont
 (9998, NULL, 26110000, 45000, 14000),
 (9999, NULL, 21860000, 51000, 10000),
 (10000, 1257520000, 20290000, NULL, 13000);
-INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
+INSERT INTO `ssafyhome`.`property_price` (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
 (10001, 1063140000, 28240000, NULL, 8000),
 (10002, NULL, 42790000, 67000, 16000),
 (10003, NULL, 35740000, 58000, 14000),
@@ -20000,7 +20000,7 @@ INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, mana
 (19998, NULL, 36470000, 98000, 6000),
 (19999, NULL, 21650000, 37000, 3000),
 (20000, NULL, 17290000, 90000, 14000);
-INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
+INSERT INTO `ssafyhome`.`property_price` (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
 (20001, NULL, 40340000, 50000, 11000),
 (20002, NULL, 68160000, NULL, 7000),
 (20003, NULL, 57410000, NULL, 14000),
@@ -30001,7 +30001,7 @@ INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, mana
 (29998, 1626320000, 36740000, NULL, 17000),
 (29999, 1240980000, 29680000, NULL, 16000),
 (30000, NULL, 26800000, 61000, 13000);
-INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
+INSERT INTO `ssafyhome`.`property_price` (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
 (30001, NULL, 66120000, NULL, 17000),
 (30002, 1016970000, 47930000, NULL, 11000),
 (30003, NULL, 49970000, 55000, 8000),
@@ -40002,7 +40002,7 @@ INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, mana
 (39998, NULL, 19630000, 79000, 7000),
 (39999, NULL, 47370000, 75000, 15000),
 (40000, NULL, 51760000, NULL, 18000);
-INSERT INTO property_price (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
+INSERT INTO `ssafyhome`.`property_price` (property_id, sale_price, deposit, monthly_rent, management_fee) VALUES
 (40001, NULL, 26490000, 59000, 20000),
 (40002, NULL, 44290000, 94000, 7000),
 (40003, 1163100000, 38190000, NULL, 15000),
@@ -60004,7 +60004,7 @@ INSERT INTO `ssafyhome`.`property_option_mapping` (property_id, option_id) VALUE
 (2843, 5),
 (2844, 6),
 (2844, 1);
-INSERT INTO property_option_mapping (property_id, option_id) VALUES
+INSERT INTO `ssafyhome`.`property_option_mapping` (property_id, option_id) VALUES
 (2844, 7),
 (2844, 5),
 (2845, 8),
@@ -70005,7 +70005,7 @@ INSERT INTO property_option_mapping (property_id, option_id) VALUES
 (5701, 9),
 (5701, 10),
 (5702, 2);
-INSERT INTO property_option_mapping (property_id, option_id) VALUES
+INSERT INTO `ssafyhome`.`property_option_mapping` (property_id, option_id) VALUES
 (5702, 7),
 (5703, 5),
 (5703, 9),
@@ -80006,7 +80006,7 @@ INSERT INTO property_option_mapping (property_id, option_id) VALUES
 (8554, 6),
 (8555, 4),
 (8555, 10);
-INSERT INTO property_option_mapping (property_id, option_id) VALUES
+INSERT INTO `ssafyhome`.`property_option_mapping` (property_id, option_id) VALUES
 (8555, 2),
 (8556, 7),
 (8556, 3),
@@ -90007,7 +90007,7 @@ INSERT INTO property_option_mapping (property_id, option_id) VALUES
 (11385, 8),
 (11385, 5),
 (11386, 2);
-INSERT INTO property_option_mapping (property_id, option_id) VALUES
+INSERT INTO `ssafyhome`.`property_option_mapping` (property_id, option_id) VALUES
 (11386, 6),
 (11387, 3),
 (11387, 1),
@@ -110009,7 +110009,7 @@ INSERT INTO `ssafyhome`.`property_safety_mapping` (property_id, safety_id) VALUE
 (5019, 6),
 (5019, 1),
 (5020, 6);
-INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
+INSERT INTO `ssafyhome`.`property_safety_mapping` (property_id, safety_id) VALUES
 (5020, 7),
 (5021, 4),
 (5022, 1),
@@ -120010,7 +120010,7 @@ INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
 (10030, 4),
 (10031, 5),
 (10031, 1);
-INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
+INSERT INTO `ssafyhome`.`property_safety_mapping` (property_id, safety_id) VALUES
 (10032, 5),
 (10032, 4),
 (10033, 4),
@@ -130011,7 +130011,7 @@ INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
 (15088, 1),
 (15089, 2),
 (15089, 7);
-INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
+INSERT INTO `ssafyhome`.`property_safety_mapping` (property_id, safety_id) VALUES
 (15090, 5),
 (15091, 1),
 (15092, 3),
@@ -140012,7 +140012,7 @@ INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
 (20130, 4),
 (20130, 5),
 (20131, 6);
-INSERT INTO property_safety_mapping (property_id, safety_id) VALUES
+INSERT INTO `ssafyhome`.`property_safety_mapping` (property_id, safety_id) VALUES
 (20131, 7),
 (20131, 2),
 (20132, 3),

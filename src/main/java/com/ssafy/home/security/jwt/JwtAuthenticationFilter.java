@@ -17,6 +17,7 @@ import com.ssafy.home.member.model.service.MemberService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -30,48 +31,55 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
+	        throws ServletException, IOException {
+		response.setContentType("application/json; charset=UTF-8");
+	    String token = jwtTokenProvider.resolveToken(request);
+	    System.out.println("[필터] 추출된 access token: " + token);
 
-		String token = jwtTokenProvider.resolveToken(request);
+	    if (token != null) {
+	        String email = null;
+	        try {
+	            email = jwtTokenProvider.getUsername(token);
+	            System.out.println("[필터] 토큰에서 추출한 email: " + email);
+	        } catch (Exception e) {
+	            System.out.println("[필터] getUsername() 실패: " + e.getMessage());
+	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            return;
+	        }
 
-		if (token != null) {
-		    if (jwtTokenProvider.validateToken(token)) {
-		        // 정상 토큰 → 인증
-		        Authentication auth = jwtTokenProvider.getAuthentication(token);
-		        SecurityContextHolder.getContext().setAuthentication(auth);
-		    } else {
-		        try {
-		            // 만료된 토큰일 경우 email 추출
-		            String email = jwtTokenProvider.getUsername(token);
-		            MemberDTO member = memberService.findMemberDetail(email);
-		            String refreshToken = member.getRefreshToken();
+	        String refreshToken = memberService.getRefreshToken(email);
+	        System.out.println("[필터] Redis에서 가져온 refreshToken: " + refreshToken);
 
-		            if (jwtTokenProvider.validateToken(refreshToken)) {
-		                // 리프레시 토큰도 유효하면 Access Token 재발급
-		                String newAccessToken = jwtTokenProvider.createToken(
-		                    email,
-		                    List.of(new SimpleGrantedAuthority("ROLE_" + member.getRole()))
-		                );
+	        String cookieRefreshToken = null;
+	        if (request.getCookies() != null) {
+	            for (Cookie cookie : request.getCookies()) {
+	                if ("refreshToken".equals(cookie.getName())) {
+	                    cookieRefreshToken = cookie.getValue();
+	                    break;
+	                }
+	            }
+	        }
+	        System.out.println("[필터] 클라이언트 쿠키의 refreshToken: " + cookieRefreshToken);
 
-		                // 새 토큰 헤더로 응답
-		                response.setHeader("X-New-Access-Token", newAccessToken);
+	        if (cookieRefreshToken == null || !cookieRefreshToken.equals(refreshToken)) {
+	            System.out.println("[필터] refresh 토큰 불일치");
+	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            new ObjectMapper().writeValue(response.getWriter(), Map.of("error", "다른 장치에서 로그인되었습니다"));
+	            return;
+	        }
 
-		                // 인증 처리
-		                Authentication auth = jwtTokenProvider.getAuthentication(newAccessToken);
-		                SecurityContextHolder.getContext().setAuthentication(auth);
-		            } else {
-		                // 리프레시 토큰도 만료된 경우
-		                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		                new ObjectMapper().writeValue(response.getWriter(), Map.of("error", "Refresh Token도 만료됨"));
-		                return;
-		            }
-		        } catch (JwtException e) {
-		            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-		            new ObjectMapper().writeValue(response.getWriter(), Map.of("error", "Access Token 파싱 실패"));
-		            return;
-		        }
-		    }
-		}
-		filterChain.doFilter(request, response);
+	        if (jwtTokenProvider.validateToken(token)) {
+	            System.out.println("[필터] access token 유효");
+	            Authentication auth = jwtTokenProvider.getAuthentication(token);
+	            SecurityContextHolder.getContext().setAuthentication(auth);
+	        } else {
+	            System.out.println("[필터] access token 만료 → 프론트에게 401 응답");
+	            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+	            return;
+	        }
+	    }
+
+	    filterChain.doFilter(request, response);
 	}
 }
+

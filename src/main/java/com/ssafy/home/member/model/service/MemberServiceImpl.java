@@ -1,9 +1,11 @@
 package com.ssafy.home.member.model.service;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.home.member.model.dao.MemberDAO;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberServiceImpl implements MemberService {
 	
 	private final MemberDAO dao;
+	private final StringRedisTemplate redisTemplate;
 	
 	@Override
 	public int addMember(MemberDTO emp) {
@@ -66,8 +69,37 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	@Override
+	public String getRefreshToken(String email) {
+	    try {
+	        String redisToken = redisTemplate.opsForValue().get("refresh:" + email);
+	        if (redisToken != null) {
+	            return redisToken;
+	        }
+	        System.out.println("[INFO] Redis에 값 없음 → DB fallback");
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 연결 실패 → DB fallback");
+	    }
+	    return dao.selectRefreshTokenByEmail(email);
+	}
+
+	@Override
 	public void modifyRefreshToken(String email, String refreshToken) {
-	    dao.updateRefreshToken(email, refreshToken);
+	    try {
+	        redisTemplate.opsForValue().set("refresh:" + email, refreshToken, Duration.ofDays(7));
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 저장 실패 → DB fallback");
+	    }
+	    dao.updateRefreshTokenByEmail(email, refreshToken);
+	}
+
+	@Override
+	public void removeRefreshToken(String email) {
+	    try {
+	        redisTemplate.delete("refresh:" + email);
+	    } catch (Exception e) {
+	        System.out.println("[WARN] Redis 삭제 실패 → DB fallback");
+	    }
+	    dao.deleteRefreshTokenByEmail(email);
 	}
 
 	
