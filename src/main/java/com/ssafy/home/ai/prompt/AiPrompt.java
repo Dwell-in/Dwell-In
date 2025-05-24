@@ -1,5 +1,6 @@
 package com.ssafy.home.ai.prompt;
 
+import com.ssafy.home.house.model.dto.CompareDetailRequestDTO;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
@@ -83,4 +84,14 @@ public class AiPrompt {
 
 		    return sb.toString();
 	}
+
+    public String buildDetailPrompt(List<CompareDetailRequestDTO> request) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("다음은 현재 여러 매물들의 정보들입니다.");
+
+		for(CompareDetailRequestDTO detail : request){
+			System.out.println("hi");
+		}
+		return sb.toString();
+    }
 }

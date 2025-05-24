@@ -1,5 +1,6 @@
 package com.ssafy.home.ai.controller;
 
+import com.ssafy.home.house.model.dto.CompareDetailRequestDTO;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +50,16 @@ public class AiChatController implements RestControllerHelper {
 		Object result = aService.simpleGenration(prompt);
 		
 		return handleSuccess(Map.of("message",result));
+	}
+
+	@PostMapping("/detail")
+	ResponseEntity<?> detailGeneration(@RequestBody List<CompareDetailRequestDTO> request){
+
+		String prompt = aPrompt.buildDetailPrompt(request);
+
+		Object result = aService.simpleGenration(prompt);
+
+		return handleSuccess(Map.of("message", result));
 	}
 
 }
