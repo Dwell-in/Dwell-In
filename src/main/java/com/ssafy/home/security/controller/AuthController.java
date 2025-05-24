@@ -61,8 +61,10 @@ public class AuthController implements RestControllerHelper {
 		mService.modifyRefreshToken(dto.getEmail(), refreshToken);
 
 		// HttpOnly 쿠키에 refresh 토큰 추가
+		// 실행 환경에 따라 .secure 다르게 설정
+		boolean isProd = "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
 		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true)
-//            .secure(true) // HTTPS 환경에서만 적용. 로컬에서는 편의상 주석 처리
+            .secure(isProd) // HTTPS 환경에서만 적용
 				.path("/").maxAge(Duration.ofDays(7)).build();
 
 		response.addHeader("Set-Cookie", refreshCookie.toString());
