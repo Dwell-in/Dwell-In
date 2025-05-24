@@ -4,11 +4,18 @@ INSERT INTO member (email, name, password, phone, role, kakao_id, state, profile
 ('ssafy@naver.com', '김싸피', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01013356886', 'ADMIN', NULL, 'NORMAL', NULL),
 =======
 INSERT INTO `ssafyhome`.`member` (email, name, password, phone, role, kakao_id, state, profile) VALUES
+<<<<<<< HEAD
 >>>>>>> f9076ce1ca4b46138fce6022bf02a462f2c34acc:src/main/resources/static/sql/member_dump(3).sql
 ('jinhojo@hanmail.net', '나미정', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01013356886', 'ADMIN', NULL, 'NORMAL', NULL),
 ('yunyujin@ju.com', '김성수', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01046913810', 'USER', NULL, 'NORMAL', NULL),
 ('sanghun09@live.com', '이종수', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01042868828', 'USER', NULL, 'NORMAL', NULL),
 ('idoyun@gmail.com', '김예은', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01039958838', 'USER', NULL, 'NORMAL', NULL),
+=======
+('ssafy@naver.com', '관리자', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01013356886', 'ADMIN', NULL, 'NORMAL', NULL),
+('ssafy1@naver.com', '김소중', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01046913810', 'USER', NULL, 'NORMAL', NULL),
+('ssafy2@naver.com', '양대열', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01042868828', 'USER', NULL, 'NORMAL', NULL),
+('ssafy3@naver.com', '추지웅', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01039958838', 'USER', NULL, 'NORMAL', NULL),
+>>>>>>> cc3ca9b290afc0779f7afd7a68043a4f619700c9
 ('bgim@gosonggweon.org', '홍수민', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01028728463', 'USER', NULL, 'NORMAL', NULL),
 ('seohyeoni@yuhanhoesa.kr', '박승민', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01023756669', 'USER', NULL, 'NORMAL', NULL),
 ('pi@ju.com', '이은경', '{bcrypt}$2a$10$dM53gUrgeTOFNh02Jp69ceTx5Xr1H5Kset2tq6ciaCmeMVcFmIEMG', '01083197857', 'USER', NULL, 'NORMAL', NULL),
