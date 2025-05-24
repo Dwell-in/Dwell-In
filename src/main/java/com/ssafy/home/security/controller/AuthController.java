@@ -44,8 +44,6 @@ public class AuthController implements RestControllerHelper {
 	private final CustomUserDetailsService cService;
 	private final JwtTokenProvider jwtTokenProvider;
 
-	@Value("${frontend.url}")
-	private String frontendUrl;
 	@Value("${kakao.client-id}")
 	private String kakaoClientId;
 
