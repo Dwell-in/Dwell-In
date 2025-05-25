@@ -77,15 +77,14 @@ jobs:
 
             for file in "${FILES[@]}"; do
               echo "Importing $file"
-              mysql -h ssafyhome.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
+              mysql -h ssafyhome-public.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
               if [ $? -ne 0 ]; then
                 echo "❌ Failed to import $file"
               fi
             done
 
             echo "서버 재시작"
-            export SPRING_PROFILES_ACTIVE=prod
-            nohup java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
+            nohup SPRING_PROFILES_ACTIVE=prod java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
             EOF
 
             chmod +x /home/ubuntu/app/start.sh

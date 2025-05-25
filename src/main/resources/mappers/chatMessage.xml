@@ -15,7 +15,7 @@
 		FROM chat_message
 		WHERE room_id = #{roomId};
 	</select>
-	<insert id="insertChatMessage">
+	<insert id="insertChatMessage" useGeneratedKeys="true" keyProperty="messageId">
 		INSERT INTO chat_message (room_id, sender_id, content)
 		VALUES (#{roomId}, #{sender}, #{content})
 	</insert>
