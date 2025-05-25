@@ -82,10 +82,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    filterChain.doFilter(request, response);
 	}
 	
+	// 로그인이 필요한 곳에만 필터 적용
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 	    String path = request.getRequestURI();
-	    return path.startsWith("/api/v1/auth/login") || path.startsWith("/api/v1/auth/refresh");
+	    String method = request.getMethod();
+
+	    // 댓글 조회 허용
+	    if (path.startsWith("/api/v1/comment") && "GET".equals(method)) {
+	        return true;
+	    }
+	    // 매물 조회 허용
+	    if (path.startsWith("/api/v1/property") && "GET".equals(method)) {
+	        return true;
+	    }
+	    // 로그인 필요 없는 나머지 경로
+	    return !(
+	        path.startsWith("/api/v1/ai")
+	        || path.startsWith("/api/v1/predict")
+	        || path.startsWith("/api/v1/board/board-wirte")
+	        || path.startsWith("/api/v1/board/board-delete")
+	        || path.startsWith("/api/v1/board/board-update")
+	        || path.startsWith("/api/v1/member/update")
+	        || path.startsWith("/api/v1/member/delete")
+	        || path.startsWith("/api/v1/member/user-info")
+	        || path.startsWith("/api/v1/starred")
+	        || path.startsWith("/api/v1/comment")
+	        || path.startsWith("/api/v1/property")
+	        || path.startsWith("/chat")
+	    );
 	}
 }
 

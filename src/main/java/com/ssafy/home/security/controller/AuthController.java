@@ -68,16 +68,16 @@ public class AuthController implements RestControllerHelper {
 
 	@PostMapping("/logout")
 	public ResponseEntity<?> logout(@CookieValue(required = false) String refreshToken) {
-		if (refreshToken == null) {
-			return handleSuccess(Map.of("message", "Refresh 토큰 없음"), HttpStatus.UNAUTHORIZED);
-		}
-
 		try {
-			String email = jwtTokenProvider.getUsername(refreshToken);
-			mService.removeRefreshToken(email);
+			// refreshToken이 null이면 신경 x
+			if (refreshToken != null) {
+				String email = jwtTokenProvider.getUsername(refreshToken);
+				mService.removeRefreshToken(email);
+			}
 			return handleSuccess(Map.of("message", "로그아웃 성공"));
 		} catch (JwtException e) {
-			return handleSuccess(Map.of("message", "유효하지 않은 토큰"), HttpStatus.UNAUTHORIZED);
+			// 얘도 어차피 토큰이 기능을 못하니까 그냥 두기
+			return handleSuccess(Map.of("message", "유효하지 않은 토큰"));
 		}
 	}
 
