@@ -21,8 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class KakaoAuthService {
 
-    @Value("${frontend.url}")
-    private String frontendUrl;
     @Value("${kakao.client-id}")
     private String kakaoClientId;
     
