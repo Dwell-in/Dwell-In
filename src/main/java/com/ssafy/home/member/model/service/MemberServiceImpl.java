@@ -77,6 +77,7 @@ public class MemberServiceImpl implements MemberService {
 	        }
 	        System.out.println("[INFO] Redis에 값 없음 → DB fallback");
 	    } catch (Exception e) {
+	    	e.printStackTrace();
 	        System.out.println("[WARN] Redis 연결 실패 → DB fallback");
 	    }
 	    return dao.selectRefreshTokenByEmail(email);
@@ -87,6 +88,8 @@ public class MemberServiceImpl implements MemberService {
 	    try {
 	        redisTemplate.opsForValue().set("refresh:" + email, refreshToken, Duration.ofDays(7));
 	    } catch (Exception e) {
+	    	e.printStackTrace();
+	    	e.printStackTrace();
 	        System.out.println("[WARN] Redis 저장 실패 → DB fallback");
 	    }
 	    dao.updateRefreshTokenByEmail(email, refreshToken);

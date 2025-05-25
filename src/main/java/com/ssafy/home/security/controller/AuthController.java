@@ -44,8 +44,6 @@ public class AuthController implements RestControllerHelper {
 	private final CustomUserDetailsService cService;
 	private final JwtTokenProvider jwtTokenProvider;
 
-	@Value("${frontend.url}")
-	private String frontendUrl;
 	@Value("${kakao.client-id}")
 	private String kakaoClientId;
 
@@ -61,9 +59,12 @@ public class AuthController implements RestControllerHelper {
 		mService.modifyRefreshToken(dto.getEmail(), refreshToken);
 
 		// HttpOnly 쿠키에 refresh 토큰 추가
-		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true)
-//            .secure(true) // HTTPS 환경에서만 적용. 로컬에서는 편의상 주석 처리
-				.path("/").maxAge(Duration.ofDays(7)).build();
+		// 실행 환경에 따라 .secure 다르게 설정
+		boolean isProd = "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
+		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true).secure(isProd) // HTTPS
+																														// 환경에서만
+																														// 적용
+				.sameSite("None").path("/").maxAge(Duration.ofDays(7)).build();
 
 		response.addHeader("Set-Cookie", refreshCookie.toString());
 
@@ -137,8 +138,7 @@ public class AuthController implements RestControllerHelper {
 		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true).secure(true)
 				.path("/").maxAge(Duration.ofDays(7)).build();
 
-		Map<String, Object> responseBody = Map.of("status", "SUCCESS", "data",
-				Map.of("signup", false, "token", token));
+		Map<String, Object> responseBody = Map.of("status", "SUCCESS", "data", Map.of("signup", false, "token", token));
 
 		return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
 				.body(responseBody);

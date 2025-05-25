@@ -19,6 +19,7 @@ import com.ssafy.home.security.dto.EmailVerificationTokenDTO;
 import com.ssafy.home.security.service.EmailVerificationService;
 import com.ssafy.home.security.service.MailService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -47,17 +48,24 @@ public class EmailVerificationController implements RestControllerHelper{
 	}
 	
 	@PostMapping("/send-token")
-	public ResponseEntity<?> sendToken(@RequestParam String email) {
-		try {
-			if(email.isBlank() || !email.contains("@")) return handleSuccess("유효하지 않은 이메일입니다");
-			if(mService.findMemberDetail(email)!=null) return handleSuccess("이미 존재하는 이메일입니다");
-			String token = eService.createVerificationToken(email);
-			mailService.sendVerificationEmail(email, token);
-			return handleSuccess("메일이 전송되었습니다");
-		}catch (Exception e) {
-			e.printStackTrace();
-			return handleFail(e);
-		}
+	public ResponseEntity<?> sendToken(@RequestParam String email, HttpServletRequest request) {
+	    try {
+	        if (email.isBlank() || !email.contains("@")) return handleSuccess("유효하지 않은 이메일입니다");
+	        if (mService.findMemberDetail(email) != null) return handleSuccess("이미 존재하는 이메일입니다");
+
+	        String token = eService.createVerificationToken(email);
+
+	        // Origin 헤더에서 프론트 URL 추출
+	        String origin = request.getHeader("Origin");
+	        String frontUrl = (origin != null) ? origin : "http://localhost:8080"; // 기본값
+
+	        mailService.sendVerificationEmail(email, token, frontUrl);
+
+	        return handleSuccess("메일이 전송되었습니다");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return handleFail(e);
+	    }
 	}
 	
 	@PostMapping("/send-password")
