@@ -60,12 +60,14 @@ public class AuthController implements RestControllerHelper {
 
 		// HttpOnly 쿠키에 refresh 토큰 추가
 		// 실행 환경에 따라 .secure 다르게 설정
+		// 둘 다 로컬에서 돌리면 sameSite 주석해야 쿠키 정상적으로 날아가요
 		boolean isProd = "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
 		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true).secure(isProd) // HTTPS
 																														// 환경에서만
 																														// 적용
-				.sameSite("None").path("/").maxAge(Duration.ofDays(7)).build();
-
+				.sameSite("None")
+				.path("/").maxAge(Duration.ofDays(7)).build();
+		System.out.println(isProd);
 		response.addHeader("Set-Cookie", refreshCookie.toString());
 
 		return handleSuccess(Map.of("accessToken", accessToken));
