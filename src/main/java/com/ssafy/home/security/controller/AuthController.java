@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.home.common.CookieHandler;
 import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.member.model.service.MemberService;
 import com.ssafy.home.security.dto.KakaoUserInfo;
@@ -43,34 +44,26 @@ public class AuthController implements RestControllerHelper {
 	private final KakaoAuthService kService;
 	private final CustomUserDetailsService cService;
 	private final JwtTokenProvider jwtTokenProvider;
+	private final CookieHandler cookieHandler;
 
 	@Value("${kakao.client-id}")
 	private String kakaoClientId;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody LoginRequest dto, HttpServletResponse response) {
-		Authentication auth = authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
+	    Authentication auth = authenticationManager
+	            .authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
 
-		String accessToken = jwtTokenProvider.createToken(dto.getEmail(), auth.getAuthorities());
-		String refreshToken = jwtTokenProvider.createRefreshToken(dto.getEmail());
+	    String accessToken = jwtTokenProvider.createToken(dto.getEmail(), auth.getAuthorities());
+	    String refreshToken = jwtTokenProvider.createRefreshToken(dto.getEmail());
 
-		// Redis에 refresh 토큰 저장
-		mService.modifyRefreshToken(dto.getEmail(), refreshToken);
+	    // Redis에 refresh 토큰 저장
+	    mService.modifyRefreshToken(dto.getEmail(), refreshToken);
 
-		// HttpOnly 쿠키에 refresh 토큰 추가
-		// 실행 환경에 따라 .secure 다르게 설정
-		// 둘 다 로컬에서 돌리면 sameSite 주석해야 쿠키 정상적으로 날아가요
-		boolean isProd = "prod".equals(System.getenv("SPRING_PROFILES_ACTIVE"));
-		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true).secure(isProd) // HTTPS
-																														// 환경에서만
-																														// 적용
-				.sameSite("None")
-				.path("/").maxAge(Duration.ofDays(7)).build();
-		System.out.println(isProd);
-		response.addHeader("Set-Cookie", refreshCookie.toString());
+	    // 공통 쿠키 핸들러 사용
+	    cookieHandler.addCookie(response, "refreshToken", refreshToken, (int) Duration.ofDays(7).getSeconds(), true);
 
-		return handleSuccess(Map.of("accessToken", accessToken));
+	    return handleSuccess(Map.of("accessToken", accessToken));
 	}
 
 	@PostMapping("/logout")
@@ -115,35 +108,28 @@ public class AuthController implements RestControllerHelper {
 	}
 
 	@GetMapping("/kakao/login")
-	public ResponseEntity<?> kakaoLogin(@RequestParam String code) {
-		String accessToken = kService.requestAccessToken(code);
-		KakaoUserInfo kakaoUser = kService.requestUserInfo(accessToken);
+	public ResponseEntity<?> kakaoLogin(@RequestParam String code, HttpServletResponse response) {
+	    String accessToken = kService.requestAccessToken(code);
+	    KakaoUserInfo kakaoUser = kService.requestUserInfo(accessToken);
 
-		String email = mService.findEmailByKakaoId(kakaoUser.getId() + "");
-		System.out.println(kakaoUser);
-		Map<String, String> profile = (Map) kakaoUser.getKakao_account().get("profile");
-		if (email == null || email.isBlank()) {
-			// 프론트에서 회원가입 페이지로 유도
-			return handleSuccess(Map.of("signup", true, "kakaoId", kakaoUser.getId(), "name", profile.get("nickname")));
-		}
+	    String email = mService.findEmailByKakaoId(kakaoUser.getId() + "");
+	    Map<String, String> profile = (Map) kakaoUser.getKakao_account().get("profile");
 
-		// 사용자 인증 객체 생성
-		// 이미 인증된 사용자이므로 굳이 authenticationManager를 거치지 않아도 됨
-		UserDetails userDetails = cService.loadUserByUsername(email);
-		Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+	    if (email == null || email.isBlank()) {
+	        return handleSuccess(Map.of("signup", true, "kakaoId", kakaoUser.getId(), "name", profile.get("nickname")));
+	    }
 
-		// 토큰 생성
-		String token = jwtTokenProvider.createToken(email, auth.getAuthorities());
-		String refreshToken = jwtTokenProvider.createRefreshToken(email);
-		mService.modifyRefreshToken(email, refreshToken); // Redis에 저장
+	    UserDetails userDetails = cService.loadUserByUsername(email);
+	    Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
 
-		ResponseCookie refreshCookie = ResponseCookie.from("refreshToken", refreshToken).httpOnly(true).secure(true)
-				.path("/").maxAge(Duration.ofDays(7)).build();
+	    String token = jwtTokenProvider.createToken(email, auth.getAuthorities());
+	    String refreshToken = jwtTokenProvider.createRefreshToken(email);
+	    mService.modifyRefreshToken(email, refreshToken);
 
-		Map<String, Object> responseBody = Map.of("status", "SUCCESS", "data", Map.of("signup", false, "token", token));
+	    cookieHandler.addCookie(response, "refreshToken", refreshToken, (int) Duration.ofDays(7).getSeconds(), true);
 
-		return ResponseEntity.status(HttpStatus.OK).header(HttpHeaders.SET_COOKIE, refreshCookie.toString())
-				.body(responseBody);
+	    Map<String, Object> responseBody = Map.of("status", "SUCCESS", "data", Map.of("signup", false, "token", token));
+	    return ResponseEntity.ok(responseBody);
 	}
 
 }
