@@ -84,8 +84,7 @@ jobs:
             done
 
             echo "서버 재시작"
-            export SPRING_PROFILES_ACTIVE=prod
-            nohup java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
+            nohup SPRING_PROFILES_ACTIVE=prod java -jar /home/ubuntu/app/target/*.jar > /home/ubuntu/app/log.txt 2>&1 < /dev/null &
             EOF
 
             chmod +x /home/ubuntu/app/start.sh
