@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`post_category`(
     PRIMARY KEY (`category_id`)
     )
 ENGINE = InnoDB;
-insert into post_category
+insert into `ssafyhome`.`post_category`
 values
 	(0, 'notice'),
     (1, '커뮤니티'),
