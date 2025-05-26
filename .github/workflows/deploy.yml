@@ -71,6 +71,7 @@ jobs:
               "comment_dump(5).sql"
               "property_dump(6).sql"
               "property_etc_dump(7).sql"
+              "attractionschema.sql"
             )
 
             SQL_DIR="/home/ubuntu/app/src/main/resources/static/sql"
