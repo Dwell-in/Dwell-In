@@ -116,7 +116,7 @@ public class AuthController implements RestControllerHelper {
 	    Map<String, String> profile = (Map) kakaoUser.getKakao_account().get("profile");
 
 	    if (email == null || email.isBlank()) {
-	        return handleSuccess(Map.of("signup", true, "kakaoId", kakaoUser.getId(), "name", profile.get("nickname")));
+	        return handleSuccess(Map.of("signup", true, "kakaoId", kakaoUser.getId(), "name", profile.get("nickname"),"profileImage", profile.get("profile_image_url")));
 	    }
 
 	    UserDetails userDetails = cService.loadUserByUsername(email);
