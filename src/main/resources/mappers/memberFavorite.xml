@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ssafy.home.member.favorite.model.dao.MemberFavoriteDAO">
+
+ <insert id="insertMemberFavorite" parameterType="com.ssafy.home.member.favorite.model.dto.MemberFavoriteDTO">
+    INSERT INTO member_favorite (
+      member_id,
+      preferred_location,
+      budget_min,
+      budget_max,
+      rent_min,
+      rent_max,
+      preferred_type,
+      min_area,
+      min_rooms,
+      commute_target,
+      commute_time_limit,
+      household_type,
+      floor_preference,
+      build_year_preference,
+      required_features,
+      lifestyle_priority,
+      created_at
+    )
+    VALUES (
+      #{memberId},
+      #{preferredLocation},
+      #{budgetMin},
+      #{budgetMax},
+      #{rentMin},
+      #{rentMax},
+      #{preferredType},
+      #{minArea},
+      #{minRooms},
+      #{commuteTarget},
+      #{commuteTimeLimit},
+      #{householdType},
+      #{floorPreference},
+      #{buildYearPreference},
+      #{requiredFeatures},
+      #{lifestylePriority},
+      NOW()
+    )
+  </insert>
+
+
+
+</mapper>

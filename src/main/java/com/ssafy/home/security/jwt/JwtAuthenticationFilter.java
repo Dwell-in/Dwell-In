@@ -110,6 +110,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	        || path.startsWith("/api/v1/comment")
 	        || path.startsWith("/api/v1/property")
 	        || path.startsWith("/chat")
+	        || path.startsWith("/api/v1/memberFavorite")
 	    );
 	}
 }
