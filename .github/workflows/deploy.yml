@@ -78,7 +78,7 @@ jobs:
 
             for file in "${FILES[@]}"; do
               echo "Importing $file"
-              mysql -h ssafyhome-public.c562miqic0og.ap-southeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
+              mysql -h ssafyhome.cjywg46ywbi8.ap-northeast-2.rds.amazonaws.com -u ssafy -p'ssafy' ssafyhome < "$SQL_DIR/$file"
               if [ $? -ne 0 ]; then
                 echo "❌ Failed to import $file"
               fi

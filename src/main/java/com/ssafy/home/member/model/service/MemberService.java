@@ -28,4 +28,10 @@ public interface MemberService {
     public void removeRefreshToken(String email);
     
     List<Map<String, ?>> findChatTargetList(int id);
+    
+    List<MemberDTO> findAllMembers(int page, int size);
+    List<MemberDTO> findMembersByState(String state);
+    List<MemberDTO> findLoggedInMembers();
+    void modifyMemberState(String email, String state);
+    void modofyMemberRole(String email, String role);
 }

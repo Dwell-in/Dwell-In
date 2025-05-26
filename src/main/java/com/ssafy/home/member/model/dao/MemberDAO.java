@@ -35,5 +35,10 @@ public interface MemberDAO {
     void updateRefreshTokenByEmail(@Param("email") String email, @Param("refreshToken") String refreshToken);
 
     void deleteRefreshTokenByEmail(String email);
-
+    
+    List<MemberDTO> selectAllMembersWithPaging(@Param("offset") int offset, @Param("limit") int limit);
+    List<MemberDTO> selectMembersByState(String state);
+    List<MemberDTO> selectMembersByRefreshTokenNotNull();
+    void updateMemberState(@Param("email") String email, @Param("state") String state);
+    void updateMemberRole(@Param("email") String email, @Param("role") String role);
 }

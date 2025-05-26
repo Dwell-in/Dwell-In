@@ -105,5 +105,30 @@ public class MemberServiceImpl implements MemberService {
 	    dao.deleteRefreshTokenByEmail(email);
 	}
 
-	
+	@Override
+	public List<MemberDTO> findAllMembers(int page, int size) {
+        int offset = (page - 1) * size;
+        return dao.selectAllMembersWithPaging(offset, size);
+	}
+
+	@Override
+	public List<MemberDTO> findMembersByState(String state) {
+		return dao.selectMembersByState(state);
+	}
+
+	@Override
+	public List<MemberDTO> findLoggedInMembers() {
+		return dao.selectMembersByRefreshTokenNotNull();
+	}
+
+	@Override
+	public void modifyMemberState(String email, String state) {
+		dao.updateMemberState(email, state);
+	}
+
+	@Override
+	public void modofyMemberRole(String email, String role) {
+		dao.updateMemberRole(email, role);
+	}
+
 }
