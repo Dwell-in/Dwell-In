@@ -18,7 +18,8 @@
 	</resultMap>
 
 	<insert id="insertMember">
-		insert into member(email,name,password,phone,role,kakao_id,profile)
+		insert into
+		member(email,name,password,phone,role,kakao_id,profile)
 		values(#{email},#{name},
 		#{password},#{phone},#{role},#{kakaoId},#{profile})
 	</insert>
@@ -43,7 +44,8 @@
 
 	<update id="updateMember">
 		update member
-		set name=#{name},password=#{password},phone=#{phone}, profile=#{profile}
+		set
+		name=#{name},password=#{password},phone=#{phone}, profile=#{profile}
 		where email=#{email}
 	</update>
 
@@ -52,13 +54,15 @@
 	</delete>
 
 	<delete id="deleteMember">
-		delete from member where email=#{email} and password=#{password}
+		delete from member where email=#{email} and
+		password=#{password}
 	</delete>
 
 	<select id="selectChatTargetId">
 		select user1_id as id
 		from chat_room
-		where user2_id = #{id}
+		where user2_id =
+		#{id}
 		union
 		select
 		user2_id as id
@@ -81,7 +85,45 @@
 	<update id="deleteRefreshTokenByEmail">
 		UPDATE member
 		SET refresh_token = NULL
-		WHERE email = #{email}
+		WHERE email =
+		#{email}
 	</update>
+
+	<select id="selectAllMembersWithPaging" resultMap="memberMap">
+		SELECT *
+		FROM
+		member
+		ORDER BY id DESC
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+
+	<select id="selectMembersByState">
+		SELECT *
+		FROM member
+		WHERE state = #{state}
+		ORDER BY id
+		DESC
+	</select>
+
+	<select id="selectMembersByRefreshTokenNotNull"
+		resultMap="memberMap">
+		SELECT *
+		FROM member
+		WHERE refresh_token IS NOT NULL
+		ORDER BY
+		id DESC
+	</select>
+
+	<update id="updateMemberState">
+		UPDATE member
+		SET state = #{state}
+		WHERE email =
+		#{email}
+	</update>
+
+	<update id="updateMemberRole">
+		UPDATE member SET role = #{role} WHERE email = #{email}
+	</update>
+
 
 </mapper>

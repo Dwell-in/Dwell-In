@@ -1,24 +1,13 @@
 package com.ssafy.home.member.controller;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -34,7 +22,6 @@ import com.ssafy.home.common.RestControllerHelper;
 import com.ssafy.home.member.model.dto.MemberDTO;
 import com.ssafy.home.member.model.service.MemberService;
 import com.ssafy.home.security.dto.CustomUserDetails;
-import com.ssafy.home.security.service.CustomUserDetailsService;
 
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -132,6 +119,35 @@ public class MemberController implements RestControllerHelper {
 				"profileImg", member.getProfileImg(), "role", member.getRole()));
 	}
 
+    @GetMapping("/members")
+    public ResponseEntity<?> getAllMembers(@RequestParam(defaultValue = "1") int page,
+                                           @RequestParam(defaultValue = "20") int size) {
+        List<MemberDTO> list = mService.findAllMembers(page, size);
+        return handleSuccess(list);
+    }
+
+    @GetMapping("/state/{state}")
+    public ResponseEntity<?> getMembersByState(@PathVariable String state) {
+        return handleSuccess(mService.findMembersByState(state));
+    }
+
+    @GetMapping("/logged-in")
+    public ResponseEntity<?> getLoggedInMembers() {
+        return handleSuccess(mService.findLoggedInMembers());
+    }
+
+    @PostMapping("/state-change")
+    public ResponseEntity<?> updateMemberState(@RequestParam String email, @RequestParam String state) {
+        mService.modifyMemberState(email, state);
+        return handleSuccess("상태 변경 성공");
+    }
+    
+    @PostMapping("/role-change")
+    public ResponseEntity<?> updateMemberRole(@RequestParam String email, @RequestParam String role) {
+        mService.modofyMemberRole(email, role);
+        return handleSuccess("권한 변경 성공");
+    }
+    
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getMemberInfo(@PathVariable int id) {
 		MemberDTO member = mService.findMemberById(id);
