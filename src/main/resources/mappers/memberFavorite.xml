@@ -45,6 +45,47 @@
     )
   </insert>
 
+  <resultMap id="MemberFavoriteResultMap" type="com.ssafy.home.member.favorite.model.dto.MemberFavoriteDTO">
+    <id property="memberId" column="member_id" />
+    <result property="preferredLocation" column="preferred_location" />
+    <result property="budgetMin" column="budget_min" />
+    <result property="budgetMax" column="budget_max" />
+    <result property="rentMin" column="rent_min" />
+    <result property="rentMax" column="rent_max" />
+    <result property="preferredType" column="preferred_type" />
+    <result property="minArea" column="min_area" />
+    <result property="minRooms" column="min_rooms" />
+    <result property="commuteTarget" column="commute_target" />
+    <result property="commuteTimeLimit" column="commute_time_limit" />
+    <result property="householdType" column="household_type" />
+    <result property="floorPreference" column="floor_preference" />
+    <result property="buildYearPreference" column="build_year_preference" />
+    <result property="requiredFeatures" column="required_features" />
+    <result property="lifestylePriority" column="lifestyle_priority" />
+  </resultMap>
+
+  <select id="selectMemberFavorite" resultMap="MemberFavoriteResultMap">
+    SELECT
+    member_id,
+    preferred_location,
+    budget_min,
+    budget_max,
+    rent_min,
+    rent_max,
+    preferred_type,
+    min_area,
+    min_rooms,
+    commute_target,
+    commute_time_limit,
+    household_type,
+    floor_preference,
+    build_year_preference,
+    required_features,
+    lifestyle_priority
+    FROM member_favorite
+    WHERE member_id = #{memberId}
+  </select>
+
 
 
 </mapper>

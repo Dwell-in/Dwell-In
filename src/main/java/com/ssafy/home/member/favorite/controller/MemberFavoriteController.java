@@ -67,7 +67,6 @@ public class MemberFavoriteController implements RestControllerHelper {
 	            try {
 					return objectMapper.writeValueAsString(list);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				return null;

@@ -19,4 +19,8 @@ public class MemberFavoriteService {
 		memberFavoriteDao.insertMemberFavorite(dto);
 	}
 
+	public MemberFavoriteDTO getMemberFavorite(long memberId){
+		return memberFavoriteDao.selectMemberFavorite(memberId);
+	}
+
 }
