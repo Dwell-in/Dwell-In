@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`guguns` (
   INDEX `gugun_code_idx` (`gugun_code` ASC) VISIBLE,
   CONSTRAINT `guguns_sido_to_sidos_cdoe_fk`
     FOREIGN KEY (`sido_code`)
-    REFERENCES `ssafytrip`.`sidos` (`sido_code`))
+    REFERENCES `ssafyhome`.`sidos` (`sido_code`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 235
 DEFAULT CHARACTER SET = utf8mb4
@@ -69,13 +69,13 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`attractions` (
   INDEX `attractions_sigungu_to_guguns_gugun_fk_idx` (`si_gun_gu_code` ASC) VISIBLE,
   CONSTRAINT `attractions_area_to_sidos_code_fk`
     FOREIGN KEY (`area_code`)
-    REFERENCES `ssafytrip`.`sidos` (`sido_code`),
+    REFERENCES `ssafyhome`.`sidos` (`sido_code`),
   CONSTRAINT `attractions_sigungu_to_guguns_gugun_fk`
     FOREIGN KEY (`si_gun_gu_code`)
-    REFERENCES `ssafytrip`.`guguns` (`gugun_code`),
+    REFERENCES `ssafyhome`.`guguns` (`gugun_code`),
   CONSTRAINT `attractions_typeid_to_types_typeid_fk`
     FOREIGN KEY (`content_type_id`)
-    REFERENCES `ssafytrip`.`contenttypes` (`content_type_id`))
+    REFERENCES `ssafyhome`.`contenttypes` (`content_type_id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 56644
 DEFAULT CHARACTER SET = utf8mb4
