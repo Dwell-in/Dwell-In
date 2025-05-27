@@ -1,3 +1,4 @@
+drop table if exists `ssafyhome`.`member_favorite`
 drop table if exists `ssafyhome`.`noticeboard`;
 
 DROP TABLE IF EXISTS `ssafyhome`.`property_safety_mapping`;
