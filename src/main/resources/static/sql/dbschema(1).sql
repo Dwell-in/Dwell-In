@@ -154,3 +154,26 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`email_verification_token` (
     expiry_date DATETIME NOT NULL,
     is_used BOOLEAN DEFAULT FALSE
 );
+
+
+CREATE TABLE IF NOT EXISTS `ssafyhome`. `member_favorite` (
+  member_id INT PRIMARY KEY,
+  preferred_location VARCHAR(255),
+  budget_min BIGINT,
+  budget_max BIGINT,
+  rent_min BIGINT,
+  rent_max BIGINT,
+  preferred_type VARCHAR(50),
+  min_area INT,
+  min_rooms INT,
+  commute_target VARCHAR(255),
+  commute_time_limit INT,
+  household_type VARCHAR(50),
+  floor_preference VARCHAR(50),
+  build_year_preference VARCHAR(50),
+  required_features TEXT,
+  lifestyle_priority TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
+);
