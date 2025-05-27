@@ -18,8 +18,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`guguns` (
   `gugun_name` varchar(20) DEFAULT NULL comment '구군이름',
   PRIMARY KEY (`no`),
   INDEX `guguns_sido_to_sidos_cdoe_fk_idx` (`sido_code` ASC) VISIBLE,
-  INDEX `gugun_code_idx` (`gugun_code` ASC) VISIBLE,
-  CONSTRAINT `guguns_sido_to_sidos_cdoe_fk`)
+  INDEX `gugun_code_idx` (`gugun_code` ASC) VISIBLE)
 ENGINE = InnoDB;
 
 
