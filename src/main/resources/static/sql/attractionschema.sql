@@ -9,10 +9,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`sidos` (
   `sido_name` varchar(20) DEFAULT NULL comment '시도이름',
   PRIMARY KEY (`no`),
   UNIQUE INDEX `sido_code_UNIQUE` (`sido_code` ASC) VISIBLE)
-ENGINE = InnoDB
-AUTO_INCREMENT = 18
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci comment '시도정보테이블';
+ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`guguns` (
   `no` int NOT NULL AUTO_INCREMENT comment '구군번호',
@@ -22,23 +19,15 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`guguns` (
   PRIMARY KEY (`no`),
   INDEX `guguns_sido_to_sidos_cdoe_fk_idx` (`sido_code` ASC) VISIBLE,
   INDEX `gugun_code_idx` (`gugun_code` ASC) VISIBLE,
-  CONSTRAINT `guguns_sido_to_sidos_cdoe_fk`
-ENGINE = InnoDB
-AUTO_INCREMENT = 235
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci
-comment '구군정보테이블';
-
-
+  CONSTRAINT `guguns_sido_to_sidos_cdoe_fk`)
+ENGINE = InnoDB;
 
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`contenttypes` (
   `content_type_id` int NOT NULL comment '콘텐츠타입번호',
   `content_type_name` varchar(45) DEFAULT NULL comment '콘텐츠타입이름',
   PRIMARY KEY (`content_type_id`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci comment '콘텐츠타입정보테이블';
+ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`attractions` (
   `no` int NOT NULL AUTO_INCREMENT  comment '명소코드',
@@ -60,9 +49,5 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`attractions` (
   PRIMARY KEY (`no`),
   INDEX `attractions_typeid_to_types_typeid_fk_idx` (`content_type_id` ASC) VISIBLE,
   INDEX `attractions_sido_to_sidos_code_fk_idx` (`area_code` ASC) VISIBLE,
-  INDEX `attractions_sigungu_to_guguns_gugun_fk_idx` (`si_gun_gu_code` ASC) VISIBLE,
-ENGINE = InnoDB
-AUTO_INCREMENT = 56644
-DEFAULT CHARACTER SET = utf8mb4
-COLLATE = utf8mb4_0900_ai_ci
-comment '명소정보테이블';
+  INDEX `attractions_sigungu_to_guguns_gugun_fk_idx` (`si_gun_gu_code` ASC) VISIBLE)
+ENGINE = InnoDB;
