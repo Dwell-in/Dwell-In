@@ -8,4 +8,6 @@ import com.ssafy.home.member.favorite.model.dto.MemberFavoriteDTO;
 public interface MemberFavoriteDAO {
 
 	void insertMemberFavorite(MemberFavoriteDTO dto);
+
+    MemberFavoriteDTO selectMemberFavorite(long memberId);
 }
