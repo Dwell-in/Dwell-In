@@ -11,6 +11,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.cloudwatch.CloudWatchClient;
 import software.amazon.awssdk.services.cloudwatch.model.Dimension;
 import software.amazon.awssdk.services.cloudwatch.model.GetMetricDataRequest;
@@ -26,11 +27,16 @@ public class CloudWatchService {
 
 	private final CloudWatchClient cloudWatchClient;
 
+	private static final String NEW_INSTANCE_ID = "i-03c432da4692845df";
+
 	// 지표 목록 (기본 EC2 지표 8개)
 	private static final List<String> METRICS = List.of("CPUUtilization", "NetworkIn", "NetworkOut", "NetworkPacketsIn",
 			"NetworkPacketsOut", "MetadataNoToken", "CPUCreditUsage", "CPUCreditBalance");
 
-	public Map<String, List<Map<String, Object>>> getMetrics(String instanceId, String range) {
+	public Map<String, List<Map<String, Object>>> getMetrics(String oldInstanceId, String range) {
+		boolean isNewInstanceRange = range.equals("1h") || range.equals("12h");
+		String instanceId = isNewInstanceRange ? NEW_INSTANCE_ID : oldInstanceId;
+		CloudWatchClient client = isNewInstanceRange ? getClientForRegion("ap-northeast-2") : cloudWatchClient;
 		Duration totalRange;
 		switch (range) {
 		case "1h":
@@ -66,7 +72,7 @@ public class CloudWatchService {
 		GetMetricDataRequest request = GetMetricDataRequest.builder().metricDataQueries(queries).startTime(start)
 				.endTime(end).build();
 
-		GetMetricDataResponse response = cloudWatchClient.getMetricData(request);
+		GetMetricDataResponse response = client.getMetricData(request);
 
 		Map<String, List<Map<String, Object>>> result = new LinkedHashMap<>();
 		for (int i = 0; i < METRICS.size(); i++) {
@@ -82,5 +88,9 @@ public class CloudWatchService {
 		}
 
 		return result;
+	}
+
+	private CloudWatchClient getClientForRegion(String regionCode) {
+		return CloudWatchClient.builder().region(Region.of(regionCode)).build();
 	}
 }
