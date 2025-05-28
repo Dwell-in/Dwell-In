@@ -100,7 +100,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	    return !(
 	        path.startsWith("/api/v1/ai")
 	        || path.startsWith("/api/v1/predict")
-	        || path.startsWith("/api/v1/board/board-wirte")
+	        || path.startsWith("/api/v1/board/board-write")
 	        || path.startsWith("/api/v1/board/board-delete")
 	        || path.startsWith("/api/v1/board/board-update")
 	        || path.startsWith("/api/v1/member/update")
