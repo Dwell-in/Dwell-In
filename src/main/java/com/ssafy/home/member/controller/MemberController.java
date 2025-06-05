@@ -21,6 +21,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,7 +41,6 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-
 @RestController
 @RequestMapping("/api/v1/member")
 @RequiredArgsConstructor
@@ -52,11 +52,11 @@ public class MemberController implements RestControllerHelper {
 	private final PasswordEncoder pe;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member, 
+	public ResponseEntity<?> memberAdd(@ModelAttribute MemberDTO member,
 			@RequestParam(required = false) MultipartFile img, HttpSession session) {
 		try {
 			String hashpw = pe.encode(member.getPassword());
-			if(img != null && !img.isEmpty()) {
+			if (img != null && !img.isEmpty()) {
 				member.setProfile(img.getBytes());
 			}
 			member.setRole("USER");
@@ -70,13 +70,13 @@ public class MemberController implements RestControllerHelper {
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<?> memberModify(@ModelAttribute MemberDTO member, 
+	public ResponseEntity<?> memberModify(@ModelAttribute MemberDTO member,
 			@AuthenticationPrincipal CustomUserDetails details) {
 		try {
 			String hashpw = pe.encode(member.getPassword());
 			member.setPassword(hashpw);
 			mService.modifyMember(member);
-			if(details.getUsername().equals(member.getEmail())) {
+			if (details.getUsername().equals(member.getEmail())) {
 				details.setMember(member);
 			}
 			return handleSuccess(member);
@@ -97,7 +97,6 @@ public class MemberController implements RestControllerHelper {
 			return handleFail(e);
 		}
 	}
-	
 
 	@PostMapping("/password-find")
 	public ResponseEntity<?> passwordFind(@RequestParam String email, HttpSession session) {
@@ -115,7 +114,7 @@ public class MemberController implements RestControllerHelper {
 			return handleFail(e);
 		}
 	}
-	
+
 	@PostMapping("/check-email")
 	public Map<String, Boolean> checkEmailDuplicate(@RequestParam String email, HttpServletResponse response) {
 		// mService 또는 DAO에 이메일 존재 여부를 확인하는 메서드가 있다고 가정합니다.
@@ -125,19 +124,20 @@ public class MemberController implements RestControllerHelper {
 
 		return Map.of("exists", exists);
 	}
-	
+
 	@GetMapping("/user-info")
-	public ResponseEntity<?> getCurrentUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails){
+	public ResponseEntity<?> getCurrentUserInfo(@AuthenticationPrincipal CustomUserDetails userDetails) {
 		MemberDTO member = userDetails.getMember();
-		return handleSuccess(Map.of(
-				"id",member.getId()
-				,"email",member.getEmail()
-				,"name",member.getName()
-				,"profileImg",member.getProfileImg(),
-				"role",member.getRole()));
+		return handleSuccess(Map.of("id", member.getId(), "email", member.getEmail(), "name", member.getName(),
+				"profileImg", member.getProfileImg(), "role", member.getRole()));
 	}
-	
-	
+
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getMemberInfo(@PathVariable int id) {
+		MemberDTO member = mService.findMemberById(id);
+		return handleSuccess(member);
+	}
+
 //	@PostMapping("/check-email")
 //	public ResponseEntity<?> checkEmailDuplicate(@RequestParam String email, HttpServletResponse response) {
 //		// mService 또는 DAO에 이메일 존재 여부를 확인하는 메서드가 있다고 가정합니다.

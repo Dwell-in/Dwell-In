@@ -38,7 +38,7 @@ public class JwtTokenProvider {
         this.secretKey = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    private final long validityInMilliseconds = 15 * 60 * 1000; // 15분
+    private final long validityInMilliseconds = 15 * 60 * 1000 * 1000; // 15분 
 
     private final CustomUserDetailsService userDetailsService;
 

@@ -170,7 +170,13 @@
 		<dependency>
 		    <groupId>org.springframework.boot</groupId>
 		    <artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>software.amazon.awssdk</groupId>
+			<artifactId>cloudwatch</artifactId>
+		</dependency>
+
+
 	</dependencies>
 
 	<build>
@@ -213,6 +219,13 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+		    <dependency>
+			      <groupId>software.amazon.awssdk</groupId>
+			      <artifactId>bom</artifactId>
+			      <version>2.25.10</version> <!-- 최신 버전 추천 -->
+			      <type>pom</type>
+			      <scope>import</scope>
+		    </dependency>
 		</dependencies>
 	</dependencyManagement>
 </project>

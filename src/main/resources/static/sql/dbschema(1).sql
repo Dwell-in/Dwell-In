@@ -1,3 +1,4 @@
+drop table if exists `ssafyhome`.`member_favorite`
 drop table if exists `ssafyhome`.`noticeboard`;
 
 DROP TABLE IF EXISTS `ssafyhome`.`property_safety_mapping`;
@@ -10,6 +11,7 @@ DROP TABLE IF EXISTS `ssafyhome`.`property`;
 drop table if exists `ssafyhome`.`comment`;
 drop table if exists `ssafyhome`.`board`;
 drop table if exists `ssafyhome`.`post_category`;
+drop table if exists `ssafyhome`.`chat_read`;
 drop table if exists `ssafyhome`.`chat_message`;
 drop table if exists `ssafyhome`.`chat_room`;
 drop table if exists `ssafyhome`.`pattern`;
@@ -52,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`post_category`(
     PRIMARY KEY (`category_id`)
     )
 ENGINE = InnoDB;
-insert into post_category
+insert into `ssafyhome`.`post_category`
 values
 	(0, 'notice'),
     (1, '커뮤니티'),
@@ -122,6 +124,16 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`chat_room` (
     FOREIGN KEY (user2_id) REFERENCES member(id))
 ENGINE = InnoDB;
 
+CREATE TABLE IF NOT EXISTS `ssafyhome`.`chat_read` (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    room_id VARCHAR(255) NOT NULL,
+    last_read_message_id BIGINT DEFAULT NULL,
+    last_read_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY unique_user_room (user_id, room_id)
+);
+
+
 -- 채팅 메시지 테이블
 CREATE TABLE IF NOT EXISTS `ssafyhome`.`chat_message` (
     `message_id` BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -142,4 +154,27 @@ CREATE TABLE IF NOT EXISTS `ssafyhome`.`email_verification_token` (
     token VARCHAR(255) NOT NULL,
     expiry_date DATETIME NOT NULL,
     is_used BOOLEAN DEFAULT FALSE
+);
+
+
+CREATE TABLE IF NOT EXISTS `ssafyhome`. `member_favorite` (
+  member_id INT PRIMARY KEY,
+  preferred_location VARCHAR(255),
+  budget_min BIGINT,
+  budget_max BIGINT,
+  rent_min BIGINT,
+  rent_max BIGINT,
+  preferred_type VARCHAR(50),
+  min_area INT,
+  min_rooms INT,
+  commute_target VARCHAR(255),
+  commute_time_limit INT,
+  household_type VARCHAR(50),
+  floor_preference VARCHAR(50),
+  build_year_preference VARCHAR(50),
+  required_features TEXT,
+  lifestyle_priority TEXT,
+  created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+
+  FOREIGN KEY (member_id) REFERENCES member(id) ON DELETE CASCADE
 );

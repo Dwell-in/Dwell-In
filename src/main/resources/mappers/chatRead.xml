@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="com.ssafy.home.websocket.model.dao.ChatReadDAO">
+
+	<resultMap id="ChatReadMap" type="ChatReadDTO">
+		<id property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="roomId" column="room_id" />
+		<result property="lastReadMessageId"
+			column="last_read_message_id" />
+	</resultMap>
+
+	<resultMap id="UnreadCountMap" type="UnreadCountDTO">
+		<result property="roomId" column="room_id" />
+		<result property="unreadCount" column="unread_count" />
+	</resultMap>
+
+	<select id="selectByUserIdAndRoomId" resultMap="ChatReadMap">
+		SELECT * FROM
+		chat_read WHERE user_id = #{userId} AND room_id = #{roomId}
+	</select>
+
+	<insert id="insertOrUpdateRead">
+		INSERT INTO chat_read (user_id, room_id,
+		last_read_message_id,
+		last_read_time)
+		VALUES (#{userId}, #{roomId},
+		#{lastReadMessageId}, NOW())
+		ON DUPLICATE KEY UPDATE
+		last_read_message_id = VALUES(last_read_message_id),
+		last_read_time =
+		NOW()
+	</insert>
+
+	<update id="updateLastReadMessageId">
+		UPDATE chat_read
+		SET last_read_message_id =
+		#{messageId}, last_read_time = NOW()
+		WHERE user_id = #{userId} AND
+		room_id = #{roomId}
+	</update>
+	
+	<insert id="insertInitialRead">
+	  INSERT INTO chat_read (user_id, room_id, last_read_message_id, last_read_time)
+	  VALUES (#{userId}, #{roomId}, 0, NOW())
+	</insert>
+
+	<select id="countUnreadMessages" resultMap="UnreadCountMap">
+		SELECT
+		m.room_id,
+		COUNT(*) AS unread_count
+		FROM
+		chat_message m
+		JOIN chat_read r ON m.room_id = r.room_id AND r.user_id
+		= #{userId}
+		WHERE m.sender_id != #{userId}
+		AND m.message_id >
+		IFNULL(r.last_read_message_id, 0)
+		GROUP BY m.room_id
+	</select>
+
+</mapper>
