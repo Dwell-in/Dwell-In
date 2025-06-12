@@ -156,7 +156,7 @@ Dwell_In은 이러한 사용자의 번거로운 노력을 해소하고자 만들
 
 | 채팅 알림 |
 |:-:|
-| ![](https://velog.velcdn.com/images/ksj0314/post/de176c25-ed8f-4eae-b53f-cdb8e87180a0/image.gif) |
+| | ![](./reademe/chat알림.gif) | |
 
 메시지가 온 경우 프로필 상단에 알림이 표시됩니다.
 
