@@ -174,7 +174,7 @@ Dwell_In은 이러한 사용자의 번거로운 노력을 해소하고자 만들
 
 #### 7) Dwellog
 
-| Dwellog |
+| Dwellog ||
 |:-:|:-:|
 | ![](https://velog.velcdn.com/images/ksj0314/post/8c9bd082-d960-47d2-bc9b-1518e4398862/image.png) | ![](https://velog.velcdn.com/images/ksj0314/post/7024c84d-19b0-4d92-b43c-b6d24255d185/image.png) |
 
