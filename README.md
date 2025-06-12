@@ -218,9 +218,9 @@ BackEnd 서버가 내려가더라도 개발노트만은 보여질 수 있도록
 ## 4️⃣ 개발 환경
 
 
-|||
+|BE||
 |:-:|:-:|
-|Front||
+|FE||
 
 ![](https://img.shields.io/badge/vue-%234FC08D?style=for-the-badge&logo=vuedotjs&logoColor=white)
 
