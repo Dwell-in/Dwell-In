@@ -1,10 +1,3 @@
-<style>
-    a{
-        color: white;
-        text-decoration: none;
-    }
-</style>
-
 # 🏠 Dwell_In 
 
 #### 👨‍💻 SSAFY 13기 1학기 광주 4반 Dwell_In (25.04.28 ~ 25.05.28)
