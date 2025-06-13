@@ -58,7 +58,7 @@ Dwell_In은 이러한 사용자의 번거로운 노력을 해소하고자 만들
 
 ## 🏠 서비스 소개
 
-### 1️⃣1 시연 영상
+### 1️⃣ 시연 영상
 
 [🔗 시연 영상 바로가기](https://www.youtube.com/watch?v=msAUq9gcWXs)
 
