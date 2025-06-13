@@ -1,4 +1,4 @@
-# 🏠 Dwell_In 
+## 🏠 Dwell_In 
 
 #### 👨‍💻 SSAFY 13기 1학기 광주 4반 Dwell_In (25.04.28 ~ 25.05.28)
 
@@ -8,36 +8,36 @@
 
 ## 📑 목차
 
-* [1️⃣ 프로젝트 개요](#1️⃣-프로젝트-개요)
-  * [🏠 기획 배경](#-기획-배경)
-  * [🏠 팀원 소개](#-팀원-소개)
-* [2️⃣ 서비스 소개](#2️⃣-서비스-소개)
-  * [🏠 시연 영상](#-시연-영상)
-  * [🏠 서비스 화면 및 기능](#-서비스-화면-및-기능)
-* [3️⃣ 활용 기술](#3️⃣-활용-기술)
-* [4️⃣ 개발 환경](#4️⃣-개발-환경)
-* [5️⃣ 프로젝트 구조](#5️⃣-프로젝트-구조)
-* [6️⃣ 협업 환경](#6️⃣-협업-환경)
-* [7️⃣ 프로젝트 일정](#7️⃣-프로젝트-일정)
-* [8️⃣ 프로젝트 산출물](#8️⃣-프로젝트-산출물)
-  * [🏠 기능 정의서](#-기능-정의서)
-  * [🏠 API 명세서](#-api-명세서)
-  * [🏠 화면 설계서](#-화면-설계서)
-  * [🏠 ERD](#-erd)
-  * [🏠 클래스 다이어그램](#-클래스-다이어그램)
+* [프로젝트 개요](#🏠-프로젝트-개요)
+  * [기획 배경](#-기획-배경)
+  * [팀원 소개](#-팀원-소개)
+* [서비스 소개](#🏠-서비스-소개)
+  * [시연 영상](#-시연-영상)
+  * [서비스 화면 및 기능](#-서비스-화면-및-기능)
+* [활용 기술](#🏠-활용-기술)
+* [개발 환경](#🏠-개발-환경)
+* [프로젝트 구조](#🏠-프로젝트-구조)
+* [협업 환경](#🏠-협업-환경)
+* [프로젝트 일정](#🏠-프로젝트-일정)
+* [프로젝트 산출물](#🏠-프로젝트-산출물)
+  * [기능 정의서](#-기능-정의서)
+  * [API 명세서](#-api-명세서)
+  * [화면 설계서](#-화면-설계서)
+  * [ERD](#-erd)
+  * [클래스 다이어그램](#-클래스-다이어그램)
 
 ---
 
-## 1️⃣ 프로젝트 개요
+## 🏠 프로젝트 개요
 
-### 🏠 팀원 소개
+### 1️⃣ 팀원 소개
 
 | 김소중 | 양대열 | 추지웅 |
 |:-:|:-:|:-:|
 | ![](https://velog.velcdn.com/images/ksj0314/post/fce28f5d-d812-46dd-acdf-3b5534e39e07/image.png) | ![](https://velog.velcdn.com/images/ksj0314/post/b052113b-a3a2-434b-a1e7-d71516af9618/image.png) | ![](https://velog.velcdn.com/images/ksj0314/post/f6ded87e-b859-4ec5-a597-04bfb17e1d6f/image.png) |
 | Leader, FrontEnd, BackEnd | AI, BackEnd | Security, BackEnd, 배포 |
 
-### 🏠 기획 배경
+### 2️⃣ 기획 배경
 
 ![](https://velog.velcdn.com/images/ksj0314/post/eaaf7229-d1d5-40f5-86d7-b8ab9f8f4ad3/image.png)
 
@@ -58,13 +58,13 @@ Dwell_In은 이러한 사용자의 번거로운 노력을 해소하고자 만들
 
 ---
 
-## 2️⃣ 서비스 소개
+## 🏠 서비스 소개
 
-### 🏠 시연 영상
+### 1️⃣1 시연 영상
 
 [🔗 시연 영상 바로가기](https://www.youtube.com/watch?v=msAUq9gcWXs)
 
-### 🏠 서비스 화면 및 기능
+### 2️⃣ 서비스 화면 및 기능
 
 #### 1) 사이트 소개
 
@@ -209,13 +209,13 @@ BackEnd 서버가 내려가더라도 개발노트만은 보여질 수 있도록
 
 ---
 
-## 3️⃣ 활용 기술
+## 🏠 활용 기술
 
 
 
 ---
 
-## 4️⃣ 개발 환경
+## 🏠 개발 환경
 
 
 |BE| ![openjdk17](https://img.shields.io/badge/OpenJDK_17-%23EE7208?style=for-the-badge&logo=openjdk) ![SpringBoot](https://img.shields.io/badge/Spring_Boot-%236DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white) ![spring_security](https://img.shields.io/badge/spring_security-%236DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) ![spring ai](https://img.shields.io/badge/Spring_AI-%236DB33F?style=for-the-badge&logo=openai&logoColor=white) ![MySQL](https://img.shields.io/badge/MySQL_8.0-%231A6997?style=for-the-badge&logo=mysql&logoColor=white) |
@@ -227,7 +227,7 @@ BackEnd 서버가 내려가더라도 개발노트만은 보여질 수 있도록
 
 ---
 
-## 5️⃣ 프로젝트 구조
+## 🏠 프로젝트 구조
 
 #### 💼  Back
 
@@ -342,7 +342,7 @@ BackEnd 서버가 내려가더라도 개발노트만은 보여질 수 있도록
 
 ---
 
-## 6️⃣ 협업 환경
+## 🏠 협업 환경
 
 #### 1) GitHub
 
@@ -376,7 +376,7 @@ FE 코드를 작성하는 것에 비해 빠른 속도로 페이지의 구조를 
 
 ---
 
-## 7️⃣ 프로젝트 일정
+## 🏠 프로젝트 일정
 
 | ![](https://velog.velcdn.com/images/ksj0314/post/6c4cfcd0-8834-4c3e-a14d-6f75a9a9c5bf/image.png) |
 |:-:|
@@ -385,7 +385,7 @@ FE 코드를 작성하는 것에 비해 빠른 속도로 페이지의 구조를 
 
 ## 8️⃣ 프로젝트 산출물
 
-### 🏠 API 명세서
+### 1️⃣ API 명세서
 
 |![](https://velog.velcdn.com/images/ksj0314/post/0431e4c3-0214-49a1-b420-df0e6b8d8ce0/image.png)|
 |:-:|
@@ -395,7 +395,7 @@ BE 개발자와 FE 개발자가 원할한 소통을 할 수 있게 이곳에 API
 
 ***
 
-### 🏠 화면 설계서
+### 2️⃣ 화면 설계서
 
 > Figma
 >
@@ -404,14 +404,14 @@ BE 개발자와 FE 개발자가 원할한 소통을 할 수 있게 이곳에 API
 
 ***
 
-### 🏠 ERD
+### 3️⃣ ERD
 
 |![](https://velog.velcdn.com/images/ksj0314/post/dfe986bb-6565-47a7-8edb-ad519d18b802/image.png)|
 |:-:|
 
 ***
 
-### 🏠 클래스 다이어그램
+### 4️⃣ 클래스 다이어그램
 
 |다이어그램|구조도|
 |:-:|:-:|
