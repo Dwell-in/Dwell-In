@@ -166,9 +166,26 @@ Dwell_In은 이러한 사용자의 번거로운 노력을 해소하고자 만들
 
 ***
 
-#### 5) 로그인, 회원가입
+#### 5) 회원가입, 로그인
 
+| JavaMailSender | 카카오 OAuth |
+|:-:|:-:|
+| ![](https://velog.velcdn.com/images/ksj0314/post/2e365561-cbae-4ef9-bbc8-81fbe566440c/image.png) | ![](https://velog.velcdn.com/images/ksj0314/post/2d35fcc3-dde8-4cfd-8c54-998a331eaa99/image.png) |
 
+1. `JavaMailSender`를 이용한 이메일 인증 방식
+2. 카카오 API를 이용한 `OAuth 2.0` 방식의 인증
+
+이렇게 2가지의 인증 방식을 통해 회원가입이 이루어집니다.
+
+| 로그인 |
+|:-:|
+| ![](https://velog.velcdn.com/images/ksj0314/post/804234a6-717b-40fd-9e21-ba8d8cbb70c5/image.png) |
+
+로그인 요청 시 JWT를 이용하여 Access 토큰과 Refresh 토큰을 각각 발급합니다.
+또한, 로그인시 사용자의 정보는 pinia로 저장하여 클라이언트 상태로 관리합니다.
+
+Access Token을 인증 헤더에 포함해 서버에 전달하여 API 요청 시 유효성을 검사하고
+로그인한 사용자의 정보는 전역 상태로 저장되어 불필요한 API 호출을 막습니다.
 
 ***
 
