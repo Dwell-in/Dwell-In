@@ -1,5 +1,7 @@
 ## 🏠 Dwell_In 
 
+🥇 SSAFY 관통 프로젝트 최우수상
+
 #### 👨‍💻 SSAFY 13기 1학기 광주 4반 Dwell_In (25.04.28 ~ 25.05.28)
 
 ![](https://velog.velcdn.com/images/ksj0314/post/6b8f70de-e0dd-41f1-a92d-0dc31790df6b/image.png)
