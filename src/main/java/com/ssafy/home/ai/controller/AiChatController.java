@@ -9,6 +9,8 @@ import com.ssafy.home.security.dto.CustomUserDetails;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,12 +38,12 @@ public class AiChatController implements RestControllerHelper {
 	private final HouseService hService;
 	private final AiPrompt aPrompt;
 	private final MemberFavoriteService memberFavoriteService;
+	private static final Logger logger = LoggerFactory.getLogger(AiChatController.class);
 	
 	@PostMapping("/simple")
 	ResponseEntity<?> simpleGeneration(@RequestBody Map<String, String> userInput){
-		System.out.println("컨트롤러 도착 ==================");
 		Object result = aService.simpleGenration(userInput.get("message"));
-		System.out.println(result);
+		logger.trace("컨트롤러 도착: "+String.valueOf(result));
 		return handleSuccess(Map.of("message",result));
 	}
 	
